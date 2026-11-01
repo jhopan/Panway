@@ -127,7 +127,11 @@ func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName st
 		c.Writer.Header().Set(k, v[0])
 	}
 	c.Writer.WriteHeader(resp.StatusCode)
-	_, err = io.Copy(c.Writer, resp.Body)
+	// Strip a trailing stream terminator ("data: [DONE]") that some upstreams
+	// append to non-streaming responses. Forwarding it breaks every
+	// OpenAI-compatible client, which parses the body as one JSON document.
+	forwarded := StripStreamTerminator(responseBody)
+	_, err = c.Writer.Write(forwarded)
 	if err != nil {
 		return ErrorWrapper(err, "copy_response_body_failed", http.StatusInternalServerError), nil
 	}
