@@ -90,12 +90,12 @@ const OtherSetting = () => {
 
   const openGitHubRelease = () => {
     window.location =
-      'https://github.com/songquanpeng/one-api/releases/latest';
+      'https://github.com/jhopan/Panway/releases/latest';
   };
 
   const checkUpdate = async () => {
     const res = await API.get(
-      'https://api.github.com/repos/songquanpeng/one-api/releases/latest'
+      'https://api.github.com/repos/jhopan/Panway/releases/latest'
     );
     const { tag_name, body } = res.data;
     if (tag_name === process.env.REACT_APP_VERSION) {
@@ -141,7 +141,7 @@ const OtherSetting = () => {
           <Form.Group widths='equal'>
             <Form.Input
               label={<label>主题名称（<Link
-                to='https://github.com/songquanpeng/one-api/blob/main/web/README.md'>当前可用主题</Link>）</label>}
+                to='https://github.com/jhopan/Panway/blob/main/web/README.md'>当前可用主题</Link>）</label>}
               placeholder='请输入主题名称'
               value={inputs.Theme}
               name='Theme'
@@ -182,7 +182,7 @@ const OtherSetting = () => {
             />
           </Form.Group>
           <Form.Button onClick={submitAbout}>保存关于</Form.Button>
-          <Message>移除 One API
+          <Message>移除 Panway
             的版权标识必须首先获得授权，项目维护需要花费大量精力，如果本项目对你有意义，请主动支持本项目。</Message>
           <Form.Group widths='equal'>
             <Form.Input

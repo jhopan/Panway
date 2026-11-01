@@ -8,7 +8,6 @@ import (
 	_ "image/gif"
 	_ "image/jpeg"
 	_ "image/png"
-	"net/http"
 	"regexp"
 	"strings"
 	"sync"
@@ -61,7 +60,9 @@ func GetImageFromUrl(url string) (mimeType string, data string, err error) {
 	if !isImage {
 		return
 	}
-	resp, err := http.Get(url)
+	// Use the user-content client: it carries a browser User-Agent, which
+	// image hosts require. A bare http.Get gets rejected with HTTP 400.
+	resp, err := client.UserContentRequestHTTPClient.Get(url)
 	if err != nil {
 		return
 	}
