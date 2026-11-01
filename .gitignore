@@ -1,0 +1,20 @@
+.idea
+.vscode
+upload
+*.exe
+*.db
+build
+*.db-journal
+logs
+data
+/web/node_modules
+/web/default/node_modules
+cmd.md
+.env
+/one-api
+temp
+.DS_Store
+
+# upstream reference docs
+README.upstream.md
+
