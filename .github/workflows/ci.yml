@@ -29,6 +29,21 @@ jobs:
         with:
           go-version: ^1.22
 
+      # The Go build embeds web/build (see the //go:embed directive in
+      # common/embed.go). The frontend is not committed, so it has to be built
+      # before the Go tests run — otherwise the build fails with
+      # "pattern web/build/*: no matching files found".
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build frontend
+        working-directory: web/default
+        run: |
+          npm install --no-audit --no-fund
+          CI=false npm run build
+
       # When you execute your unit tests, make sure to use the "-coverprofile" flag to write a
       # coverage profile to a file. You will need the name of the file (e.g. "coverage.txt")
       # in the next step as well as the next job.
