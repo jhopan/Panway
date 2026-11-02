@@ -149,6 +149,29 @@ Panway adalah fork One API (MIT) dengan perubahan:
   respons non-streaming (`relay/adaptor/openai/json.go`).
 - **Alamat SMTP aman IPv6** (`common/message/email.go`).
 
+## Kredit & kontributor
+
+| Peran | Nama |
+|---|---|
+| **Panway — maintainer, kontributor** | [jhopan](https://github.com/jhopan) |
+| **One API — proyek asal** | [JustSong](https://github.com/songquanpeng) |
+
+Panway adalah fork rebranded dari **One API** © JustSong, lisensi MIT. Kredit
+asli dipertahankan di footer antarmuka, `LICENSE`, dan riwayat commit file
+tersentuh — sesuai syarat lisensi MIT.
+
+Kontribusi Panway di atas fork upstream:
+
+- Rebranding penuh ke "Panway" (nama sistem, teks antarmuka dua bahasa, module
+  path, nama database, nama file log, binary, image Docker).
+- Integrasi **PanWallet**: tautakan wallet, cek saldo live, sinkronisasi top-up
+  IDR ke kuota.
+- Harga default model **PanRouter**.
+- Parsing JSON toleran untuk upstream yang menempelkan `data: [DONE]` ke respons
+  non-streaming.
+- Pengiriman `User-Agent` browser saat ambil gambar dari URL user.
+- Alamat SMTP aman IPv6.
+
 ## Lisensi
 
 MIT. Berasal dari [One API](https://github.com/songquanpeng/one-api) © JustSong.
