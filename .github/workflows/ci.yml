@@ -40,6 +40,11 @@ jobs:
 
       - name: Build frontend
         working-directory: web/default
+        env:
+          # eslint-plugin-react-app rejects the "jest/globals" environment
+          # with newer plugin versions; the official build script disables
+          # the plugin for the same reason.
+          DISABLE_ESLINT_PLUGIN: 'true'
         run: |
           npm install --no-audit --no-fund
           CI=false npm run build
