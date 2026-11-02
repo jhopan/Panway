@@ -33,6 +33,24 @@
       "success": "充值成功！",
       "request_failed": "请求失败",
       "no_link": "超级管理员未设置充值链接！"
+    },
+    "wallet": {
+      "title": "使用 PanWallet 支付",
+      "description": "绑定你的 PanWallet 钱包，然后把已支付的余额同步为额度。PanWallet 余额是真实来源；这里的额度只是镜像。",
+      "id_label": "PanWallet 钱包 ID",
+      "id_required": "请输入 PanWallet 钱包 ID（8 个字符）。",
+      "link_button": "绑定钱包",
+      "linked": "钱包绑定成功。",
+      "unlink_button": "解除钱包绑定",
+      "unlinked": "钱包已解绑。",
+      "public_id": "钱包 ID",
+      "balance": "余额",
+      "available": "可用",
+      "sync_amount": "同步金额（Rp）",
+      "sync_button": "同步到额度",
+      "synced": "同步成功：已增加 {{quota}} 额度。",
+      "amount_required": "请输入要同步的金额。",
+      "request_failed": "请求失败"
     }
   },
   "channel": {

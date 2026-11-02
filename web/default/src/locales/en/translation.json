@@ -33,6 +33,24 @@
       "success": "Top up successful!",
       "request_failed": "Request failed",
       "no_link": "Admin has not set up the top-up link!"
+    },
+    "wallet": {
+      "title": "Bayar dengan PanWallet",
+      "description": "Hubungkan wallet PanWallet kamu, lalu sinkronkan saldo yang sudah dibayar menjadi kuota. Saldo PanWallet adalah sumber kebenaran; kuota di sini hanya cerminan.",
+      "id_label": "ID wallet PanWallet",
+      "id_required": "Masukkan ID wallet PanWallet (8 karakter).",
+      "link_button": "Hubungkan wallet",
+      "linked": "Wallet berhasil dihubungkan.",
+      "unlink_button": "Lepas tautan wallet",
+      "unlinked": "Wallet dilepas.",
+      "public_id": "ID wallet",
+      "balance": "Saldo",
+      "available": "Tersedia",
+      "sync_amount": "Nominal yang disinkronkan (Rp)",
+      "sync_button": "Sinkronkan ke kuota",
+      "synced": "Sinkronisasi berhasil: {{quota}} kuota ditambahkan.",
+      "amount_required": "Masukkan nominal yang ingin disinkronkan.",
+      "request_failed": "Permintaan gagal"
     }
   },
   "channel": {
