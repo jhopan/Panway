@@ -13,7 +13,7 @@ const PROVIDERS = [
   { key: 'gemini', name: 'Gemini' },
   { key: 'deepseek', name: 'DeepSeek' },
   { key: 'qwen', name: 'Qwen' },
-  { key: 'minimax', name: 'minimax' },
+  { key: 'minimax', name: 'MiniMax' },
   { key: 'kimi', name: 'Kimi' },
   { key: 'grok', name: 'Grok' },
 ];
@@ -117,7 +117,9 @@ const Landing = () => {
 
           <nav className='landing-nav'>
             <Link to='/'>{t('landing.nav.home')}</Link>
-            <Link to={consolePath}>{t('landing.nav.console')}</Link>
+            {!userState.user && (
+              <Link to='/login'>{t('landing.nav.console')}</Link>
+            )}
             <Link to='/topup'>{t('landing.nav.pricing')}</Link>
             <Link to='/about'>{t('landing.nav.about')}</Link>
           </nav>
@@ -220,7 +222,10 @@ const Landing = () => {
       <section className='landing-code' id='models'>
         <div className='landing-container landing-code-card'>
           <div className='landing-code-copy'>
-            <div className='landing-eyebrow'>{t('landing.code.eyebrow')}</div>
+            <div className='landing-eyebrow'>
+              <span className='landing-eyebrow-rule' />
+              {t('landing.code.eyebrow')}
+            </div>
             <h2 className='landing-section-title'>{t('landing.code.title')}</h2>
             <p className='landing-section-body'>{t('landing.code.body')}</p>
 
