@@ -44,6 +44,10 @@ branch `master`.
 | `common/telegram.go` | client Bot API Telegram |
 | `common/walletclient/client.go` | client HTTP PanWallet |
 | `common/i18n/locales/` | `en.json`, `id.json` (pesan server) |
+| `controller/pricing.go` | endpoint publik `/api/pricing` (katalog + harga) |
+| `components/Sidebar.js` | navigasi console (rail kiri) |
+| `components/Chrome.js` | memilih chrome per route |
+| `pages/Landing/` | landing page marketing di `/` |
 | `model/` | GORM model + auto-migrate |
 | `controller/` | handler HTTP |
 | `router/api.go` | daftar route `/api/*` |
@@ -70,6 +74,10 @@ Buka `http://127.0.0.1:3110`.
 - Kalau "address already in use", ada proses lama masih pegang port:
   `netstat -ano | grep ":3110.*LISTENING"` → `cmd.exe /c "taskkill /PID
   <pid> /F"`.
+- **Build frontend harus dengan server dimatikan.** Go meng-embed
+  `web/build/*` ke binary, jadi While server jalan, `npm run build` gagal
+  dengan `rm: cannot remove '../build/default': Device or resource busy`.
+  Urutan yang benar: kill server → `npm run build` → `go run .`.
 - `go build` ~1-2 menit. `npm install` ~5-6 menit.
 - Argumen untuk program native (go, git, node) **tidak** diterjemahkan MSYS.
   Pakai `C:/Users/...`; `cd /c/Users/...` untuk perintah bash.
@@ -260,6 +268,34 @@ string literal 0.)
 - **Jangan** `git push --force` ke branch yang sudah dipakai.
 - Release: tag `v*` memicu GitHub Actions yang build. **Jangan** build
   release lokal, dan jangan push tag tanpa diminta.
+
+## 12b. Tampilan: landing vs console
+
+Tiga jenis chrome, dipilih di `components/Chrome.js`:
+
+| Route | Chrome |
+|---|---|
+| `/` | Landing sendiri (header + footer marketing), tanpa Header global |
+| `/login`, `/register`, `/reset`, `/oauth/*` | Header lama, tanpa sidebar |
+| sisanya (console) | Sidebar kiri + konten |
+
+**Landing** (`pages/Landing/`):
+- Menarik katalog & harga dari `GET /api/pricing` (publik, tanpa login).
+- Hardcode nama model/price di frontend **dilarang** - harga harus dari API
+  supaya panel admin tetap sumber kebenaran.
+- i18n key di namespace `landing`, path `landing.how.steps.*` (bukan
+  `landing.steps.*`).
+
+**Sidebar** (`components/Sidebar.js`):
+- Menu: Dashboard, Token, Top Up, Log, Settings + grup Administrasi
+  (Channel, Redemption, User) + grup Situs (About).
+- Item aktif ditandai lewat `location.pathname`.
+- Di bawah 900px jadi drawer dengan tombol toggle + overlay.
+- `i18n.language` bisa berupa tag regional ("en-US"), jadi dropdown harus
+  menormalkan ke "en"/"id" dulu, kalau tidak nilai dropdown kosong.
+
+**Logo:** `web/default/public/logo-panway.svg` (huruf P, gradient indigo ->
+cyan). `helpers/utils.js` `getLogo()` memakai path itu sebagai default.
 
 ## 13. Yang belum dikerjakan
 

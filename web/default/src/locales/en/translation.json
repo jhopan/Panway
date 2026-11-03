@@ -873,60 +873,72 @@
   },
   "landing": {
     "nav": {
-      "home": "Home",
-      "console": "Console",
+      "models": "Models",
+      "how": "How it works",
       "pricing": "Pricing",
-      "about": "About",
+      "console": "Console",
       "signin": "Sign in"
     },
     "hero": {
-      "eyebrow": "The AI connection layer",
-      "title_accent": "Every model.",
-      "title": "One connection.",
-      "subtitle": "Access leading AI models through a single gateway. Transparent pricing, flexible payments, and real-time usage monitoring for your applications.",
-      "cta_primary": "Start building",
-      "cta_secondary": "Explore models",
-      "check1": "Compatible APIs",
-      "check2": "One API key",
-      "check3": "Your choice of model",
-      "hub_caption": "One key. Many possibilities.",
-      "strip_left": "Built for the way you build.",
-      "strip_right": "Unified access. Thoughtful controls. Open possibilities."
+      "pill": "One API key, every model",
+      "title": "One key. Every model you need.",
+      "subtitle": "Panway fronts a pool of AI providers behind a single OpenAI-compatible endpoint. Pay in rupiah, watch every token, and switch models without touching your code.",
+      "cta_primary": "Open console",
+      "cta_secondary": "See models",
+      "stat_models": "models live",
+      "stat_key": "API key",
+      "stat_currency": "billing currency"
     },
-    "logos": {
-      "eyebrow": "Great models. A shared starting point."
+    "preview": {
+      "title": "Recent requests"
     },
-    "code": {
-      "eyebrow": "Designed for developers",
-      "title": "One key. Your choice of model.",
-      "body": "Point the official SDK at your Panway endpoint and switch models by name. No custom client, no new auth flow, no code changes when you change provider.",
-      "footer": "Illustrative integration"
+    "models": {
+      "title": "Models and prices",
+      "lead": "The catalogue is served live from the gateway, so what you see is what you pay. Prices are per one million tokens.",
+      "model": "Model",
+      "input": "Input",
+      "output": "Output",
+      "unit": "per 1M tokens",
+      "loading": "Loading the catalogue...",
+      "error": "The catalogue could not be loaded. Refresh to try again."
     },
-    "features": {
-      "routing": {
-        "tag": "Routing",
-        "title": "The right route for every request.",
-        "body": "Requests are routed across providers and accounts automatically, with load balancing and failover handled for you."
-      },
-      "visibility": {
-        "tag": "Visibility",
-        "title": "A clear view of your usage.",
-        "body": "Issue API keys per project, cap requests and tokens per key, and watch consumption in real time."
-      },
-      "payments": {
-        "tag": "USD / IDR",
-        "title": "Local payments. A familiar flow.",
-        "body": "Top up through PanWallet using rupiah or QRIS, then spend the balance across every model from a single balance."
+    "how": {
+      "title": "How it works",
+      "lead": "Three steps from signup to your first completion.",
+      "steps": {
+        "connect": {
+          "title": "Point your SDK at Panway",
+          "body": "Set the base URL to your Panway domain and paste the API key from the console. The official OpenAI, Anthropic and Gemini SDKs work as they are."
+        },
+        "topup": {
+          "title": "Top up with rupiah",
+          "body": "Fund the balance through PanWallet using bank transfer or QRIS. One balance covers every model."
+        },
+        "call": {
+          "title": "Call any model",
+          "body": "Name the model in the request body. Usage, latency and cost show up in the log the moment the response lands."
+        }
       }
+    },
+    "pricing": {
+      "title": "Price list",
+      "lead": "A flat rate per model. No subscription, no minimum spend, no hidden fees.",
+      "multiplier": "Output multiplier",
+      "note": "Prices are listed in rupiah per one million tokens. Output tokens are billed at the multiplier shown."
     },
     "cta": {
       "title": "Ready to build?",
-      "body": "Create an account, issue your first key, and call any supported model in minutes.",
-      "button": "Start building"
+      "body": "Create an account, top up, and issue your first key. The console shows your usage from the first request.",
+      "button": "Open console"
     },
     "footer": {
+      "rights": "All rights reserved.",
       "about": "About",
       "signin": "Sign in"
     }
+  },
+  "sidebar": {
+    "group_admin": "Administration",
+    "group_site": "Site"
   }
 }

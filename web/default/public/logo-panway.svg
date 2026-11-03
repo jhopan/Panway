@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="pwBadge" x1="0.1" y1="0" x2="0.75" y2="1">
+      <stop offset="0%" stop-color="#6D5BF5"/>
+      <stop offset="46%" stop-color="#3B5BFD"/>
+      <stop offset="100%" stop-color="#0BA5D9"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="16" y="16" width="480" height="480" rx="136" fill="url(#pwBadge)"/>
+
+  <path fill="#FFFFFF" fill-rule="evenodd" transform="translate(-31 0)" d="
+    M177 94
+    H310
+    C366 94 398 140 398 206
+    C398 272 366 318 310 318
+    H256
+    V418
+    H177
+    Z
+
+    M242 146
+    H298
+    C326 146 342 168 342 206
+    C342 244 326 266 298 266
+    H256
+    Z
+  "/>
+</svg>

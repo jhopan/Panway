@@ -166,14 +166,17 @@ const Dashboard = () => {
 
   const axisTick = {fontSize: 12, fill: '#8E9BB3'};
 
+  // Let recharts drop labels that would collide instead of forcing every
+  // day to render: the console is narrower now that the sidebar takes
+  // space, so seven day labels overlap on the three small charts.
   const xAxisConfig = {
     dataKey: 'date',
     axisLine: {stroke: '#E4E8F0'},
     tickLine: false,
     tick: {...axisTick, textAnchor: 'middle'},
     tickFormatter: formatDate,
-    interval: 0,
-    minTickGap: 8,
+    interval: 'preserveStartEnd',
+    minTickGap: 14,
   };
 
   const lineChart = (dataKey, color, tooltipKey, formatter) => (

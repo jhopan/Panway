@@ -873,60 +873,72 @@
   },
   "landing": {
     "nav": {
-      "home": "Beranda",
-      "console": "Konsol",
+      "models": "Model",
+      "how": "Cara kerja",
       "pricing": "Harga",
-      "about": "Tentang",
+      "console": "Konsol",
       "signin": "Masuk"
     },
     "hero": {
-      "eyebrow": "Lapisan koneksi AI",
-      "title_accent": "Semua model.",
-      "title": "Satu koneksi.",
-      "subtitle": "Akses model AI unggulan lewat satu gateway. Harga transparan, pembayaran fleksibel, dan monitored pemakaian real-time untuk aplikasimu.",
-      "cta_primary": "Mulai membangun",
+      "pill": "Satu API key, semua model",
+      "title": "Satu kunci. Semua model yang kamu butuh.",
+      "subtitle": "Panway menaruh kumpulan penyedia AI di balik satu endpoint yang kompatibel dengan OpenAI. Bayar pakai rupiah, pantau tiap token, dan ganti model tanpa menyentuh kodemu.",
+      "cta_primary": "Buka konsol",
       "cta_secondary": "Lihat model",
-      "check1": "API kompatibel",
-      "check2": "Satu API key",
-      "check3": "Model bebas dipilih",
-      "hub_caption": "Satu kunci. Banyak kemungkinan.",
-      "strip_left": "Dibangun untuk cara kamu membangun.",
-      "strip_right": "Akses terpadu. Kontrol yang baik. Kemungkinan terbuka."
+      "stat_models": "model aktif",
+      "stat_key": "API key",
+      "stat_currency": "mata uang tagihan"
     },
-    "logos": {
-      "eyebrow": "Model hebat. Titik awal yang sama."
+    "preview": {
+      "title": "Request terbaru"
     },
-    "code": {
-      "eyebrow": "Dirancang untuk developer",
-      "title": "Satu kunci. Model bebas dipilih.",
-      "body": "Arahkan SDK resmi ke endpoint Panway lalu ganti model dengan namanya saja. Tanpa client khusus, tanpa alur auth baru, tanpa ubah kode saat ganti provider.",
-      "footer": "Integrasi ilustratif"
+    "models": {
+      "title": "Model dan harga",
+      "lead": "Katalog diambil langsung dari gateway, jadi yang tampil sama dengan yang kamu bayar. Harga untuk satu juta token.",
+      "model": "Model",
+      "input": "Input",
+      "output": "Output",
+      "unit": "per 1 juta token",
+      "loading": "Memuat katalog...",
+      "error": "Katalog gagal dimuat. Muat ulang untuk mencoba lagi."
     },
-    "features": {
-      "routing": {
-        "tag": "Routing",
-        "title": "Rute yang tepat untuk tiap request.",
-        "body": "Request dirouting otomatis ke berbagai provider dan akun, dengan load balancing dan failover yang ditangani untukmu."
-      },
-      "visibility": {
-        "tag": "Visibilitas",
-        "title": "Pemandangan jelas atas pemakaianmu.",
-        "body": "Terbitkan API key per proyek, batasi request dan token per key, dan pantau konsumsi secara real-time."
-      },
-      "payments": {
-        "tag": "USD / IDR",
-        "title": "Pembayaran lokal. Alur yang familiar.",
-        "body": "Isi saldo lewat PanWallet memakai rupiah atau QRIS, lalu pakai saldo itu untuk semua model dari satu saldo saja."
+    "how": {
+      "title": "Cara kerjanya",
+      "lead": "Tiga langkah dari daftar sampai completion pertama.",
+      "steps": {
+        "connect": {
+          "title": "Arahkan SDK ke Panway",
+          "body": "Isi base URL dengan domain Panway lalu tempel API key dari konsol. SDK resmi OpenAI, Anthropic, dan Gemini bisa langsung dipakai."
+        },
+        "topup": {
+          "title": "Isi saldo pakai rupiah",
+          "body": "Tambah saldo lewat PanWallet dengan transfer bank atau QRIS. Satu saldo berlaku untuk semua model."
+        },
+        "call": {
+          "title": "Panggil model mana saja",
+          "body": "Sebut modelnya di body request. Pemakaian, latensi, dan biaya langsung muncul di log begitu respons selesai."
+        }
       }
+    },
+    "pricing": {
+      "title": "Daftar harga",
+      "lead": "Tarif flat per model. Tanpa langganan, tanpa minimum belanja, tanpa biaya tersembunyi.",
+      "multiplier": "Pengali output",
+      "note": "Harga dicantumkan dalam rupiah per satu juta token. Token output ditagih dengan pengali yang tercantum."
     },
     "cta": {
       "title": "Siap membangun?",
-      "body": "Buat akun, terbitkan key pertamamu, dan panggil model yang didukung dalam hitungan menit.",
-      "button": "Mulai membangun"
+      "body": "Buat akun, isi saldo, lalu terbitkan key pertamamu. Konsol menampilkan pemakaian sejak request pertama.",
+      "button": "Buka konsol"
     },
     "footer": {
+      "rights": "Seluruh hak cipta dilindungi.",
       "about": "Tentang",
       "signin": "Masuk"
     }
+  },
+  "sidebar": {
+    "group_admin": "Administrasi",
+    "group_site": "Situs"
   }
 }

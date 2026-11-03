@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    padding-top: 55px;
+    padding-top: 0;
     overflow-y: scroll;
     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, "Microsoft YaHei", sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -114,4 +114,36 @@ code {
   .stat-value {
     font-size: 0.9em !important;
   }
+}
+
+/* ---------- console shell (sidebar layout) ---------- */
+
+.console-shell {
+    min-height: 100vh;
+    background: #f7f8fc;
+}
+
+.console-main {
+    margin-left: 248px;
+    padding: 24px 24px 48px;
+    min-height: 100vh;
+}
+
+.console-main .main-content {
+    padding: 0;
+    max-width: 1240px !important;
+    margin: 0 auto;
+}
+
+/* pages that still use the old top bar (login, register, ...) need the
+   room the fixed header occupies */
+.plain-shell {
+    padding-top: 55px;
+}
+
+@media (max-width: 900px) {
+    .console-main {
+        margin-left: 0;
+        padding: 64px 14px 40px;
+    }
 }
