@@ -37,6 +37,9 @@ func ShouldDisableChannel(err *model.Error, statusCode int) bool {
 		strings.Contains(lowerMessage, "organization has been restricted") || // groq
 		strings.Contains(lowerMessage, "api key not valid") || // gemini
 		strings.Contains(lowerMessage, "api key expired") || // gemini
+		// Some Chinese providers report an exhausted account as "already
+		// overdue" in Chinese. The rune escape below keeps this source file
+		// free of CJK bytes while matching the exact same string.
 		strings.Contains(lowerMessage, "\u5df2\u6b20\u8d39") {
 		return true
 	}
