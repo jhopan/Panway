@@ -19,6 +19,9 @@ func SetRelayRouter(router *gin.Engine) {
 	}
 	relayV1Router := router.Group("/v1")
 	relayV1Router.Use(middleware.RelayPanicRecover(), middleware.TokenAuth(), middleware.Distribute())
+	// Per-token rate limit: requests per minute, tokens per minute, and
+	// concurrent requests. Runs after TokenAuth so the token id is known.
+	relayV1Router.Use(middleware.TokenRateLimit())
 	{
 		relayV1Router.Any("/oneapi/proxy/:channelid/*target", controller.Relay)
 		relayV1Router.POST("/completions", controller.Relay)

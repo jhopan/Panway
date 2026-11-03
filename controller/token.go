@@ -140,16 +140,19 @@ func AddToken(c *gin.Context) {
 	}
 
 	cleanToken := model.Token{
-		UserId:         c.GetInt(ctxkey.Id),
-		Name:           token.Name,
-		Key:            random.GenerateKey(),
-		CreatedTime:    helper.GetTimestamp(),
-		AccessedTime:   helper.GetTimestamp(),
-		ExpiredTime:    token.ExpiredTime,
-		RemainQuota:    token.RemainQuota,
-		UnlimitedQuota: token.UnlimitedQuota,
-		Models:         token.Models,
-		Subnet:         token.Subnet,
+		UserId:          c.GetInt(ctxkey.Id),
+		Name:            token.Name,
+		Key:             random.GenerateKey(),
+		CreatedTime:     helper.GetTimestamp(),
+		AccessedTime:    helper.GetTimestamp(),
+		ExpiredTime:     token.ExpiredTime,
+		RemainQuota:     token.RemainQuota,
+		UnlimitedQuota:  token.UnlimitedQuota,
+		Models:          token.Models,
+		Subnet:          token.Subnet,
+		RateLimitRPM:    token.RateLimitRPM,
+		RateLimitTPM:    token.RateLimitTPM,
+		ConcurrencyLimit: token.ConcurrencyLimit,
 	}
 	err = cleanToken.Insert()
 	if err != nil {
@@ -239,6 +242,9 @@ func UpdateToken(c *gin.Context) {
 		cleanToken.UnlimitedQuota = token.UnlimitedQuota
 		cleanToken.Models = token.Models
 		cleanToken.Subnet = token.Subnet
+		cleanToken.RateLimitRPM = token.RateLimitRPM
+		cleanToken.RateLimitTPM = token.RateLimitTPM
+		cleanToken.ConcurrencyLimit = token.ConcurrencyLimit
 	}
 	err = cleanToken.Update()
 	if err != nil {

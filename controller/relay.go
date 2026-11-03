@@ -63,6 +63,19 @@ func Relay(c *gin.Context) {
 	go processChannelRelayError(ctx, userId, channelId, channelName, *bizErr)
 	requestId := c.GetString(helper.RequestIdKey)
 	retryTimes := config.RetryTimes
+	// A client-side rate limit is not a channel problem: retrying would
+	// burn another upstream call and replace our message with theirs.
+	if code, ok := bizErr.Error.Code.(string); ok && code == "token_rate_limit_exceeded" {
+		logger.Errorf(ctx, "token rate limit exceeded, not retrying")
+		c.JSON(bizErr.StatusCode, gin.H{
+			"error": gin.H{
+				"message": bizErr.Error.Message,
+				"type":    bizErr.Error.Type,
+				"code":    bizErr.Error.Code,
+			},
+		})
+		return
+	}
 	if !shouldRetry(c, bizErr.StatusCode) {
 		logger.Errorf(ctx, "relay error happen, status code is %d, won't retry in this case", bizErr.StatusCode)
 		retryTimes = 0

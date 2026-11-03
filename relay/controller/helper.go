@@ -66,6 +66,21 @@ func getPreConsumedQuota(textRequest *relaymodel.GeneralOpenAIRequest, promptTok
 }
 
 func preConsumeQuota(ctx context.Context, textRequest *relaymodel.GeneralOpenAIRequest, promptTokens int, ratio float64, meta *meta.Meta) (int64, *relaymodel.ErrorWithStatusCode) {
+	// Token rate limit per minute. Checked here because this is the first
+	// place that knows the real prompt token count (the middleware only has
+	// a rough character-based estimate).
+	if limit := tokenTokenRateLimit(meta.TokenId); limit > 0 {
+		// The upstream counts more tokens than the local estimate (it may add
+		// its own system prompt), so the budget is checked against the tokens
+		// actually consumed by the previous requests, and the real usage is
+		// recorded after the request finishes.
+		used := common.GetTokenRateLimiter().TokensUsed(meta.TokenId)
+		if used >= limit {
+			return 0, openai.ErrorWrapper(
+				fmt.Errorf("rate limit exceeded: token reached %d tokens per minute", limit),
+				"token_rate_limit_exceeded", http.StatusTooManyRequests)
+		}
+	}
 	preConsumedQuota := getPreConsumedQuota(textRequest, promptTokens, ratio)
 
 	userQuota, err := model.CacheGetUserQuota(ctx, meta.UserId)
@@ -106,6 +121,11 @@ func postConsumeQuota(ctx context.Context, usage *relaymodel.Usage, meta *meta.M
 	quota = int64(math.Ceil((float64(promptTokens) + float64(completionTokens)*completionRatio) * ratio))
 	if ratio != 0 && quota <= 0 {
 		quota = 1
+	}
+	// Record the real token usage for the per-token TPM limit. The local
+	// estimate undercounts, so the upstream numbers are what count.
+	if meta.TokenId != 0 {
+		common.GetTokenRateLimiter().RecordTokens(meta.TokenId, promptTokens+completionTokens)
 	}
 	totalTokens := promptTokens + completionTokens
 	if totalTokens == 0 {

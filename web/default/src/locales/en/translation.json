@@ -235,7 +235,11 @@
         "update_success": "Token updated successfully!",
         "create_success": "Token created successfully, please copy it from the list page!",
         "expire_time_invalid": "Invalid expiry time format!"
-      }
+      },
+      "rate_limit_rpm": "Rate limit (requests per minute)",
+      "rate_limit_tpm": "Rate limit (tokens per minute)",
+      "concurrency_limit": "Concurrent request limit",
+      "rate_limit_placeholder": "0 = unlimited / use default"
     },
     "copy_options": {
       "raw": "Copy Raw Token",

@@ -34,6 +34,10 @@ type Token struct {
 	UsedQuota      int64   `json:"used_quota" gorm:"bigint;default:0"` // used quota
 	Models         *string `json:"models" gorm:"type:text"`            // allowed models
 	Subnet         *string `json:"subnet" gorm:"default:''"`           // allowed subnet
+	// Rate limit per token. 0 = pakai default global.
+	RateLimitRPM      int `json:"rate_limit_rpm" gorm:"default:0"`       // request per menit
+	RateLimitTPM      int `json:"rate_limit_tpm" gorm:"default:0"`       // token per menit
+	ConcurrencyLimit  int `json:"concurrency_limit" gorm:"default:0"`    // request paralel
 }
 
 func GetAllUserTokens(userId int, startIdx int, num int, order string) ([]*Token, error) {
@@ -117,10 +121,14 @@ func GetTokenById(id int) (*Token, error) {
 	if id == 0 {
 		return nil, errors.New("id 为空！")
 	}
-	token := Token{Id: id}
-	var err error = nil
-	err = DB.First(&token, "id = ?", id).Error
-	return &token, err
+	// Do not pre-set the primary key: GORM then appends its own primary-key
+	// condition to the query, and the combination never matches a row.
+	var token Token
+	err := DB.Where("id = ?", id).First(&token).Error
+	if err != nil {
+		return nil, err
+	}
+	return &token, nil
 }
 
 func (t *Token) Insert() error {
@@ -132,7 +140,8 @@ func (t *Token) Insert() error {
 // Update Make sure your token's fields is completed, because this will update non-zero values
 func (t *Token) Update() error {
 	var err error
-	err = DB.Model(t).Select("name", "status", "expired_time", "remain_quota", "unlimited_quota", "models", "subnet").Updates(t).Error
+	err = DB.Model(t).Select("name", "status", "expired_time", "remain_quota", "unlimited_quota", "models", "subnet",
+		"rate_limit_rpm", "rate_limit_tpm", "concurrency_limit").Updates(t).Error
 	return err
 }
 

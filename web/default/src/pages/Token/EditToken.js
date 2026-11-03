@@ -32,6 +32,9 @@ const EditToken = () => {
     unlimited_quota: false,
     models: [],
     subnet: '',
+    rate_limit_rpm: 0,
+    rate_limit_tpm: 0,
+    concurrency_limit: 0,
   };
   const [inputs, setInputs] = useState(originInputs);
   const { name, remain_quota, expired_time, unlimited_quota } = inputs;
@@ -130,6 +133,10 @@ const EditToken = () => {
       localInputs.expired_time = Math.ceil(time / 1000);
     }
     localInputs.models = localInputs.models.join(',');
+    // Limit values arrive as strings from the number inputs.
+    localInputs.rate_limit_rpm = parseInt(localInputs.rate_limit_rpm) || 0;
+    localInputs.rate_limit_tpm = parseInt(localInputs.rate_limit_tpm) || 0;
+    localInputs.concurrency_limit = parseInt(localInputs.concurrency_limit) || 0;
     let res;
     if (isEdit) {
       res = await API.put(`/api/token/`, {
@@ -196,6 +203,42 @@ const EditToken = () => {
                 placeholder={t('token.edit.ip_limit_placeholder')}
                 onChange={handleInputChange}
                 value={inputs.subnet}
+                autoComplete='new-password'
+              />
+            </Form.Field>
+            <Form.Field>
+              <Form.Input
+                label={t('token.edit.rate_limit_rpm')}
+                name='rate_limit_rpm'
+                placeholder={t('token.edit.rate_limit_placeholder')}
+                onChange={handleInputChange}
+                value={inputs.rate_limit_rpm ?? 0}
+                type='number'
+                min='0'
+                autoComplete='new-password'
+              />
+            </Form.Field>
+            <Form.Field>
+              <Form.Input
+                label={t('token.edit.rate_limit_tpm')}
+                name='rate_limit_tpm'
+                placeholder={t('token.edit.rate_limit_placeholder')}
+                onChange={handleInputChange}
+                value={inputs.rate_limit_tpm ?? 0}
+                type='number'
+                min='0'
+                autoComplete='new-password'
+              />
+            </Form.Field>
+            <Form.Field>
+              <Form.Input
+                label={t('token.edit.concurrency_limit')}
+                name='concurrency_limit'
+                placeholder={t('token.edit.rate_limit_placeholder')}
+                onChange={handleInputChange}
+                value={inputs.concurrency_limit ?? 0}
+                type='number'
+                min='0'
                 autoComplete='new-password'
               />
             </Form.Field>
