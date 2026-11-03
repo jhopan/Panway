@@ -126,6 +126,21 @@ API:
 | GET | `/api/user/wallet/list` | admin |
 | POST | `/api/user/wallet/topup` | admin — body `{"user_id":1,"amount_idr":25000}` |
 
+## Bahasa
+
+| Bahasa | Status |
+|---|---|
+| English | **Default** |
+| Bahasa Indonesia | Tersedia (dropdown di kanan atas) |
+
+Bahasa Mandarin sudah dihapus. Backend ikut memakai `Accept-Language`
+(`id` → `id`, selain itu → `en`), dan file locale server tinggal
+`common/i18n/locales/en.json` + `id.json`.
+
+Seluruh pesan antarmuka (frontend maupun backend) berbahasa Inggris atau
+Indonesia. Nama merek provider yang resmi (Baidu Qianfan, Alibaba Tongyi,
+iFlytek Spark, ByteDance Doubao, Zhipu ChatGLM) tetap memakai nama aslinya.
+
 ## Batas per token
 
 Setiap token punya batas sendiri, diatur di panel **Token → Edit**:
