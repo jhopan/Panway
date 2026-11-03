@@ -1,0 +1,5 @@
+{
+  "invalid_input": "Input tidak valid, periksa kembali isian kamu",
+  "send_email_failed": "gagal mengirim email: ",
+  "invalid_parameter": "parameter tidak valid"
+}

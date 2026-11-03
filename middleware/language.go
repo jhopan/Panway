@@ -14,9 +14,13 @@ func Language() gin.HandlerFunc {
 		if lang == "" {
 			lang = "en"
 		}
-		if strings.HasPrefix(strings.ToLower(lang), "zh") {
-			lang = "zh-CN"
-		} else {
+		lower := strings.ToLower(lang)
+		switch {
+		case strings.HasPrefix(lower, "id"):
+			lang = "id"
+		case strings.HasPrefix(lower, "en"):
+			lang = "en"
+		default:
 			lang = "en"
 		}
 		c.Set(i18n.ContextKey, lang)

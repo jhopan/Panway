@@ -16,7 +16,7 @@ package ratio
 // With QuotaPerUnit set to 1 (1 quota = Rp1), the same numbers read as
 // rupiah directly: multiply by the USD/IDR rate to get the rupiah price.
 //
-// Edit these through the admin panel (设置 -> 模型倍率) once the operator has
+// Edit these through the admin panel (Settings -> Model Ratio) once the operator has
 // settled the real sell price; the defaults here are a starting point.
 
 // panRouterModelRatio maps a PanRouter model id to its input-price ratio.

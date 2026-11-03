@@ -467,7 +467,15 @@
         "date": "Date",
         "value": "Value"
       }
-    }
+    },
+    "summary": {
+      "requests": "Total Requests",
+      "quota": "Total Quota Used",
+      "tokens": "Total Tokens",
+      "models": "Models"
+    },
+    "loading": "Loading dashboard data...",
+    "no_data": "No usage recorded in the last 7 days."
   },
   "setting": {
     "title": "System Settings",

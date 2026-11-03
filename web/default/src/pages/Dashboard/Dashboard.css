@@ -1,26 +1,42 @@
 .dashboard-container {
     padding: 20px 24px 40px;
-    background-color: #ffffff;
-    margin-top: -15px; /* 减小与导航栏的间距 */
-    max-width: 1600px;        /* 设置最大宽度 */
-    margin-left: auto;        /* 水平居中 */
+    background-color: #f7f8fc;
+    max-width: 1600px;
+    margin-left: auto;
     margin-right: auto;
 }
 
-.stat-card {
-    background: linear-gradient(135deg, #2185d0 0%, #1678c2 100%) !important;
-    color: white !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-    transition: transform 0.2s ease !important;
+.summary-grid {
     margin-bottom: 1rem !important;
 }
 
-.stat-card:hover {
-    transform: translateY(-5px);
+.stat-card {
+    border: none !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 12px rgba(20, 30, 60, 0.05) !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease !important;
 }
 
-.stat-card .statistic {
-    color: white !important;
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(20, 30, 60, 0.10) !important;
+}
+
+.stat-card .statistic .label {
+    font-size: 0.85em !important;
+    color: #6b7691 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.stat-card .statistic .label .icon {
+    margin-right: 6px;
+}
+
+.stat-card .statistic .value {
+    font-size: 1.7em !important;
+    font-weight: 700 !important;
+    margin-top: 4px !important;
 }
 
 .charts-grid {
@@ -33,10 +49,10 @@
 
 .chart-card {
     height: 100%;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04) !important;
+    box-shadow: 0 2px 12px rgba(20, 30, 60, 0.05) !important;
     border: none !important;
-    border-radius: 16px !important;
-    padding: 8px!important;
+    border-radius: 14px !important;
+    padding: 8px !important;
 }
 
 .chart-container {
@@ -46,45 +62,54 @@
     border-radius: 12px;
 }
 
+.chart-empty {
+    padding: 48px 16px;
+    text-align: center;
+    color: #8e9bb3;
+    font-size: 14px;
+}
+
 .ui.card > .content > .header {
-    color: #2B3674;
-    font-size: 1.2em;
-    margin-bottom: 15px;
+    color: #2b3674;
+    font-size: 1.05em;
+    margin-bottom: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-weight: 600;
-    gap: 12px; /* 增加标题和数值之间的间距 */
+    gap: 12px;
+}
+
+.ui.card > .content > .header .icon {
+    margin-right: 6px;
 }
 
 .stat-value {
-    color: #4318FF;
+    color: #4318ff;
     font-weight: bold;
     font-size: 1.1em;
     background: rgba(67, 24, 255, 0.1);
     padding: 4px 12px;
     border-radius: 8px;
-    white-space: nowrap; /* 防止数值换行 */
+    white-space: nowrap;
     margin-left: 16px;
 }
 
-/* 优化图表响应式布局 */
 @media (max-width: 768px) {
     .dashboard-container {
-        padding: 10px 16px;   /* 移动端也相应减小内边距 */
-        max-width: 100%;      /* 移动端占满全宽 */
+        padding: 10px 16px;
+        max-width: 100%;
     }
-    
+
     .chart-container {
         padding: 12px;
     }
-    
+
     .charts-grid .column {
         padding: 0.25rem !important;
     }
 }
 
-/* 设置页面的 Tab 样式 */
 .settings-tab {
     margin-top: 1rem !important;
     border-bottom: none !important;
@@ -106,4 +131,4 @@
     border: none !important;
     box-shadow: none !important;
     padding: 1rem 0 !important;
-} 
+}

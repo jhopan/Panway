@@ -1,0 +1,874 @@
+{
+  "header": {
+    "home": "Beranda",
+    "channel": "Kanal",
+    "token": "Token",
+    "redemption": "Kode Tukar",
+    "topup": "Isi Saldo",
+    "user": "Pengguna",
+    "dashboard": "Dasbor",
+    "log": "Log",
+    "setting": "Pengaturan",
+    "about": "Tentang",
+    "chat": "Obrolan",
+    "login": "Masuk",
+    "logout": "Keluar",
+    "register": "Daftar"
+  },
+  "topup": {
+    "title": "Pusat Isi Saldo",
+    "get_code": {
+      "title": "Ambil Kode Tukar",
+      "current_quota": "Kuota Tersedia Saat Ini",
+      "button": "Ambil Kode Sekarang"
+    },
+    "redeem_code": {
+      "title": "Tukar Kode",
+      "placeholder": "Masukkan kode tukar",
+      "paste": "Tempel",
+      "paste_error": "Tidak dapat mengakses papan klip, silakan tempel secara manual",
+      "submit": "Tukar Sekarang",
+      "submitting": "Sedang menukar...",
+      "empty_code": "Masukkan kode tukar!",
+      "success": "Isi saldo berhasil!",
+      "request_failed": "Permintaan gagal",
+      "no_link": "Admin belum mengatur tautan isi saldo!"
+    },
+    "wallet": {
+      "title": "Bayar dengan PanWallet",
+      "description": "Hubungkan wallet PanWallet kamu, lalu sinkronkan saldo yang sudah dibayar menjadi kuota. Saldo PanWallet adalah sumber kebenaran; kuota di sini hanya cerminan.",
+      "id_label": "ID wallet PanWallet",
+      "id_required": "Masukkan ID wallet PanWallet (8 karakter).",
+      "link_button": "Hubungkan wallet",
+      "linked": "Wallet berhasil dihubungkan.",
+      "unlink_button": "Lepas tautan wallet",
+      "unlinked": "Wallet dilepas.",
+      "public_id": "ID wallet",
+      "balance": "Saldo",
+      "available": "Tersedia",
+      "sync_amount": "Nominal yang disinkronkan (Rp)",
+      "sync_button": "Sinkronkan ke kuota",
+      "synced": "Sinkronisasi berhasil: {{quota}} kuota ditambahkan.",
+      "amount_required": "Masukkan nominal yang ingin disinkronkan.",
+      "request_failed": "Permintaan gagal"
+    }
+  },
+  "common": {
+    "quota": {
+      "display": "Setara: ${{amount}}",
+      "display_short": "${{amount}}",
+      "unit": "$"
+    }
+  },
+  "footer": {
+    "built_by": "dibangun oleh",
+    "built_by_name": "JustSong",
+    "license": ", kode sumber berlisensi di bawah",
+    "mit": "Lisensi MIT"
+  },
+  "home": {
+    "welcome": {
+      "title": "Selamat datang di Panway",
+      "description": "Panway adalah sistem manajemen dan distribusi API LLM yang membantu kamu mengelola serta memakai API LLM dari berbagai penyedia dengan lebih baik.",
+      "login_notice": "Untuk memakai layanan ini, silakan masuk atau daftar terlebih dahulu."
+    },
+    "system_status": {
+      "title": "Status Sistem",
+      "info": {
+        "title": "Informasi Sistem",
+        "name": "Nama: ",
+        "version": "Versi: ",
+        "source": "Sumber: ",
+        "source_link": "Repositori GitHub",
+        "start_time": "Waktu Mulai: "
+      },
+      "config": {
+        "title": "Konfigurasi Sistem",
+        "email_verify": "Verifikasi Email: ",
+        "github_oauth": "GitHub OAuth: ",
+        "wechat_login": "Login WeChat: ",
+        "turnstile": "Pemeriksaan Turnstile: ",
+        "enabled": "Aktif",
+        "disabled": "Nonaktif"
+      }
+    },
+    "loading_failed": "Gagal memuat konten beranda..."
+  },
+  "auth": {
+    "login": {
+      "title": "Login Pengguna",
+      "username": "Nama Pengguna / Email",
+      "password": "Kata Sandi",
+      "button": "Masuk",
+      "forgot_password": "Lupa kata sandi?",
+      "reset_password": "Atur Ulang",
+      "no_account": "Belum punya akun?",
+      "register": "Daftar",
+      "other_methods": "Metode login lainnya",
+      "wechat": {
+        "scan_tip": "Pindai QR code untuk mengikuti Akun Resmi WeChat, masukkan 'code' untuk mendapatkan kode verifikasi (berlaku 3 menit)",
+        "code_placeholder": "Kode verifikasi"
+      }
+    },
+    "register": {
+      "title": "Pendaftaran Pengguna Baru",
+      "username": "Nama pengguna (maks. 12 karakter)",
+      "password": "Kata sandi (8-20 karakter)",
+      "confirm_password": "Konfirmasi kata sandi",
+      "email": "Alamat email",
+      "verification_code": "Kode verifikasi",
+      "get_code": "Ambil kode",
+      "get_code_retry": "Coba lagi ({{countdown}})",
+      "button": "Daftar",
+      "has_account": "Sudah punya akun?",
+      "login": "Masuk"
+    },
+    "reset": {
+      "title": "Atur Ulang Kata Sandi",
+      "email": "Alamat email",
+      "button": "Kirim",
+      "notice": "Sistem akan mengirimkan email berisi tautan pengaturan ulang ke kotak masukmu. Silakan periksa emailmu.",
+      "confirm": {
+        "title": "Konfirmasi Pengaturan Ulang Kata Sandi",
+        "new_password": "Kata sandi baru",
+        "button": "Kirim",
+        "button_disabled": "Pengaturan ulang kata sandi selesai",
+        "notice": "Kata sandi baru sudah dibuat, silakan klik kolom kata sandi atau tombol di atas untuk menyalinnya. Segera masuk dan ganti kata sandimu!"
+      }
+    }
+  },
+  "about": {
+    "title": "Tentang",
+    "description": "Panway adalah platform open-source untuk manajemen dan proxy API.",
+    "repository": "Repositori: ",
+    "loading_failed": "Gagal memuat"
+  },
+  "messages": {
+    "success": {
+      "login": "Login berhasil!",
+      "register": "Pendaftaran berhasil!",
+      "verification_code": "Kode verifikasi telah dikirim, silakan periksa emailmu!",
+      "password_reset": "Email pengaturan ulang telah dikirim, silakan periksa kotak masukmu!"
+    },
+    "error": {
+      "login_expired": "Belum login atau sesi telah berakhir, silakan login kembali!",
+      "password_length": "Kata sandi minimal 8 karakter!",
+      "password_mismatch": "Kata sandi tidak cocok",
+      "turnstile_wait": "Silakan tunggu beberapa detik, Turnstile sedang memeriksa lingkungan!",
+      "root_password": "Segera ganti kata sandi bawaan!"
+    },
+    "notice": {
+      "password_copied": "Kata sandi baru disalin ke papan klip: {{password}}"
+    }
+  },
+  "channel": {
+    "title": "Manajemen Kanal",
+    "search": "Cari kanal berdasarkan ID, nama, dan kunci...",
+    "balance_notice": "Kanal OpenAI tidak lagi mendukung pengambilan saldo melalui kunci, sehingga saldo ditampilkan sebagai 0. Untuk jenis kanal yang didukung, klik saldo untuk memperbarui.",
+    "test_notice": "Pengujian kanal hanya mendukung model chat, dengan preferensi gpt-3.5-turbo. Jika tidak tersedia, digunakan model pertama dalam daftar yang Anda konfigurasi.",
+    "detail_notice": "Klik tombol detail di bawah ini untuk menampilkan saldo dan mengatur model pengujian tambahan.",
+    "table": {
+      "id": "ID",
+      "name": "Nama",
+      "group": "Grup",
+      "type": "Tipe",
+      "status": "Status",
+      "response_time": "Waktu Respons",
+      "balance": "Saldo",
+      "priority": "Prioritas",
+      "test_model": "Model Uji",
+      "actions": "Aksi",
+      "no_name": "Tidak ada",
+      "status_enabled": "Aktif",
+      "status_disabled": "Nonaktif",
+      "status_auto_disabled": "Nonaktif",
+      "status_disabled_tip": "Kanal ini dinonaktifkan secara manual",
+      "status_auto_disabled_tip": "Kanal ini dinonaktifkan secara otomatis",
+      "status_unknown": "Status Tidak Diketahui",
+      "not_tested": "Belum Diuji",
+      "priority_tip": "Prioritas pemilihan kanal, angka yang lebih tinggi lebih diutamakan",
+      "select_test_model": "Silakan pilih model uji",
+      "click_to_update": "Klik untuk memperbarui",
+      "balance_not_supported": "-"
+    },
+    "buttons": {
+      "test": "Uji",
+      "delete": "Hapus",
+      "confirm_delete": "Hapus Kanal",
+      "enable": "Aktifkan",
+      "disable": "Nonaktifkan",
+      "edit": "Ubah",
+      "add": "Tambah Kanal Baru",
+      "test_all": "Uji Semua Kanal",
+      "test_disabled": "Uji Kanal Nonaktif",
+      "delete_disabled": "Hapus Kanal Nonaktif",
+      "confirm_delete_disabled": "Konfirmasi Hapus",
+      "refresh": "Muat Ulang",
+      "show_detail": "Detail",
+      "hide_detail": "Sembunyikan Detail"
+    },
+    "messages": {
+      "test_success": "Pengujian kanal {{name}} berhasil, model {{model}}, waktu {{time}} dtk, keluaran: {{message}}",
+      "test_all_started": "Pengujian kanal berhasil dimulai, silakan muat ulang halaman untuk melihat hasilnya.",
+      "delete_disabled_success": "Semua kanal nonaktif telah dihapus, total: {{count}}",
+      "balance_update_success": "Saldo kanal {{name}} berhasil diperbarui!",
+      "all_balance_updated": "Saldo semua kanal aktif telah diperbarui!",
+      "operation_success": "Operasi berhasil diselesaikan!"
+    },
+    "edit": {
+      "title_edit": "Perbarui Informasi Kanal",
+      "title_create": "Buat Kanal Baru",
+      "type": "Tipe",
+      "name": "Nama",
+      "name_placeholder": "Silakan masukkan nama",
+      "group": "Grup",
+      "group_placeholder": "Silakan pilih grup yang dapat menggunakan kanal ini",
+      "group_addition": "Silakan ubah pengali grup pada pengaturan sistem untuk menambahkan grup baru:",
+      "models": "Model",
+      "models_placeholder": "Silakan pilih model yang didukung kanal ini",
+      "model_mapping": "Pemetaan Model",
+      "model_mapping_placeholder": "Opsional, digunakan untuk mengubah nama model pada body permintaan. Berupa string JSON dengan key berupa nama model permintaan dan value berupa nama model tujuan",
+      "system_prompt": "System Prompt",
+      "system_prompt_placeholder": "Opsional, digunakan untuk memaksa pengaturan system prompt. Gunakan bersama model kustom & pemetaan model. Pertama buat nama model kustom yang unik di atas, lalu petakan ke model yang didukung secara native",
+      "proxy_url": "Proxy",
+      "proxy_url_placeholder": "Ini opsional dan digunakan untuk pemanggilan API melalui proxy. Silakan masukkan URL proxy dengan format: https://domain.com",
+      "base_url": "Base URL",
+      "base_url_placeholder": "Base URL yang diperlukan oleh OpenAPI SDK",
+      "key": "Kunci",
+      "key_placeholder": "Silakan masukkan kunci",
+      "batch": "Pembuatan Massal",
+      "batch_placeholder": "Silakan masukkan kunci, satu per baris",
+      "buttons": {
+        "cancel": "Batal",
+        "submit": "Kirim",
+        "fill_models": "Isi Model Terkait",
+        "fill_all": "Isi Semua Model",
+        "clear": "Hapus Semua Model",
+        "add_custom": "Tambah",
+        "custom_placeholder": "Masukkan nama model kustom"
+      },
+      "messages": {
+        "name_required": "Silakan masukkan nama kanal dan kunci!",
+        "models_required": "Silakan pilih minimal satu model!",
+        "model_mapping_invalid": "Pemetaan model harus berupa format JSON yang valid!",
+        "update_success": "Kanal berhasil diperbarui!",
+        "create_success": "Kanal berhasil dibuat!"
+      },
+      "spark_version": "Versi Model",
+      "spark_version_placeholder": "Silakan masukkan versi model Spark dari URL API, misalnya: v2.1",
+      "knowledge_id": "ID Basis Pengetahuan",
+      "knowledge_id_placeholder": "Silakan masukkan ID basis pengetahuan, misalnya: 123456",
+      "plugin_param": "Parameter Plugin",
+      "plugin_param_placeholder": "Silakan masukkan parameter plugin (nilai header X-DashScope-Plugin)",
+      "coze_notice": "Untuk Coze, nama model adalah Bot ID. Anda dapat menambahkan awalan `bot-`, misalnya: `bot-123456`.",
+      "douban_notice": "Untuk Douban, Anda perlu membuka",
+      "douban_notice_link": "Halaman Inferensi Model",
+      "douban_notice_2": "untuk membuat endpoint inferensi, lalu gunakan nama endpoint tersebut sebagai nama model, misalnya: `ep-20240608051426-tkxvl`.",
+      "aws_region_placeholder": "region, misalnya: us-west-2",
+      "aws_ak_placeholder": "AWS IAM Access Key",
+      "aws_sk_placeholder": "AWS IAM Secret Key",
+      "vertex_region_placeholder": "Vertex AI Region, misalnya: us-east5",
+      "vertex_project_id": "Vertex AI Project ID",
+      "vertex_project_id_placeholder": "Vertex AI Project ID",
+      "vertex_credentials": "Google Cloud Application Default Credentials JSON",
+      "vertex_credentials_placeholder": "Google Cloud Application Default Credentials JSON",
+      "user_id": "User ID",
+      "user_id_placeholder": "User ID pengguna yang membuat kunci ini",
+      "key_prompts": {
+        "default": "Silakan masukkan kunci autentikasi untuk kanal ini",
+        "zhipu": "Masukkan dengan format: APIKey|SecretKey",
+        "spark": "Masukkan dengan format: APPID|APISecret|APIKey",
+        "fastgpt": "Masukkan dengan format: APIKey-AppId, misalnya: fastgpt-0sp2gtvfdgyi4k30jwlgwf1i-64f335d84283f05518e9e041",
+        "tencent": "Masukkan dengan format: AppId|SecretId|SecretKey"
+      }
+    }
+  },
+  "token": {
+    "title": "Manajemen Token",
+    "search": "Cari token berdasarkan nama ...",
+    "table": {
+      "name": "Nama",
+      "status": "Status",
+      "used_quota": "Kuota Terpakai",
+      "remain_quota": "Kuota Tersisa",
+      "created_time": "Waktu Pembuatan",
+      "expired_time": "Waktu Kedaluwarsa",
+      "actions": "Aksi",
+      "no_name": "Tidak ada",
+      "never_expire": "tidak pernah",
+      "unlimited": "Tak terbatas",
+      "status_enabled": "Aktif",
+      "status_disabled": "Nonaktif",
+      "status_expired": "Kedaluwarsa",
+      "status_depleted": "Habis",
+      "status_unknown": "Status Tidak Diketahui"
+    },
+    "buttons": {
+      "copy": "Salin",
+      "chat": "Obrolan",
+      "delete": "Hapus",
+      "confirm_delete": "Hapus Token",
+      "enable": "Aktifkan",
+      "disable": "Nonaktifkan",
+      "edit": "Ubah",
+      "add": "Tambah Token Baru",
+      "refresh": "Muat Ulang"
+    },
+    "edit": {
+      "title_edit": "Perbarui Informasi Token",
+      "title_create": "Buat Token Baru",
+      "name": "Nama",
+      "name_placeholder": "Silakan masukkan nama",
+      "models": "Cakupan Model",
+      "models_placeholder": "Silakan pilih model yang diizinkan, kosongkan bila tidak ada batasan",
+      "ip_limit": "Pembatasan IP",
+      "ip_limit_placeholder": "Silakan masukkan subnet yang diizinkan, misalnya: 192.168.0.0/24, gunakan koma untuk memisahkan beberapa subnet",
+      "expire_time": "Waktu Kedaluwarsa",
+      "expire_time_placeholder": "Silakan masukkan waktu kedaluwarsa dalam format yyyy-MM-dd HH:mm:ss, -1 untuk tanpa batas",
+      "quota_notice": "Catatan: kuota token hanya membatasi penggunaan maksimum token itu sendiri, penggunaan sebenarnya tetap bergantung pada kuota sisa akun.",
+      "quota": "Kuota",
+      "quota_placeholder": "Silakan masukkan kuota",
+      "buttons": {
+        "never_expire": "Tidak Pernah Kedaluwarsa",
+        "expire_1_month": "Kedaluwarsa dalam 1 Bulan",
+        "expire_1_day": "Kedaluwarsa dalam 1 Hari",
+        "expire_1_hour": "Kedaluwarsa dalam 1 Jam",
+        "expire_1_minute": "Kedaluwarsa dalam 1 Menit",
+        "unlimited_quota": "Atur Kuota Tak Terbatas",
+        "cancel_unlimited": "Batalkan Kuota Tak Terbatas",
+        "submit": "Kirim",
+        "cancel": "Batal"
+      },
+      "messages": {
+        "update_success": "Token berhasil diperbarui!",
+        "create_success": "Token berhasil dibuat, silakan salin dari halaman daftar!",
+        "expire_time_invalid": "Format waktu kedaluwarsa tidak valid!"
+      },
+      "rate_limit_rpm": "Batas laju (permintaan per menit)",
+      "rate_limit_tpm": "Batas laju (token per menit)",
+      "concurrency_limit": "Batas permintaan bersamaan",
+      "rate_limit_placeholder": "0 = tak terbatas / gunakan bawaan"
+    },
+    "copy_options": {
+      "raw": "Salin Token Mentah",
+      "ama": "Salin Tautan AMA",
+      "opencat": "Salin Tautan OpenCat",
+      "next": "Salin Tautan NextChat",
+      "lobe": "Salin Tautan LobeChat"
+    },
+    "messages": {
+      "copy_success": "Tersalin ke papan klip!",
+      "copy_failed": "Tidak dapat menyalin ke papan klip, silakan salin secara manual. Token telah diisi pada kotak pencarian.",
+      "operation_success": "Operasi berhasil diselesaikan!"
+    },
+    "sort": {
+      "placeholder": "Urutkan Menurut",
+      "default": "Urutan Bawaan",
+      "by_remain": "Urutkan berdasarkan Kuota Tersisa",
+      "by_used": "Urutkan berdasarkan Kuota Terpakai"
+    }
+  },
+  "redemption": {
+    "title": "Manajemen Kode Penukaran",
+    "search": "Cari kode penukaran berdasarkan ID dan nama ...",
+    "table": {
+      "id": "ID",
+      "name": "Nama",
+      "status": "Status",
+      "quota": "Kuota",
+      "created_time": "Waktu Pembuatan",
+      "redeemed_time": "Waktu Penukaran",
+      "actions": "Aksi",
+      "no_name": "Tidak ada",
+      "not_redeemed": "Belum Ditukar"
+    },
+    "buttons": {
+      "copy": "Salin",
+      "delete": "Hapus",
+      "confirm_delete": "Konfirmasi Hapus",
+      "enable": "Aktifkan",
+      "disable": "Nonaktifkan",
+      "edit": "Ubah",
+      "add": "Tambah Kode Baru",
+      "refresh": "Muat Ulang"
+    },
+    "status": {
+      "unused": "Belum Digunakan",
+      "disabled": "Nonaktif",
+      "used": "Sudah Digunakan",
+      "unknown": "Tidak Diketahui"
+    },
+    "edit": {
+      "title_edit": "Perbarui Kode Penukaran",
+      "title_create": "Buat Kode Penukaran Baru",
+      "name": "Nama",
+      "name_placeholder": "Silakan masukkan nama",
+      "quota": "Kuota",
+      "quota_placeholder": "Silakan masukkan kuota per kode penukaran",
+      "count": "Jumlah Pembuatan",
+      "count_placeholder": "Silakan masukkan jumlah kode yang akan dibuat",
+      "buttons": {
+        "submit": "Kirim",
+        "cancel": "Batal"
+      }
+    },
+    "messages": {
+      "update_success": "Kode penukaran berhasil diperbarui!",
+      "create_success": "Kode penukaran berhasil dibuat!"
+    }
+  },
+  "log": {
+    "title": "Log Operasi",
+    "search": "Cari log...",
+    "usage_details": "Rincian Penggunaan",
+    "total_quota": "Total Kuota Terpakai",
+    "click_to_view": "Klik untuk Melihat",
+    "type": {
+      "select": "Pilih Tipe Log",
+      "all": "Semua",
+      "topup": "Isi Ulang",
+      "usage": "Penggunaan",
+      "admin": "Admin",
+      "system": "Sistem",
+      "test": "Uji"
+    },
+    "table": {
+      "time": "Waktu",
+      "channel": "Kanal",
+      "type": "Tipe",
+      "model": "Model",
+      "username": "Nama Pengguna",
+      "token_name": "Nama Token",
+      "token_name_placeholder": "Opsional",
+      "model_name": "Nama Model",
+      "model_name_placeholder": "Opsional",
+      "start_time": "Waktu Mulai",
+      "end_time": "Waktu Selesai",
+      "channel_id": "ID Kanal",
+      "channel_id_placeholder": "Opsional",
+      "username_placeholder": "Opsional",
+      "prompt_tokens": "Token Prompt",
+      "completion_tokens": "Token Completion",
+      "quota": "Kuota",
+      "detail": "Rincian"
+    },
+    "buttons": {
+      "query": "Aksi",
+      "submit": "Kueri",
+      "refresh": "Muat Ulang"
+    }
+  },
+  "user": {
+    "title": "Manajemen Pengguna",
+    "edit": {
+      "title": "Perbarui Informasi Pengguna",
+      "username": "Nama Pengguna",
+      "username_placeholder": "Masukkan nama pengguna baru",
+      "password": "Kata Sandi",
+      "password_placeholder": "Masukkan kata sandi baru, minimal 8 karakter",
+      "display_name": "Nama Tampilan",
+      "display_name_placeholder": "Masukkan nama tampilan baru",
+      "group": "Grup",
+      "group_placeholder": "Silakan pilih grup",
+      "group_addition": "Silakan ubah pengali grup di pengaturan sistem untuk menambahkan grup baru:",
+      "quota": "Kuota Tersisa",
+      "quota_placeholder": "Masukkan kuota tersisa yang baru",
+      "github_id": "Akun GitHub Tertaut",
+      "github_id_placeholder": "Hanya baca, pengguna harus menautkan lewat halaman pengaturan pribadi, tidak bisa diubah langsung",
+      "wechat_id": "Akun WeChat Tertaut",
+      "wechat_id_placeholder": "Hanya baca, pengguna harus menautkan lewat halaman pengaturan pribadi, tidak bisa diubah langsung",
+      "email": "Akun Email Tertaut",
+      "email_placeholder": "Hanya baca, pengguna harus menautkan lewat halaman pengaturan pribadi, tidak bisa diubah langsung",
+      "buttons": {
+        "submit": "Simpan",
+        "cancel": "Batal"
+      }
+    },
+    "add": {
+      "title": "Buat Akun Pengguna Baru"
+    },
+    "messages": {
+      "update_success": "Informasi pengguna berhasil diperbarui!",
+      "create_success": "Akun pengguna berhasil dibuat!",
+      "operation_success": "Operasi berhasil diselesaikan!"
+    },
+    "search": "Cari pengguna...",
+    "table": {
+      "id": "ID",
+      "username": "Nama Pengguna",
+      "group": "Grup",
+      "quota": "Kuota",
+      "role_text": "Peran",
+      "status_text": "Status",
+      "actions": "Aksi",
+      "remaining_quota": "Kuota Tersisa",
+      "used_quota": "Kuota Terpakai",
+      "request_count": "Jumlah Permintaan",
+      "role_types": {
+        "normal": "Pengguna Biasa",
+        "admin": "Admin",
+        "super_admin": "Super Admin",
+        "unknown": "Peran Tidak Diketahui"
+      },
+      "status_types": {
+        "activated": "Aktif",
+        "banned": "Diblokir",
+        "unknown": "Status Tidak Diketahui"
+      },
+      "sort": {
+        "default": "Urutan Bawaan",
+        "by_quota": "Urutkan berdasarkan Kuota Tersisa",
+        "by_used_quota": "Urutkan berdasarkan Kuota Terpakai",
+        "by_request_count": "Urutkan berdasarkan Jumlah Permintaan"
+      },
+      "sort_by": "Urutkan Menurut"
+    },
+    "buttons": {
+      "add": "Tambah Pengguna Baru",
+      "delete": "Hapus",
+      "delete_user": "Hapus Pengguna",
+      "enable": "Aktifkan",
+      "disable": "Nonaktifkan",
+      "edit": "Ubah",
+      "promote": "Naikkan",
+      "demote": "Turunkan"
+    },
+    "telegram": {
+      "title": "Verifikasi Telegram",
+      "hint": "Verifikasi bahwa kamu adalah pemilik chat Telegram ini. Ambil chat id dari @userinfobot, lalu masukkan kodenya di sini.",
+      "chat_id": "Telegram chat id",
+      "code": "Kode verifikasi",
+      "send_button": "Kirim kode",
+      "verify_button": "Verifikasi",
+      "code_sent": "Kode dikirim ke chat Telegram kamu",
+      "verified": "Telegram berhasil diverifikasi",
+      "unverified": "Verifikasi Telegram dilepas",
+      "already_verified": "Telegram kamu sudah terverifikasi.",
+      "request_failed": "Permintaan gagal"
+    }
+  },
+  "dashboard": {
+    "charts": {
+      "requests": {
+        "title": "Tren Permintaan Model",
+        "tooltip": "Jumlah Permintaan"
+      },
+      "quota": {
+        "title": "Tren Penggunaan Kuota",
+        "tooltip": "Kuota Terpakai"
+      },
+      "tokens": {
+        "title": "Tren Penggunaan Token",
+        "tooltip": "Jumlah Token"
+      }
+    },
+    "statistics": {
+      "title": "Statistik",
+      "tooltip": {
+        "date": "Tanggal",
+        "value": "Nilai"
+      }
+    },
+    "summary": {
+      "requests": "Total Permintaan",
+      "quota": "Total Kuota Terpakai",
+      "tokens": "Total Token",
+      "models": "Model"
+    },
+    "loading": "Memuat data dashboard...",
+    "no_data": "Belum ada pemakaian dalam 7 hari terakhir."
+  },
+  "setting": {
+    "title": "Pengaturan Sistem",
+    "tabs": {
+      "personal": "Pengaturan Pribadi",
+      "operation": "Pengaturan Operasional",
+      "system": "Pengaturan Sistem",
+      "other": "Pengaturan Lainnya"
+    },
+    "personal": {
+      "general": {
+        "title": "Pengaturan Umum",
+        "system_token_notice": "Catatan: Token yang dibuat di sini digunakan untuk manajemen sistem, bukan untuk meminta layanan terkait OpenAI.",
+        "buttons": {
+          "update_profile": "Perbarui Profil",
+          "generate_token": "Buat Token Sistem",
+          "copy_invite": "Salin Tautan Undangan",
+          "delete_account": "Hapus Akun"
+        }
+      },
+      "binding": {
+        "title": "Penautan Akun",
+        "buttons": {
+          "bind_wechat": "Hubungkan Akun WeChat",
+          "bind_github": "Hubungkan Akun GitHub",
+          "bind_email": "Hubungkan Alamat Email",
+          "bind_lark": "Hubungkan Akun Lark"
+        },
+        "wechat": {
+          "title": "Penautan WeChat",
+          "description": "Pindai kode QR untuk mengikuti akun resmi, masukkan 'kode verifikasi' untuk mendapatkan kodenya (berlaku 3 menit)",
+          "verification_code": "Kode Verifikasi",
+          "bind": "Hubungkan"
+        },
+        "email": {
+          "title": "Hubungkan Alamat Email",
+          "email_placeholder": "Masukkan alamat email",
+          "code_placeholder": "Kode verifikasi",
+          "get_code": "Ambil Kode",
+          "get_code_retry": "Kirim Ulang ({{countdown}})",
+          "bind": "Konfirmasi Penautan",
+          "cancel": "Batal"
+        }
+      },
+      "delete_account": {
+        "title": "Operasi Berbahaya",
+        "warning": "Kamu sedang menghapus akunmu. Semua data akan dihapus dan tidak dapat dipulihkan",
+        "confirm_placeholder": "Masukkan nama pengguna {{username}} untuk mengonfirmasi penghapusan",
+        "buttons": {
+          "confirm": "Konfirmasi Hapus",
+          "cancel": "Batal"
+        }
+      }
+    },
+    "system": {
+      "general": {
+        "title": "Pengaturan Umum",
+        "server_address": "Alamat Server",
+        "server_address_placeholder": "mis.: https://domainmu.com",
+        "buttons": {
+          "update": "Perbarui Alamat Server"
+        }
+      },
+      "login": {
+        "title": "Pengaturan Login & Pendaftaran",
+        "password_login": "Izinkan Login dengan Kata Sandi",
+        "password_register": "Izinkan Pendaftaran dengan Kata Sandi",
+        "email_verification": "Wajibkan Verifikasi Email untuk Pendaftaran dengan Kata Sandi",
+        "github_oauth": "Izinkan Login & Pendaftaran lewat GitHub OAuth",
+        "wechat_login": "Izinkan Login & Pendaftaran lewat WeChat",
+        "registration": "Izinkan Pendaftaran Pengguna Baru (Jika dinonaktifkan, pengguna baru tidak dapat mendaftar dengan cara apa pun)",
+        "turnstile": "Aktifkan Verifikasi Pengguna Turnstile"
+      },
+      "email_restriction": {
+        "title": "Daftar Putih Domain Email",
+        "subtitle": "Digunakan untuk mencegah pengguna jahat mendaftar secara massal menggunakan email sementara",
+        "enable": "Aktifkan Daftar Putih Domain Email",
+        "allowed_domains": "Domain Email yang Diizinkan",
+        "add_domain": "Tambah Domain Email yang Diizinkan",
+        "add_domain_placeholder": "Masukkan domain email baru yang diizinkan",
+        "buttons": {
+          "fill": "Isi",
+          "save": "Simpan Pengaturan Daftar Putih Domain Email"
+        }
+      },
+      "smtp": {
+        "title": "Konfigurasi SMTP",
+        "subtitle": "Digunakan untuk mendukung pengiriman email sistem",
+        "server": "Alamat Server SMTP",
+        "server_placeholder": "mis.: smtp.gmail.com",
+        "port": "Port SMTP",
+        "port_placeholder": "Bawaan: 587",
+        "account": "Akun SMTP",
+        "account_placeholder": "Biasanya alamat email kamu",
+        "from": "Email Pengirim SMTP",
+        "from_placeholder": "Biasanya sama dengan alamat email",
+        "token": "Token Akses SMTP",
+        "token_placeholder": "Informasi sensitif tidak akan dikirim ke frontend",
+        "buttons": {
+          "save": "Simpan Pengaturan SMTP"
+        }
+      },
+      "github": {
+        "title": "Konfigurasi GitHub OAuth App",
+        "subtitle": "Digunakan untuk mendukung login dan pendaftaran lewat GitHub",
+        "manage_link": "Klik di sini",
+        "manage_text": "untuk mengelola GitHub OAuth App kamu",
+        "url_notice": "Atur Homepage URL ke {{server_url}}, dan Authorization callback URL ke {{callback_url}}",
+        "client_id": "GitHub Client ID",
+        "client_id_placeholder": "Masukkan APP ID GitHub OAuth yang kamu daftarkan",
+        "client_secret": "GitHub Client Secret",
+        "client_secret_placeholder": "Informasi sensitif tidak akan dikirim ke frontend",
+        "buttons": {
+          "save": "Simpan Pengaturan GitHub OAuth"
+        }
+      },
+      "lark": {
+        "title": "Konfigurasi Lark OAuth",
+        "subtitle": "Digunakan untuk mendukung login dan pendaftaran lewat Lark",
+        "manage_link": "Klik di sini",
+        "manage_text": "untuk mengelola aplikasi Lark kamu",
+        "url_notice": "Atur Homepage URL ke {{server_url}}, dan Redirect URL ke {{callback_url}}",
+        "client_id": "App ID",
+        "client_id_placeholder": "Masukkan App ID",
+        "client_secret": "App Secret",
+        "client_secret_placeholder": "Informasi sensitif tidak akan dikirim ke frontend",
+        "buttons": {
+          "save": "Simpan Pengaturan Lark OAuth"
+        }
+      },
+      "wechat": {
+        "title": "Konfigurasi Server WeChat",
+        "subtitle": "Digunakan untuk mendukung login dan pendaftaran lewat WeChat",
+        "learn_more": "Pelajari tentang Server WeChat",
+        "server_address": "Alamat Server WeChat",
+        "server_address_placeholder": "mis.: https://domainmu.com",
+        "token": "Token Akses Server WeChat",
+        "token_placeholder": "Informasi sensitif tidak akan dikirim ke frontend",
+        "qrcode": "URL Gambar Kode QR Akun Resmi WeChat",
+        "qrcode_placeholder": "Masukkan URL gambar",
+        "buttons": {
+          "save": "Simpan Pengaturan Server WeChat"
+        },
+        "scan_tip": "Pindai kode QR untuk mengikuti Akun Resmi WeChat, masukkan 'kode' untuk mendapatkan kode verifikasi (berlaku 3 menit)",
+        "code_placeholder": "Kode verifikasi"
+      },
+      "turnstile": {
+        "title": "Konfigurasi Turnstile",
+        "subtitle": "Digunakan untuk mendukung verifikasi pengguna",
+        "manage_link": "Klik di sini",
+        "manage_text": "untuk mengelola Turnstile Sites kamu, disarankan Invisible Widget Type",
+        "site_key": "Turnstile Site Key",
+        "site_key_placeholder": "Masukkan Turnstile Site Key yang kamu daftarkan",
+        "secret_key": "Turnstile Secret Key",
+        "secret_key_placeholder": "Informasi sensitif tidak akan dikirim ke frontend",
+        "buttons": {
+          "save": "Simpan Pengaturan Turnstile"
+        }
+      },
+      "password_login": {
+        "warning": {
+          "title": "Peringatan",
+          "content": "Menonaktifkan login dengan kata sandi akan mencegah semua pengguna (termasuk administrator) yang belum mengautentikasi dengan cara login lain untuk masuk menggunakan kata sandi. Konfirmasi menonaktifkan?",
+          "buttons": {
+            "confirm": "Konfirmasi",
+            "cancel": "Batal"
+          }
+        }
+      }
+    },
+    "operation": {
+      "quota": {
+        "title": "Pengaturan Kuota",
+        "new_user": "Kuota Awal untuk Pengguna Baru",
+        "new_user_placeholder": "mis.: 100",
+        "pre_consume": "Kuota yang Dikurasi di Muka per Permintaan",
+        "pre_consume_placeholder": "Pengembalian atau pengurangan selisih setelah permintaan",
+        "inviter_reward": "Kuota Hadiah untuk Pengundang",
+        "inviter_reward_placeholder": "mis.: 2000",
+        "invitee_reward": "Kuota Hadiah untuk Menggunakan Kode Undangan",
+        "invitee_reward_placeholder": "mis.: 1000",
+        "buttons": {
+          "save": "Simpan Pengaturan Kuota"
+        }
+      },
+      "ratio": {
+        "title": "Pengaturan Rasio",
+        "model": {
+          "title": "Rasio Model",
+          "placeholder": "Teks JSON dengan kunci berupa nama model dan nilai berupa rasio"
+        },
+        "completion": {
+          "title": "Rasio Kompletion",
+          "placeholder": "Teks JSON dengan kunci berupa nama model dan nilai berupa rasio. Rasio ini adalah proporsi rasio completion terhadap rasio prompt, yang dapat menimpa rasio internal Panway"
+        },
+        "group": {
+          "title": "Rasio Grup",
+          "placeholder": "Teks JSON dengan kunci berupa nama grup dan nilai berupa rasio"
+        },
+        "buttons": {
+          "save": "Simpan Pengaturan Rasio"
+        }
+      },
+      "log": {
+        "title": "Pengaturan Log",
+        "enable_consume": "Aktifkan Pencatatan Penggunaan Kuota",
+        "target_time": "Waktu Target",
+        "buttons": {
+          "clean": "Bersihkan Log Lama"
+        }
+      },
+      "monitor": {
+        "title": "Pengaturan Pemantauan",
+        "max_response_time": "Waktu Respons Maksimum",
+        "max_response_time_placeholder": "Dalam detik, channel yang melampaui waktu ini saat pengujian akan dinonaktifkan otomatis",
+        "quota_reminder": "Ambang Pengingat Kuota",
+        "quota_reminder_placeholder": "Pengguna akan menerima pengingat email saat kuota turun di bawah nilai ini",
+        "auto_disable": "Nonaktifkan Channel Otomatis saat Gagal",
+        "auto_enable": "Aktifkan Channel Otomatis saat Berhasil",
+        "buttons": {
+          "save": "Simpan Pengaturan Pemantauan"
+        }
+      },
+      "general": {
+        "title": "Pengaturan Umum",
+        "topup_link": "Tautan Isi Ulang",
+        "topup_link_placeholder": "mis.: Tautan pembelian di website penjualan kartu",
+        "chat_link": "Tautan Halaman Chat",
+        "chat_link_placeholder": "mis.: Alamat deployment ChatGPT Next Web",
+        "quota_per_unit": "Kuota per Dolar",
+        "quota_per_unit_placeholder": "Kuota yang dapat ditukar per unit mata uang",
+        "retry_times": "Jumlah Percobaan Ulang saat Gagal",
+        "retry_times_placeholder": "Jumlah percobaan ulang ketika gagal",
+        "display_in_currency": "Tampilkan Kuota dalam Format Mata Uang",
+        "display_token_stat": "Tampilkan Kuota Token Bukan Kuota Pengguna pada API Penagihan",
+        "approximate_token": "Gunakan Metode Pendekatan untuk Mengestimasi Jumlah Token",
+        "buttons": {
+          "save": "Simpan Pengaturan Umum"
+        }
+      }
+    },
+    "other": {
+      "notice": {
+        "title": "Pengaturan Pemberitahuan",
+        "content": "Isi Pemberitahuan",
+        "content_placeholder": "Masukkan isi pemberitahuan baru di sini, mendukung Markdown & kode HTML",
+        "buttons": {
+          "save": "Simpan Pemberitahuan"
+        }
+      },
+      "system": {
+        "title": "Pengaturan Sistem",
+        "name": "Nama Sistem",
+        "name_placeholder": "Silakan masukkan nama sistem",
+        "logo": "URL Gambar Logo",
+        "logo_placeholder": "Masukkan URL gambar logo di sini",
+        "theme": {
+          "title": "Nama Tema",
+          "link": "Tema yang Tersedia",
+          "placeholder": "Silakan masukkan nama tema"
+        },
+        "buttons": {
+          "save_name": "Atur Nama Sistem",
+          "save_logo": "Atur Logo",
+          "save_theme": "Atur Tema (Perlu Mulai Ulang)"
+        }
+      },
+      "content": {
+        "title": "Pengaturan Konten",
+        "homepage": {
+          "title": "Konten Halaman Utama",
+          "placeholder": "Masukkan konten halaman utama di sini, mendukung Markdown & kode HTML. Informasi status tidak akan ditampilkan setelah diatur. Jika sebuah tautan dimasukkan, tautan itu akan digunakan sebagai atribut src dari iframe, sehingga kamu bisa menjadikan halaman web mana pun sebagai halaman utama."
+        },
+        "about": {
+          "title": "Tentang Sistem",
+          "description": "Kamu bisa mengatur konten tentang di halaman pengaturan, mendukung HTML & Markdown",
+          "repository": "Repositori Proyek:",
+          "loading_failed": "Gagal memuat konten tentang..."
+        },
+        "footer": {
+          "title": "Footer",
+          "placeholder": "Masukkan footer baru di sini, biarkan kosong untuk memakai footer bawaan, mendukung kode HTML"
+        },
+        "buttons": {
+          "save_homepage": "Simpan Konten Halaman Utama",
+          "save_about": "Simpan Tentang",
+          "save_footer": "Atur Footer"
+        }
+      },
+      "copyright": {
+        "notice": "Panway dibangun berdasarkan One API (MIT). Pemberitahuan hak cipta asli tetap dipertahankan sesuai ketentuan lisensi. Pemeliharaan proyek ini membutuhkan usaha yang besar, jadi jika proyek ini berarti bagi kamu, mohon dukung secara aktif."
+      }
+    }
+  }
+}

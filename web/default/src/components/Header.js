@@ -93,7 +93,7 @@ const Header = () => {
   async function logout() {
     setShowSidebar(false);
     await API.get('/api/user/logout');
-    showSuccess('注销成功!');
+    showSuccess('Signed out!');
     userDispatch({ type: 'logout' });
     localStorage.removeItem('user');
     navigate('/login');
@@ -140,8 +140,8 @@ const Header = () => {
 
   // Add language switcher dropdown
   const languageOptions = [
-    { key: 'zh', text: '中文', value: 'zh' },
     { key: 'en', text: 'English', value: 'en' },
+    { key: 'id', text: 'Bahasa Indonesia', value: 'id' },
   ];
 
   const changeLanguage = (language) => {
