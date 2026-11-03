@@ -870,5 +870,63 @@
         "notice": "Panway dibangun berdasarkan One API (MIT). Pemberitahuan hak cipta asli tetap dipertahankan sesuai ketentuan lisensi. Pemeliharaan proyek ini membutuhkan usaha yang besar, jadi jika proyek ini berarti bagi kamu, mohon dukung secara aktif."
       }
     }
+  },
+  "landing": {
+    "nav": {
+      "home": "Beranda",
+      "console": "Konsol",
+      "pricing": "Harga",
+      "about": "Tentang",
+      "signin": "Masuk"
+    },
+    "hero": {
+      "eyebrow": "Lapisan koneksi AI",
+      "title_accent": "Semua model.",
+      "title": "Satu koneksi.",
+      "subtitle": "Akses model AI unggulan lewat satu gateway. Harga transparan, pembayaran fleksibel, dan monitored pemakaian real-time untuk aplikasimu.",
+      "cta_primary": "Mulai membangun",
+      "cta_secondary": "Lihat model",
+      "check1": "API kompatibel",
+      "check2": "Satu API key",
+      "check3": "Model bebas dipilih",
+      "hub_caption": "Satu kunci. Banyak kemungkinan.",
+      "strip_left": "Dibangun untuk cara kamu membangun.",
+      "strip_right": "Akses terpadu. Kontrol yang baik. Kemungkinan terbuka."
+    },
+    "logos": {
+      "eyebrow": "Model hebat. Titik awal yang sama."
+    },
+    "code": {
+      "eyebrow": "Dirancang untuk developer",
+      "title": "Satu kunci. Model bebas dipilih.",
+      "body": "Arahkan SDK resmi ke endpoint Panway lalu ganti model dengan namanya saja. Tanpa client khusus, tanpa alur auth baru, tanpa ubah kode saat ganti provider.",
+      "footer": "Integrasi ilustratif"
+    },
+    "features": {
+      "routing": {
+        "tag": "Routing",
+        "title": "Rute yang tepat untuk tiap request.",
+        "body": "Request dirouting otomatis ke berbagai provider dan akun, dengan load balancing dan failover yang ditangani untukmu."
+      },
+      "visibility": {
+        "tag": "Visibilitas",
+        "title": "Pemandangan jelas atas pemakaianmu.",
+        "body": "Terbitkan API key per proyek, batasi request dan token per key, dan pantau konsumsi secara real-time."
+      },
+      "payments": {
+        "tag": "USD / IDR",
+        "title": "Pembayaran lokal. Alur yang familiar.",
+        "body": "Isi saldo lewat PanWallet memakai rupiah atau QRIS, lalu pakai saldo itu untuk semua model dari satu saldo saja."
+      }
+    },
+    "cta": {
+      "title": "Siap membangun?",
+      "body": "Buat akun, terbitkan key pertamamu, dan panggil model yang didukung dalam hitungan menit.",
+      "button": "Mulai sekarang"
+    },
+    "footer": {
+      "about": "Tentang",
+      "signin": "Masuk"
+    }
   }
 }

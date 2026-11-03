@@ -28,6 +28,7 @@ import LarkOAuth from './components/LarkOAuth';
 import Dashboard from './pages/Dashboard';
 
 const Home = lazy(() => import('./pages/Home'));
+const Landing = lazy(() => import('./pages/Landing'));
 const About = lazy(() => import('./pages/About'));
 
 function App() {
@@ -96,6 +97,14 @@ function App() {
     <Routes>
       <Route
         path='/'
+        element={
+          <Suspense fallback={<Loading></Loading>}>
+            <Landing />
+          </Suspense>
+        }
+      />
+      <Route
+        path='/home'
         element={
           <Suspense fallback={<Loading></Loading>}>
             <Home />
