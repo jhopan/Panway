@@ -126,6 +126,48 @@ API:
 | GET | `/api/user/wallet/list` | admin |
 | POST | `/api/user/wallet/topup` | admin — body `{"user_id":1,"amount_idr":25000}` |
 
+## Batas per token
+
+Setiap token punya batas sendiri, diatur di panel **Token → Edit**:
+
+| Field | Arti | 0 berarti |
+|---|---|---|
+| `rate_limit_rpm` | Request per menit | pakai `GLOBAL_API_RATE_LIMIT` |
+| `rate_limit_tpm` | Token per menit | tanpa batas |
+| `concurrency_limit` | Request berjalan bersamaan | tanpa batas |
+
+RPM memakai sliding window, jadi tidak ada celah di batas jendela. TPM memakai
+angka token **sungguhan dari upstream** — estimasi lokal jauh lebih kecil
+(misalnya 8 vs 497 token, karena upstream menambah system prompt sendiri), jadi
+angka upstream yang dipakai untuk menghitung.
+
+Request yang melewati batas dijawab `429` dan **tidak di-retry** ke channel lain,
+supaya pesan pelanggan tetap milik Panway, bukan milik upstream.
+
+## Login & verifikasi
+
+Tiga cara, bisa dipakai bareng:
+
+| Cara | Status | Cara setup |
+|---|---|---|
+| **Google (OAuth)** | Sudah ada (lewat OIDC) | Isi `OidcClientId`, `OidcClientSecret`, `OidcWellKnown` di panel → OIDC, arahkan ke Google |
+| **Email + kode OTP** | Sudah ada | Isi SMTP (`SMTPServer`, `SMTPPort`, `SMTPPassword`, `SMTPSender`) di panel → Email, lalu nyalakan **Email verification** |
+| **Telegram** | **Baru ditambahkan** | `TELEGRAM_VERIFICATION_ENABLED=true`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_BOT_USERNAME` |
+
+Telegram dipakai sebagai **verifikasi**, bukan login:
+
+1. Pelanggan daftar pakai email atau Google.
+2. Di halaman **User → Edit**, bagian "Telegram verification": masukkan chat id
+   (dari `@userinfobot`), klik **Send code**.
+3. Bot mengirim kode 6 digit ke chat itu. Pelanggan masukkan kodenya, klik
+   **Verify**.
+
+Kode terikat ke user **dan** chat, jadi kode yang dikirim ke satu chat tidak
+bisa dipakai untuk chat lain. Berlaku 10 menit (set `VerificationValidMinutes`).
+
+Before masuk production, ganti password root (`root` / `123456`) dan isi
+`SESSION_SECRET` dengan string acak panjang.
+
 ## Endpoint API pelanggan
 
 OpenAI-compatible:

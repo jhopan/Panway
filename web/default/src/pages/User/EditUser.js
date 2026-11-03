@@ -4,6 +4,7 @@ import { Button, Form, Card } from 'semantic-ui-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API, showError, showSuccess } from '../../helpers';
 import { renderQuota, renderQuotaWithPrompt } from '../../helpers/render';
+import TelegramVerification from '../../components/TelegramVerification';
 
 const EditUser = () => {
   const { t } = useTranslation();
@@ -195,6 +196,7 @@ const EditUser = () => {
                 readOnly
               />
             </Form.Field>
+            <TelegramVerification />
             <Button onClick={handleCancel}>
               {t('user.edit.buttons.cancel')}
             </Button>

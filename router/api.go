@@ -53,6 +53,11 @@ func SetApiRouter(router *gin.Engine) {
 				selfRoute.POST("/wallet/unlink", controller.UnlinkWallet)
 				selfRoute.GET("/wallet", controller.GetWallet)
 				selfRoute.POST("/wallet/sync", controller.SyncWalletTopUp)
+				// Telegram verification: proves the customer owns a chat.
+				selfRoute.GET("/telegram/status", controller.GetTelegramStatus)
+				selfRoute.POST("/telegram/send", controller.SendTelegramVerificationCode)
+				selfRoute.POST("/telegram/verify", controller.VerifyTelegramCode)
+				selfRoute.POST("/telegram/unverify", controller.UnverifyTelegram)
 			}
 
 			adminRoute := userRoute.Group("/")

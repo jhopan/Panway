@@ -36,6 +36,15 @@ var PanWalletQuotaPerIDR = env.Float64("PANWALLET_QUOTA_PER_IDR", 1)
 // Public base URL of PanWallet for the customer to see their balance.
 var PanWalletPublicURL = env.String("PANWALLET_PUBLIC_URL", "")
 
+// --- Telegram verification ---
+// Telegram is used to verify that a customer controls a chat, not as a
+// passwordless login. The customer registers with email or Google, then
+// confirms a code sent to their Telegram chat.
+var TelegramVerificationEnabled = env.Bool("TELEGRAM_VERIFICATION_ENABLED", false)
+var TelegramBotToken = env.String("TELEGRAM_BOT_TOKEN", "")
+var TelegramBotUsername = env.String("TELEGRAM_BOT_USERNAME", "")
+var TelegramApiBaseURL = env.String("TELEGRAM_API_BASE_URL", "")
+
 // Any options with "Secret", "Token" in its key won't be return by GetOptions
 
 var SessionSecret = uuid.New().String()

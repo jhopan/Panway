@@ -431,6 +431,19 @@
       "edit": "Edit",
       "promote": "Promote",
       "demote": "Demote"
+    },
+    "telegram": {
+      "title": "Telegram verification",
+      "hint": "Verifikasi bahwa kamu adalah pemilik chat Telegram ini. Ambil chat id dari @userinfobot, lalu masukkan kodenya di sini.",
+      "chat_id": "Telegram chat id",
+      "code": "Verification code",
+      "send_button": "Send code",
+      "verify_button": "Verify",
+      "code_sent": "Kode dikirim ke chat Telegram kamu",
+      "verified": "Telegram berhasil diverifikasi",
+      "unverified": "Verifikasi Telegram dilepas",
+      "already_verified": "Telegram kamu sudah terverifikasi.",
+      "request_failed": "Permintaan gagal"
     }
   },
   "dashboard": {

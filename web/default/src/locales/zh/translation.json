@@ -431,6 +431,19 @@
       "edit": "编辑",
       "promote": "提升",
       "demote": "降级"
+    },
+    "telegram": {
+      "title": "Telegram 验证",
+      "hint": "验证你确实控制该 Telegram 聊天。从 @userinfobot 获取 chat id，然后把验证码填在这里。",
+      "chat_id": "Telegram chat id",
+      "code": "验证码",
+      "send_button": "发送验证码",
+      "verify_button": "验证",
+      "code_sent": "验证码已发送到你的 Telegram 聊天",
+      "verified": "Telegram 验证成功",
+      "unverified": "已解除 Telegram 验证",
+      "already_verified": "你的 Telegram 已经验证通过。",
+      "request_failed": "请求失败"
     }
   },
   "dashboard": {

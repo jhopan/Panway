@@ -51,6 +51,9 @@ type User struct {
 	Group            string `json:"group" gorm:"type:varchar(32);default:'default'"`
 	AffCode          string `json:"aff_code" gorm:"type:varchar(32);column:aff_code;uniqueIndex"`
 	InviterId        int    `json:"inviter_id" gorm:"type:int;column:inviter_id;index"`
+	// Telegram verification: the chat the customer proved to own.
+	TelegramChatId   string `json:"telegram_chat_id" gorm:"type:char(64);index"`
+	TelegramVerified bool   `json:"telegram_verified" gorm:"default:false"`
 }
 
 func GetMaxUserId() int {
