@@ -281,7 +281,8 @@ Tiga jenis chrome, dipilih di `components/Chrome.js`:
 
 | Route | Chrome |
 |---|---|
-| `/` | Landing sendiri (header + footer marketing), tanpa Header global |
+| `/` | Landing sendiri, tanpa Header global |
+| `/about` | Halaman marketing, tanpa sidebar |
 | `/login`, `/register`, `/reset`, `/oauth/*` | Header lama, tanpa sidebar |
 | sisanya (console) | Sidebar kiri + konten |
 
@@ -307,6 +308,12 @@ cyan). `helpers/utils.js` `getLogo()` memakai path itu sebagai default.
 
 Mode tema disimpan di `localStorage` key `panway_theme` (`light` | `dark` |
 `system`) dan diterapkan sebagai class `light`/`dark` di `<html>`.
+**Default-nya `dark`** (`DEFAULT_THEME_MODE` di `helpers/theme.js`).
+
+Terapkan tema di dua tempat, jangan hanya satu:
+- `index.js` memanggil `applyTheme()` sebelum render pertama.
+- `public/index.html` punya inline script yang sama, karena CSS sudah mulai
+  paints sebelum React mount. Tanpa itu halaman berkedip putih.
 
 - `helpers/theme.js` — baca/simpan/apply, plus `toggleTheme()`.
   `system` mengikuti preferensi OS dan tetap ikut berubah selama app jalan.
