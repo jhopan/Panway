@@ -45,6 +45,8 @@ branch `master`.
 | `common/walletclient/client.go` | client HTTP PanWallet |
 | `common/i18n/locales/` | `en.json`, `id.json` (pesan server) |
 | `controller/pricing.go` | endpoint publik `/api/pricing` (katalog + harga) |
+| `controller/pricing_admin.go` | endpoint admin edit harga per model |
+| `pages/Console.css` | gaya bersama tabel/form console |
 | `components/Sidebar.js` | navigasi console (rail kiri) |
 | `components/ThemeToggle.js` | tombol light/dark/system |
 | `helpers/theme.js` | simpan & terapkan mode tema |
@@ -321,6 +323,30 @@ Mode tema disimpan di `localStorage` key `panway_theme` (`light` | `dark` |
   terang di atas gelap, badge status memakai background tinted + teks
   terang, dan `--pw-faint` dinaikkan supaya label kecil tetap lolos
   kontras.
+
+## 12d. Edit harga model
+
+Admin mengubah harga dari halaman katalog, bukan dari JSON mentah di
+Settings -> Operation -> Ratio.
+
+| Endpoint | Akses | Body |
+|---|---|---|
+| `GET /api/pricing` | publik | - |
+| `GET /api/pricing/all` | admin | - |
+| `PUT /api/pricing` | admin | `{model_id, input_price, output_price}` |
+| `DELETE /api/pricing` | admin | `{model_id}` |
+
+Dua hal yang mudah salah:
+
+1. **model_id dikirim di body, bukan di path.** Model id mengandung `/`
+   (misal `agnes/agnes-3.0-flash`) sehingga tidak muat jadi path param Gin.
+2. **Harga dalam rupiah per 1 juta token**, bukan satuan ratio internal.
+   Backend yang mengonversi: `modelRatio = input_price / 1e6 / groupRatio`,
+   `completionRatio = output_price / input_price`.
+
+`GET /api/pricing/all` hanya mengembalikan model yang dilayani channel
+aktif. Peta ratio juga memuat semua model default One API, dan itu bukan
+yang bisa dilayani deployment ini.
 
 ## 13. Yang belum dikerjakan
 
