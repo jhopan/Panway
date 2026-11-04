@@ -1,0 +1,178 @@
+/* Shared console polish: tables, forms, page headers.
+   The console pages all use Semantic UI, so these rules make the same
+   components look the same everywhere. */
+
+/* ---------- page heading ---------- */
+
+.console-page-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 18px;
+}
+
+.console-page-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--pw-ink, #10131a);
+    margin: 0;
+}
+
+.console-page-lead {
+    margin: 6px 0 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--pw-muted, #626b7c);
+}
+
+/* ---------- tables ---------- */
+
+.ui.table.console-table {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0 !important;
+}
+
+.console-table thead th {
+    background: var(--pw-surface-2, #f6f7fa) !important;
+    color: var(--pw-faint, #8e9bb3) !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-color: var(--pw-line, #e5e8ef) !important;
+    padding: 11px 14px !important;
+    white-space: nowrap;
+}
+
+.console-table tbody td {
+    border-color: var(--pw-line, #e5e8ef) !important;
+    padding: 13px 14px !important;
+    color: var(--pw-ink, #10131a);
+    font-size: 14px;
+}
+
+.console-table tbody tr:hover {
+    background: var(--pw-surface-2, #f6f7fa) !important;
+}
+
+.console-table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+/* the first column carries the entity name, give it a bit more weight */
+.console-table tbody td:first-child {
+    font-weight: 600;
+}
+
+/* ---------- forms ---------- */
+
+.ui.form .field > label {
+    color: var(--pw-muted, #626b7c) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+
+.ui.form .field > .ui.input > input,
+.ui.form .field > .ui.selection.dropdown {
+    border-color: var(--pw-line, #e5e8ef) !important;
+    border-radius: 9px !important;
+    background: var(--pw-surface, #fff) !important;
+    color: var(--pw-ink, #10131a) !important;
+}
+
+.ui.form .field > .ui.input > input:focus,
+.ui.form .field > .ui.selection.dropdown:focus {
+    border-color: var(--pw-accent, #2f6bff) !important;
+    box-shadow: 0 0 0 1px var(--pw-accent, #2f6bff) !important;
+}
+
+.ui.form textarea {
+    border-radius: 9px !important;
+    border-color: var(--pw-line, #e5e8ef) !important;
+    background: var(--pw-surface, #fff) !important;
+    color: var(--pw-ink, #10131a) !important;
+}
+
+/* ---------- pagination ---------- */
+
+.ui.pagination.menu {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin-top: 18px !important;
+}
+
+.ui.pagination.menu .item {
+    color: var(--pw-muted, #626b7c) !important;
+    border-radius: 8px !important;
+    min-width: 32px;
+}
+
+.ui.pagination.menu .active.item {
+    background: var(--pw-accent, #2f6bff) !important;
+    color: #fff !important;
+}
+
+/* ---------- buttons in tables ---------- */
+
+.ui.table .ui.mini.button,
+.ui.table .ui.tiny.button,
+.ui.table .ui.small.button {
+    border-radius: 7px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    padding: 6px 11px !important;
+}
+
+.ui.table .ui.icon.button {
+    border-radius: 7px !important;
+}
+
+/* The action cell holds several small buttons. Keep them on one line and
+   let the cell scroll instead of stacking the buttons on top of each
+   other. */
+.console-table tbody td:last-child > .ui.buttons,
+.console-table tbody td:last-child {
+    white-space: nowrap;
+}
+
+.console-table tbody td:last-child .ui.button {
+    margin-bottom: 0;
+}
+
+/* ---------- table readability ---------- */
+
+/* Ids, timestamps and quota numbers must stay on one line, otherwise a
+   narrow column breaks them into two and the table becomes unreadable. */
+.console-table tbody td,
+.console-table thead th {
+    white-space: nowrap;
+}
+
+.console-table tbody td:first-child {
+    white-space: nowrap;
+}
+
+/* right-align the numeric columns so the amounts line up */
+.console-table tbody td:nth-child(3),
+.console-table tbody td:nth-child(4) {
+    font-variant-numeric: tabular-nums;
+}
+
+/* the action cell is the only one allowed to breathe */
+.console-table tbody td:last-child {
+    white-space: normal;
+}
+
+/* Tables keep every cell on one line, so the table can get wider than the
+   card. Let the card scroll sideways instead of squeezing the columns. */
+.console-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}

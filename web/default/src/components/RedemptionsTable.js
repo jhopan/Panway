@@ -21,6 +21,7 @@ import {
 
 import { ITEMS_PER_PAGE } from '../constants';
 import { renderQuota } from '../helpers/render';
+import '../pages/Console.css';
 
 function renderTimestamp(timestamp) {
   return <>{timestamp2string(timestamp)}</>;
@@ -196,7 +197,7 @@ const RedemptionsTable = () => {
         />
       </Form>
 
-      <Table basic={'very'} compact size='small'>
+      <Table className='console-table' basic={'very'} compact size='small'>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell

@@ -19,6 +19,7 @@ import {
   renderQuota,
   renderText,
 } from '../helpers/render';
+import '../pages/Console.css';
 
 function renderRole(role, t) {
   switch (role) {
@@ -186,7 +187,7 @@ const UsersTable = () => {
         />
       </Form>
 
-      <Table basic={'very'} compact size='small'>
+      <Table className='console-table' basic={'very'} compact size='small'>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell

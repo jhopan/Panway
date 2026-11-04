@@ -15,6 +15,7 @@ import {
 
 import {CHANNEL_OPTIONS, ITEMS_PER_PAGE} from '../constants';
 import {renderGroup, renderNumber} from '../helpers/render';
+import '../pages/Console.css';
 
 function renderTimestamp(timestamp) {
   return <>{timestamp2string(timestamp)}</>;
@@ -437,7 +438,7 @@ const ChannelsTable = () => {
           {t('channel.detail_notice')}
         </Message>
       )}
-      <Table basic={'very'} compact size='small'>
+      <Table className='console-table' basic={'very'} compact size='small'>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell

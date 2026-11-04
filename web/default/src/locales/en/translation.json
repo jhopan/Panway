@@ -954,7 +954,17 @@
     "other": "Other",
     "loading": "Loading the catalogue...",
     "error": "The catalogue could not be loaded. Refresh to try again.",
-    "empty": "No models are available right now."
+    "empty": "No models are available right now.",
+    "admin_title": "Admin mode",
+    "admin_lead": "You are signed in as an administrator. Use Edit on a model to change its price; the change applies immediately to the price list.",
+    "edit": "Edit",
+    "modal_title": "Edit price",
+    "modal_hint": "Prices are in rupiah per one million tokens. The output price sets the output multiplier.",
+    "invalid_price": "Both prices must be a number greater than zero",
+    "save_failed": "The price could not be saved",
+    "saved": "Price updated",
+    "cancel": "Cancel",
+    "save": "Save"
   },
   "pricing": {
     "eyebrow": "Pricing",

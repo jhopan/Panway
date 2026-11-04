@@ -833,3 +833,64 @@ func GetCompletionRatio(name string, channelType int) float64 {
 
 	return 1
 }
+
+// SetModelRatio sets the input ratio for one model and returns the whole
+// map as JSON, ready to be persisted in the option table.
+//
+// It is used by the admin pricing editor so the operator can change one
+// model without editing the raw JSON blob.
+func SetModelRatio(name string, value float64) (string, error) {
+	modelRatioLock.Lock()
+	defer modelRatioLock.Unlock()
+	if ModelRatio == nil {
+		ModelRatio = make(map[string]float64)
+	}
+	ModelRatio[name] = value
+	jsonBytes, err := json.Marshal(ModelRatio)
+	if err != nil {
+		return "", err
+	}
+	return string(jsonBytes), nil
+}
+
+// SetCompletionRatio sets the output ratio for one model and returns the
+// whole map as JSON.
+func SetCompletionRatio(name string, value float64) (string, error) {
+	modelRatioLock.Lock()
+	defer modelRatioLock.Unlock()
+	if CompletionRatio == nil {
+		CompletionRatio = make(map[string]float64)
+	}
+	CompletionRatio[name] = value
+	jsonBytes, err := json.Marshal(CompletionRatio)
+	if err != nil {
+		return "", err
+	}
+	return string(jsonBytes), nil
+}
+
+// DeleteModelRatio removes a model from both ratio maps and returns the
+// updated maps as JSON.
+func DeleteModelRatio(name string) (string, string, error) {
+	modelRatioLock.Lock()
+	defer modelRatioLock.Unlock()
+	delete(ModelRatio, name)
+	delete(CompletionRatio, name)
+	modelBytes, err := json.Marshal(ModelRatio)
+	if err != nil {
+		return "", "", err
+	}
+	completionBytes, err := json.Marshal(CompletionRatio)
+	if err != nil {
+		return "", "", err
+	}
+	return string(modelBytes), string(completionBytes), nil
+}
+
+// PricedModel is one model that carries a price.
+type PricedModel struct {
+	ModelId         string  `json:"model_id"`
+	InputPrice      float64 `json:"input_price"`
+	OutputPrice     float64 `json:"output_price"`
+	CompletionRatio float64 `json:"completion_ratio"`
+}

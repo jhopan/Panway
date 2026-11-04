@@ -954,7 +954,17 @@
     "other": "Lainnya",
     "loading": "Memuat katalog...",
     "error": "Katalog gagal dimuat. Muat ulang untuk mencoba lagi.",
-    "empty": "Belum ada model yang tersedia saat ini."
+    "empty": "Belum ada model yang tersedia saat ini.",
+    "admin_title": "Mode admin",
+    "admin_lead": "Kamu masuk sebagai administrator. Klik Ubah pada sebuah model untuk mengganti harganya; perubahan langsung berlaku di daftar harga.",
+    "edit": "Ubah",
+    "modal_title": "Ubah harga",
+    "modal_hint": "Harga dalam rupiah per satu juta token. Harga output menentukan pengali output.",
+    "invalid_price": "Kedua harga harus berupa angka di atas nol",
+    "save_failed": "Harga gagal disimpan",
+    "saved": "Harga diperbarui",
+    "cancel": "Batal",
+    "save": "Simpan"
   },
   "pricing": {
     "eyebrow": "Harga",
