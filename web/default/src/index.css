@@ -1,3 +1,51 @@
+/* ---------- theme tokens ----------
+   Every surface in the app reads from these variables, so switching the
+   mode on <html> re-themes the whole UI in one paint. */
+
+:root,
+html.light {
+    --pw-bg: #f6f7fa;
+    --pw-surface: #ffffff;
+    --pw-surface-2: #fbfbfd;
+    --pw-ink: #10131a;
+    --pw-muted: #626b7c;
+    --pw-faint: #9aa3b2;
+    --pw-line: #e5e8ef;
+    --pw-line-strong: #ccd4e3;
+    --pw-accent: #2f6bff;
+    --pw-accent-soft: rgba(47, 107, 255, 0.1);
+    --pw-danger: #d14343;
+    --pw-shadow: 0 8px 26px rgba(16, 19, 26, 0.08);
+    --pw-shadow-lg: 0 24px 60px rgba(16, 19, 26, 0.12);
+}
+
+html.dark {
+    --pw-bg: #0f1012;
+    --pw-surface: #16171a;
+    --pw-surface-2: #1c1d21;
+    --pw-ink: #f4f5f7;
+    --pw-muted: #9aa0ad;
+    --pw-faint: #8b93a3;
+    --pw-line: #26282e;
+    --pw-line-strong: #363a43;
+    --pw-accent: #6f9bff;
+    --pw-accent-soft: rgba(111, 155, 255, 0.14);
+    --pw-danger: #f26d6d;
+    --pw-shadow: 0 8px 26px rgba(0, 0, 0, 0.42);
+    --pw-shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+html,
+html.light,
+html.dark {
+    background: var(--pw-bg);
+}
+
+html.dark body {
+    background: var(--pw-bg);
+    color: var(--pw-ink);
+}
+
 body {
     margin: 0;
     padding-top: 0;
@@ -120,7 +168,7 @@ code {
 
 .console-shell {
     min-height: 100vh;
-    background: #f7f8fc;
+    background: var(--pw-bg);
 }
 
 .console-main {

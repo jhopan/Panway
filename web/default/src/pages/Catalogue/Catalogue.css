@@ -1,0 +1,304 @@
+/* Catalogue pages: /models and /pricing.
+   They share the marketing card language but live inside the console
+   shell, so they use the console spacing. */
+
+.catalogue {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8px 0 48px;
+}
+
+.catalogue-head {
+  max-width: 640px;
+  margin-bottom: 30px;
+}
+
+.catalogue-eyebrow {
+  display: inline-block;
+  background: var(--pw-accent-soft);
+  color: var(--pw-accent);
+  border-radius: 999px;
+  padding: 5px 13px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.catalogue-title {
+  margin: 16px 0 0;
+  font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  color: var(--pw-ink);
+}
+
+.catalogue-lead {
+  margin: 12px 0 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--pw-muted);
+}
+
+.catalogue-empty {
+  padding: 44px 16px;
+  text-align: center;
+  color: var(--pw-muted);
+  font-size: 14px;
+  border: 1px dashed var(--pw-line);
+  border-radius: 14px;
+}
+
+/* ---------- groups ---------- */
+
+.catalogue-group {
+  margin-bottom: 34px;
+}
+
+.catalogue-group-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--pw-line);
+}
+
+.catalogue-group-name {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--pw-ink);
+  text-transform: capitalize;
+}
+
+.catalogue-group-count {
+  font-size: 13px;
+  color: var(--pw-faint);
+}
+
+/* ---------- cards ---------- */
+
+.catalogue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 16px;
+}
+
+.catalogue-card {
+  border: 1px solid var(--pw-line);
+  border-radius: 14px;
+  padding: 18px;
+  background: var(--pw-surface);
+  transition: border-color 0.15s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.catalogue-card:hover {
+  border-color: var(--pw-line-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--pw-shadow);
+}
+
+.catalogue-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.catalogue-card-provider {
+  background: var(--pw-accent-soft, rgba(47, 107, 255, 0.1));
+  color: var(--pw-accent, #2f6bff);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  flex: none;
+}
+
+.catalogue-card-name {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--pw-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.catalogue-prices {
+  display: flex;
+  gap: 26px;
+}
+
+.catalogue-price {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.catalogue-price-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 700;
+  color: var(--pw-faint);
+}
+
+.catalogue-price-value {
+  font-size: 18px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  color: var(--pw-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.catalogue-card-unit {
+  margin-top: 9px;
+  font-size: 12.5px;
+  color: var(--pw-muted);
+}
+
+.catalogue-card-id {
+  display: block;
+  margin-top: 13px;
+  padding-top: 11px;
+  border-top: 1px solid var(--pw-line);
+  font-size: 11.5px;
+  color: var(--pw-faint);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/* ---------- pricing ---------- */
+
+.pricing-highlight {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  border: 1px solid var(--pw-line);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 22px;
+  background: var(--pw-surface);
+}
+
+.pricing-highlight-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 700;
+  color: var(--pw-faint);
+}
+
+.pricing-highlight-value {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--pw-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.pricing-highlight-unit {
+  font-size: 13px;
+  color: var(--pw-muted);
+}
+
+.pricing-highlight-model {
+  margin-left: auto;
+  font-size: 12.5px;
+  color: var(--pw-muted);
+}
+
+.pricing-table-wrap {
+  border: 1px solid var(--pw-line);
+  border-radius: 14px;
+  overflow-x: auto;
+  background: var(--pw-surface);
+}
+
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+
+.pricing-table th {
+  text-align: left;
+  padding: 13px 18px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--pw-faint);
+  background: var(--pw-surface-2);
+  border-bottom: 1px solid var(--pw-line);
+  white-space: nowrap;
+}
+
+.pricing-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--pw-line);
+  color: var(--pw-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.pricing-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.pricing-table code {
+  font-size: 13px;
+  color: var(--pw-muted);
+}
+
+.pricing-dim {
+  color: var(--pw-muted) !important;
+}
+
+/* the upstream model name may say ":free" while Panway still charges for
+   it, so the wording is spelled out instead of leaving the reader guessing */
+.pricing-disclaimer {
+  margin: 14px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--pw-muted, #626b7c);
+}
+
+.pricing-notes {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.pricing-note {
+  border: 1px solid var(--pw-line);
+  border-radius: 14px;
+  padding: 16px 18px;
+  background: var(--pw-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pricing-note-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--pw-ink);
+}
+
+.pricing-note-body {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--pw-muted);
+}
+
+@media (max-width: 900px) {
+  .pricing-notes {
+    grid-template-columns: 1fr;
+  }
+}

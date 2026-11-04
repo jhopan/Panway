@@ -1,0 +1,352 @@
+/* Dark theme overrides for Semantic UI.
+   Semantic UI ships no dark theme, so the parts the console uses are
+   re-coloured here. Only the surface/text/border colours change; spacing
+   and typography stay as Semantic defines them. */
+
+html.dark .ui.menu,
+html.dark .ui.segment,
+html.dark .ui.card,
+html.dark .ui.table,
+html.dark .ui.modal,
+html.dark .ui.popup,
+html.dark .ui.dropdown-menu,
+html.dark .ui.input,
+html.dark .ui.textarea,
+html.dark .ui.selection.dropdown,
+html.dark .ui.form input,
+html.dark .ui.form textarea,
+html.dark .ui.form select {
+    background: var(--pw-surface) !important;
+    color: var(--pw-ink) !important;
+    border-color: var(--pw-line) !important;
+    box-shadow: none !important;
+}
+
+html.dark .ui.menu .item,
+html.dark .ui.segment .item,
+html.dark .ui.table,
+html.dark .ui.table td,
+html.dark .ui.table th,
+html.dark .ui.table thead th,
+html.dark .ui.dropdown-menu .item,
+html.dark .ui.input,
+html.dark .ui.textarea,
+html.dark .ui.form input,
+html.dark .ui.form textarea,
+html.dark .ui.selection.dropdown {
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.table {
+    background: var(--pw-surface) !important;
+}
+
+html.dark .ui.table thead th {
+    background: var(--pw-surface-2) !important;
+    color: var(--pw-muted) !important;
+    border-color: var(--pw-line) !important;
+}
+
+html.dark .ui.table tbody tr {
+    background: transparent !important;
+}
+
+html.dark .ui.table tbody tr:hover {
+    background: var(--pw-surface-2) !important;
+}
+
+html.dark .ui.table tbody tr td {
+    border-color: var(--pw-line) !important;
+}
+
+html.dark .ui.header,
+html.dark .ui.header + .sub.header,
+html.dark .ui.statistic .value,
+html.dark .ui.statistic .label {
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.statistic .label {
+    color: var(--pw-muted) !important;
+}
+
+html.dark .ui.text,
+html.dark .ui.list .item,
+html.dark .p.description,
+html.dark .ui.sub.header {
+    color: var(--pw-muted) !important;
+}
+
+html.dark .ui.divider {
+    border-color: var(--pw-line) !important;
+}
+
+html.dark .ui.horizontal.divider,
+html.dark .ui.vertical.divider {
+    border-color: var(--pw-line) !important;
+}
+
+html.dark .ui.segment,
+html.dark .ui.card {
+    border: 1px solid var(--pw-line) !important;
+}
+
+html.dark .ui.primary.button,
+html.dark .ui.primary.button:hover {
+    background: var(--pw-ink) !important;
+    color: var(--pw-bg) !important;
+}
+
+html.dark .ui.basic.button,
+html.dark .ui.basic.buttons .button {
+    background: var(--pw-surface) !important;
+    color: var(--pw-ink) !important;
+    border-color: var(--pw-line-strong) !important;
+    box-shadow: none !important;
+}
+
+html.dark .ui.basic.button:hover {
+    background: var(--pw-surface-2) !important;
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.button:hover {
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.input:focus,
+html.dark .ui.textarea:focus,
+html.dark .ui.selection.dropdown:focus {
+    border-color: var(--pw-accent) !important;
+    box-shadow: 0 0 0 1px var(--pw-accent) !important;
+}
+
+html.dark .ui.dropdown-menu .item:hover,
+html.dark .ui.dropdown-menu .selected.item {
+    background: var(--pw-surface-2) !important;
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.dropdown-menu .active.item {
+    color: var(--pw-accent) !important;
+}
+
+html.dark .ui.menu .dropdown.item .menu,
+html.dark .ui.menu .right.menu .dropdown.item .menu {
+    background: var(--pw-surface) !important;
+}
+
+html.dark .ui.popup,
+html.dark .ui.popup .content {
+    background: var(--pw-surface) !important;
+    color: var(--pw-ink) !important;
+    border-color: var(--pw-line) !important;
+}
+
+html.dark .ui.modal > .content,
+html.dark .ui.modal > .actions {
+    background: var(--pw-surface) !important;
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.modal > .header {
+    background: var(--pw-surface) !important;
+    color: var(--pw-ink) !important;
+    border-color: var(--pw-line) !important;
+}
+
+html.dark .ui.label {
+    background: var(--pw-surface-2) !important;
+    color: var(--pw-muted) !important;
+}
+
+html.dark .ui.basic.label {
+    border-color: var(--pw-line) !important;
+}
+
+html.dark .ui.progress .bar,
+html.dark .ui.progress .bar::after {
+    background: var(--pw-accent) !important;
+}
+
+html.dark .ui.progress {
+    background: var(--pw-surface-2) !important;
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.checkbox input:checked + label::before,
+html.dark .ui.radio input:checked + label::before {
+    background: var(--pw-accent) !important;
+}
+
+html.dark .ui.checkbox label,
+html.dark .ui.radio label {
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.input:focus ~ label,
+html.dark .ui.selection.dropdown:not(.multiple):focus ~ .label {
+    color: var(--pw-accent) !important;
+}
+
+html.dark .ui.form .field > label,
+html.dark .ui.form .fields > .field > label {
+    color: var(--pw-muted) !important;
+}
+
+html.dark .ui.table tr > td:first-child,
+html.dark .ui.table tr > th:first-child {
+    border-left: none !important;
+}
+
+html.dark .ui.table tr > td:last-child,
+html.dark .ui.table tr > th:last-child {
+    border-right: none !important;
+}
+
+html.dark .ui.pagination.menu .item,
+html.dark .ui.pagination.menu .active.item {
+    color: var(--pw-muted) !important;
+}
+
+html.dark .ui.pagination.menu .active.item {
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.selection.dropdown .menu > .item,
+html.dark .ui.selection.dropdown .menu > .message {
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.message {
+    background: var(--pw-surface-2) !important;
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.attached.segment {
+    border-color: var(--pw-line) !important;
+}
+
+html.dark .ui.icon.input > i.icon {
+    color: var(--pw-faint) !important;
+}
+
+/* ---------- additional surfaces that were still light ---------- */
+
+/* the page container keeps a white frame otherwise */
+html.dark .ui.container,
+html.dark .console-main,
+html.dark .main-content {
+    background: transparent !important;
+    color: var(--pw-ink) !important;
+}
+
+/* card headers use Semantic's dark blue by default */
+html.dark .ui.card > .content > .header,
+html.dark .ui.card .header,
+html.dark .ui.card > .header {
+    color: var(--pw-ink) !important;
+    font-weight: 650 !important;
+}
+
+/* small buttons on table rows */
+html.dark .ui.mini.button,
+html.dark .ui.tiny.button,
+html.dark .ui.small.button {
+    background: var(--pw-surface-2) !important;
+    color: var(--pw-ink) !important;
+    border-color: var(--pw-line-strong) !important;
+    box-shadow: none !important;
+}
+
+html.dark .ui.mini.button:hover,
+html.dark .ui.tiny.button:hover,
+html.dark .ui.small.button:hover {
+    background: var(--pw-line) !important;
+    color: var(--pw-ink) !important;
+}
+
+/* coloured buttons keep their hue but lose the white glow */
+html.dark .ui.green.button,
+html.dark .ui.lime.button,
+html.dark .ui.red.button,
+html.dark .ui.orange.button,
+html.dark .ui.yellow.button,
+html.dark .ui.teal.button,
+html.dark .ui.blue.button,
+html.dark .ui.violet.button,
+html.dark .ui.purple.button {
+    box-shadow: none !important;
+}
+
+/* status labels: tinted background, light text */
+html.dark .ui.label.basic.green,
+html.dark .ui.green.label,
+html.dark .ui.label.basic.teal,
+html.dark .ui.teal.label {
+    background: rgba(47, 163, 107, 0.16) !important;
+    color: #5fd39b !important;
+    border-color: transparent !important;
+}
+
+html.dark .ui.label.basic.red,
+html.dark .ui.red.label,
+html.dark .ui.label.basic.orange,
+html.dark .ui.orange.label {
+    background: rgba(209, 67, 67, 0.16) !important;
+    color: #f08b8b !important;
+    border-color: transparent !important;
+}
+
+html.dark .ui.label.basic.grey,
+html.dark .ui.label.basic.gray,
+html.dark .ui.grey.label {
+    background: var(--pw-surface-2) !important;
+    color: var(--pw-muted) !important;
+}
+
+html.dark .ui.label.basic.blue,
+html.dark .ui.blue.label {
+    background: var(--pw-accent-soft) !important;
+    color: var(--pw-accent) !important;
+}
+
+html.dark .ui.input > input[type='text'],
+html.dark .ui.input > input[type='password'],
+html.dark .ui.input > input[type='number'],
+html.dark .ui.input > input[type='search'] {
+    background: var(--pw-surface-2) !important;
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.input > input::placeholder,
+html.dark .ui.textarea::placeholder {
+    color: var(--pw-faint) !important;
+}
+
+html.dark .ui.card .content > .description,
+html.dark .ui.card .description {
+    color: var(--pw-muted) !important;
+}
+
+html.dark .ui.search > input,
+html.dark .ui.form .field > .ui.input > input {
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.label.basic,
+html.dark .ui.basic.label {
+    background: var(--pw-surface-2) !important;
+    border-color: var(--pw-line) !important;
+}
+
+html.dark .ui.ribbon,
+html.dark .ui.accordion .title,
+html.dark .ui.accordion .content {
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.accordion .active.title,
+html.dark .ui.accordion .title:hover {
+    color: var(--pw-accent) !important;
+}

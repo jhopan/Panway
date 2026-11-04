@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Dropdown, Icon } from 'semantic-ui-react';
 import { UserContext } from '../context/User';
 import { API, getLogo, getSystemName, isAdmin, showSuccess } from '../helpers';
+import ThemeToggle from './ThemeToggle';
 import './Sidebar.css';
 
 // Console navigation. Every entry is a route inside the console; the
@@ -118,14 +119,17 @@ const Sidebar = () => {
         </nav>
 
         <div className='sidebar-footer'>
-          <Dropdown
-            selection
-            fluid
-            className='sidebar-language'
-            options={LANGUAGE_OPTIONS}
-            value={currentLanguage}
-            onChange={(_, { value }) => i18n.changeLanguage(value)}
-          />
+          <div className='sidebar-footer-tools'>
+            <Dropdown
+              selection
+              fluid
+              className='sidebar-language'
+              options={LANGUAGE_OPTIONS}
+              value={currentLanguage}
+              onChange={(_, { value }) => i18n.changeLanguage(value)}
+            />
+            <ThemeToggle />
+          </div>
 
           {userState.user ? (
             <div className='sidebar-user'>

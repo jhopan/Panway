@@ -157,21 +157,21 @@ const Dashboard = () => {
   ];
 
   const tooltipStyle = {
-    background: '#fff',
+    background: 'var(--pw-surface, #fff)',
     border: 'none',
     borderRadius: '8px',
     boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
     fontSize: '13px',
   };
 
-  const axisTick = {fontSize: 12, fill: '#8E9BB3'};
+  const axisTick = {fontSize: 12, fill: 'var(--pw-faint, #8E9BB3)'};
 
   // Let recharts drop labels that would collide instead of forcing every
   // day to render: the console is narrower now that the sidebar takes
   // space, so seven day labels overlap on the three small charts.
   const xAxisConfig = {
     dataKey: 'date',
-    axisLine: {stroke: '#E4E8F0'},
+    axisLine: {stroke: 'var(--pw-line, #E4E8F0)'},
     tickLine: false,
     tick: {...axisTick, textAnchor: 'middle'},
     tickFormatter: formatDate,
@@ -185,7 +185,11 @@ const Dashboard = () => {
         data={timeSeriesData}
         margin={{top: 10, right: 16, left: 4, bottom: 0}}
       >
-        <CartesianGrid strokeDasharray='3 3' vertical={false} stroke='#EEF1F6' />
+        <CartesianGrid
+          strokeDasharray='3 3'
+          vertical={false}
+          stroke='var(--pw-line, #EEF1F6)'
+        />
         <XAxis {...xAxisConfig} />
         <YAxis
           axisLine={false}
@@ -211,7 +215,7 @@ const Dashboard = () => {
           stroke={color}
           strokeWidth={2.5}
           dot={{r: 2.5, fill: color, strokeWidth: 0}}
-          activeDot={{r: 5, strokeWidth: 2, stroke: '#fff'}}
+          activeDot={{r: 5, strokeWidth: 2, stroke: 'var(--pw-surface, #fff)'}}
         />
       </LineChart>
     </ResponsiveContainer>
@@ -320,7 +324,11 @@ const Dashboard = () => {
                   data={modelData}
                   margin={{top: 10, right: 16, left: 0, bottom: 0}}
                 >
-                  <CartesianGrid strokeDasharray='3 3' vertical={false} stroke='#EEF1F6' />
+                  <CartesianGrid
+          strokeDasharray='3 3'
+          vertical={false}
+          stroke='var(--pw-line, #EEF1F6)'
+        />
                   <XAxis {...xAxisConfig} />
                   <YAxis
                     axisLine={false}

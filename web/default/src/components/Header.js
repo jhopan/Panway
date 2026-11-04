@@ -19,6 +19,7 @@ import {
   isMobile,
   showSuccess,
 } from '../helpers';
+import ThemeToggle from './ThemeToggle';
 import '../index.css';
 
 // Header Buttons
@@ -269,6 +270,9 @@ const Header = () => {
           </Menu.Item>
           {renderButtons(false)}
           <Menu.Menu position='right'>
+            <Menu.Item>
+              <ThemeToggle />
+            </Menu.Item>
             <Dropdown
               item
               trigger={

@@ -876,29 +876,34 @@
       "models": "Models",
       "how": "How it works",
       "pricing": "Pricing",
+      "about": "About",
       "console": "Console",
       "signin": "Sign in"
     },
     "hero": {
-      "pill": "One API key, every model",
-      "title": "One key. Every model you need.",
-      "subtitle": "Panway fronts a pool of AI providers behind a single OpenAI-compatible endpoint. Pay in rupiah, watch every token, and switch models without touching your code.",
-      "cta_primary": "Open console",
-      "cta_secondary": "See models",
-      "stat_models": "models live",
-      "stat_key": "API key",
-      "stat_currency": "billing currency"
+      "eyebrow": "The AI connection layer",
+      "title_accent": "Every model.",
+      "title": "One connection.",
+      "subtitle": "The models you want. The control you need. Connect to leading AI providers through one gateway, built around your workflow.",
+      "cta_primary": "Start building",
+      "cta_secondary": "Explore models",
+      "check1": "Compatible APIs",
+      "check2": "One API key",
+      "check3": "Your choice of model",
+      "hub_caption": "One key. Many possibilities.",
+      "strip_left": "Built for the way you build.",
+      "strip_right": "Unified access. Thoughtful controls. Open possibilities."
     },
-    "preview": {
-      "title": "Recent requests"
+    "logos": {
+      "eyebrow": "Great models. A shared starting point."
     },
     "models": {
       "title": "Models and prices",
-      "lead": "The catalogue is served live from the gateway, so what you see is what you pay. Prices are per one million tokens.",
-      "model": "Model",
+      "lead": "One endpoint, every model. Prices are per one million tokens and come straight from the gateway.",
       "input": "Input",
       "output": "Output",
       "unit": "per 1M tokens",
+      "all": "See all models",
       "loading": "Loading the catalogue...",
       "error": "The catalogue could not be loaded. Refresh to try again."
     },
@@ -920,16 +925,10 @@
         }
       }
     },
-    "pricing": {
-      "title": "Price list",
-      "lead": "A flat rate per model. No subscription, no minimum spend, no hidden fees.",
-      "multiplier": "Output multiplier",
-      "note": "Prices are listed in rupiah per one million tokens. Output tokens are billed at the multiplier shown."
-    },
     "cta": {
       "title": "Ready to build?",
       "body": "Create an account, top up, and issue your first key. The console shows your usage from the first request.",
-      "button": "Open console"
+      "button": "Start building"
     },
     "footer": {
       "rights": "All rights reserved.",
@@ -940,5 +939,33 @@
   "sidebar": {
     "group_admin": "Administration",
     "group_site": "Site"
+  },
+  "models": {
+    "eyebrow": "Model catalogue",
+    "title": "Every model, one endpoint",
+    "lead": "Prices come straight from the gateway, so what you see is what you pay. Pick a model, copy the id, and send it in the request body.",
+    "model": "Model",
+    "input": "Input",
+    "output": "Output",
+    "unit": "per 1M tokens",
+    "models": "models",
+    "other": "Other",
+    "loading": "Loading the catalogue...",
+    "error": "The catalogue could not be loaded. Refresh to try again.",
+    "empty": "No models are available right now."
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "Flat rate, no surprises",
+    "lead": "Pay per token from a single balance. No subscription, no minimum spend, no hidden fees.",
+    "cheapest": "Lowest input rate",
+    "multiplier": "Output multiplier",
+    "note_billing": "Billed on use",
+    "note_billing_body": "Every request is charged on the tokens it actually consumed, shown in your log.",
+    "note_topup": "One balance",
+    "note_topup_body": "The same rupiah balance covers every model. Top up through PanWallet.",
+    "note_rate": "Rates in rupiah",
+    "note_rate_body": "Prices are listed per one million tokens. Output tokens cost the multiplier shown.",
+    "disclaimer": "A model name may end in \":free\" because that is the upstream provider's name. Panway still bills the rate shown above."
   }
 }

@@ -876,29 +876,34 @@
       "models": "Model",
       "how": "Cara kerja",
       "pricing": "Harga",
+      "about": "Tentang",
       "console": "Konsol",
       "signin": "Masuk"
     },
     "hero": {
-      "pill": "Satu API key, semua model",
-      "title": "Satu kunci. Semua model yang kamu butuh.",
-      "subtitle": "Panway menaruh kumpulan penyedia AI di balik satu endpoint yang kompatibel dengan OpenAI. Bayar pakai rupiah, pantau tiap token, dan ganti model tanpa menyentuh kodemu.",
-      "cta_primary": "Buka konsol",
+      "eyebrow": "Lapisan koneksi AI",
+      "title_accent": "Semua model.",
+      "title": "Satu koneksi.",
+      "subtitle": "Model yang kamu mau. Kontrol yang kamu butuh. Hubungkan ke penyedia AI unggulan lewat satu gateway yang dibangun mengikuti cara kerjamu.",
+      "cta_primary": "Mulai membangun",
       "cta_secondary": "Lihat model",
-      "stat_models": "model aktif",
-      "stat_key": "API key",
-      "stat_currency": "mata uang tagihan"
+      "check1": "API kompatibel",
+      "check2": "Satu API key",
+      "check3": "Model bebas dipilih",
+      "hub_caption": "Satu kunci. Banyak kemungkinan.",
+      "strip_left": "Dibangun untuk cara kamu membangun.",
+      "strip_right": "Akses terpadu. Kontrol yang baik. Kemungkinan terbuka."
     },
-    "preview": {
-      "title": "Request terbaru"
+    "logos": {
+      "eyebrow": "Model hebat. Titik awal yang sama."
     },
     "models": {
       "title": "Model dan harga",
-      "lead": "Katalog diambil langsung dari gateway, jadi yang tampil sama dengan yang kamu bayar. Harga untuk satu juta token.",
-      "model": "Model",
+      "lead": "Satu endpoint, semua model. Harga per satu juta token dan diambil langsung dari gateway.",
       "input": "Input",
       "output": "Output",
       "unit": "per 1 juta token",
+      "all": "Lihat semua model",
       "loading": "Memuat katalog...",
       "error": "Katalog gagal dimuat. Muat ulang untuk mencoba lagi."
     },
@@ -920,16 +925,10 @@
         }
       }
     },
-    "pricing": {
-      "title": "Daftar harga",
-      "lead": "Tarif flat per model. Tanpa langganan, tanpa minimum belanja, tanpa biaya tersembunyi.",
-      "multiplier": "Pengali output",
-      "note": "Harga dicantumkan dalam rupiah per satu juta token. Token output ditagih dengan pengali yang tercantum."
-    },
     "cta": {
       "title": "Siap membangun?",
       "body": "Buat akun, isi saldo, lalu terbitkan key pertamamu. Konsol menampilkan pemakaian sejak request pertama.",
-      "button": "Buka konsol"
+      "button": "Mulai membangun"
     },
     "footer": {
       "rights": "Seluruh hak cipta dilindungi.",
@@ -940,5 +939,33 @@
   "sidebar": {
     "group_admin": "Administrasi",
     "group_site": "Situs"
+  },
+  "models": {
+    "eyebrow": "Katalog model",
+    "title": "Semua model, satu endpoint",
+    "lead": "Harga diambil langsung dari gateway, jadi yang tampil sama dengan yang kamu bayar. Pilih model, salin id-nya, lalu kirim di body request.",
+    "model": "Model",
+    "input": "Input",
+    "output": "Output",
+    "unit": "per 1 juta token",
+    "models": "model",
+    "other": "Lainnya",
+    "loading": "Memuat katalog...",
+    "error": "Katalog gagal dimuat. Muat ulang untuk mencoba lagi.",
+    "empty": "Belum ada model yang tersedia saat ini."
+  },
+  "pricing": {
+    "eyebrow": "Harga",
+    "title": "Tarif flat, tanpa kejutan",
+    "lead": "Bayar per token dari satu saldo. Tanpa langganan, tanpa minimum belanja, tanpa biaya tersembunyi.",
+    "cheapest": "Tarif input termurah",
+    "multiplier": "Pengali output",
+    "note_billing": "Dikenai sesuai pemakaian",
+    "note_billing_body": "Setiap request ditagih atas token yang benar-benar dipakai, terlihat di log kamu.",
+    "note_topup": "Satu saldo",
+    "note_topup_body": "Saldo rupiah yang sama berlaku untuk semua model. Isi lewat PanWallet.",
+    "note_rate": "Tarif dalam rupiah",
+    "note_rate_body": "Harga dicantumkan per satu juta token. Token output dihargai pengali yang tercantum.",
+    "disclaimer": "Nama model bisa berakhiran \":free\" karena itu nama dari penyedia aslinya. Panway tetap menagih sesuai tarif di atas."
   }
 }

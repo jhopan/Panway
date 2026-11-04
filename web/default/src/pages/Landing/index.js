@@ -3,18 +3,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../context/User';
 import { getLogo, getSystemName } from '../../helpers';
+import ThemeToggle from '../../components/ThemeToggle';
 import './Landing.css';
 
-// A small console preview: what a customer actually cares about is seeing
-// their usage, so the hero shows the product instead of a logo wall.
-const PREVIEW_ROWS = [
-  { model: 'agnes/agnes-3.0-flash', tokens: '12.4k', ms: '842' },
-  { model: 'th/deepseek-v4-flash:free', tokens: '3.1k', ms: '390' },
-  {
-    model: 'cf/@cf/qwen/qwen2.5-coder-32b-instruct',
-    tokens: '8.9k',
-    ms: '1.2s',
-  },
+// Providers Panway can front. The orbit visual is the centrepiece of the
+// hero, so the list lives here.
+const PROVIDERS = [
+  { key: 'openai', name: 'OpenAI' },
+  { key: 'claude', name: 'Claude' },
+  { key: 'gemini', name: 'Gemini' },
+  { key: 'deepseek', name: 'DeepSeek' },
+  { key: 'qwen', name: 'Qwen' },
+  { key: 'minimax', name: 'MiniMax' },
+  { key: 'kimi', name: 'Kimi' },
+  { key: 'grok', name: 'Grok' },
 ];
 
 const STEPS = [
@@ -49,14 +51,23 @@ const Landing = () => {
   }, [systemName]);
 
   const consolePath = userState.user ? '/dashboard' : '/login';
-
-  const formatPrice = (value) => 'Rp' + Math.round(value).toLocaleString(locale);
+  const formatPrice = (value) =>
+    'Rp' + Math.round(value).toLocaleString(locale);
 
   const steps = STEPS.map((s) => ({
     no: s.no,
     title: t(`${s.key}.title`),
     body: t(`${s.key}.body`),
   }));
+
+  // Signed in customers get the console links; visitors get sign in.
+  // The console link lives in the action button on the right, so it is not
+  // repeated in the nav list.
+  const navLinks = [
+    { to: '/models', label: t('landing.nav.models') },
+    { to: '/pricing', label: t('landing.nav.pricing') },
+    { to: '/about', label: t('landing.nav.about') },
+  ];
 
   return (
     <div className='landing'>
@@ -68,12 +79,15 @@ const Landing = () => {
           </Link>
 
           <nav className='landing-nav'>
-            <a href='#models'>{t('landing.nav.models')}</a>
-            <a href='#how'>{t('landing.nav.how')}</a>
-            <a href='#pricing'>{t('landing.nav.pricing')}</a>
+            {navLinks.map((l) => (
+              <Link key={l.to} to={l.to}>
+                {l.label}
+              </Link>
+            ))}
           </nav>
 
           <div className='landing-header-actions'>
+            <ThemeToggle />
             <Link to={consolePath} className='landing-btn landing-btn-primary'>
               {userState.user ? t('landing.nav.console') : t('landing.nav.signin')}
             </Link>
@@ -84,9 +98,18 @@ const Landing = () => {
       <section className='landing-hero'>
         <div className='landing-hero-inner'>
           <div className='landing-hero-copy'>
-            <span className='landing-pill'>{t('landing.hero.pill')}</span>
+            <div className='landing-eyebrow'>
+              <span className='landing-eyebrow-rule' />
+              {t('landing.hero.eyebrow')}
+            </div>
 
-            <h1 className='landing-hero-title'>{t('landing.hero.title')}</h1>
+            <h1 className='landing-hero-title'>
+              <span className='landing-hero-title-accent'>
+                {t('landing.hero.title_accent')}
+              </span>
+              <br />
+              {t('landing.hero.title')}
+            </h1>
 
             <p className='landing-hero-sub'>{t('landing.hero.subtitle')}</p>
 
@@ -97,187 +120,150 @@ const Landing = () => {
               >
                 {t('landing.hero.cta_primary')}
               </button>
-              <a
+              <Link
                 className='landing-btn landing-btn-ghost landing-btn-lg'
-                href='#models'
+                to='/models'
               >
                 {t('landing.hero.cta_secondary')}
-              </a>
+              </Link>
             </div>
 
-            <div className='landing-hero-stats'>
-              <div className='landing-hero-stat'>
-                <span className='landing-hero-stat-value'>
-                  {models.length > 0 ? models.length : '-'}
-                </span>
-                <span className='landing-hero-stat-label'>
-                  {t('landing.hero.stat_models')}
-                </span>
-              </div>
-              <div className='landing-hero-stat'>
-                <span className='landing-hero-stat-value'>1</span>
-                <span className='landing-hero-stat-label'>
-                  {t('landing.hero.stat_key')}
-                </span>
-              </div>
-              <div className='landing-hero-stat'>
-                <span className='landing-hero-stat-value'>IDR</span>
-                <span className='landing-hero-stat-label'>
-                  {t('landing.hero.stat_currency')}
-                </span>
-              </div>
-            </div>
+            <ul className='landing-checks'>
+              <li>{t('landing.hero.check1')}</li>
+              <li>{t('landing.hero.check2')}</li>
+              <li>{t('landing.hero.check3')}</li>
+            </ul>
           </div>
 
-          <div className='landing-hero-panel' aria-hidden='true'>
-            <div className='landing-panel'>
-              <div className='landing-panel-bar'>
-                <span className='landing-panel-title'>
-                  {t('landing.preview.title')}
-                </span>
-                <span className='landing-panel-dot' />
-                <span className='landing-panel-dot' />
-                <span className='landing-panel-dot' />
+          <div className='landing-hero-visual' aria-hidden='true'>
+            <div className='landing-hub'>
+              <div className='landing-hub-ring' />
+              <div className='landing-hub-ring landing-hub-ring-outer' />
+              <div className='landing-hub-core'>
+                <span className='landing-hub-logo'>{systemName.charAt(0)}</span>
               </div>
-
-              <div className='landing-panel-body'>
-                <div className='landing-panel-chart'>
-                  {[38, 62, 45, 78, 55, 88, 70, 96, 82, 100].map((h, i) => (
-                    <span
-                      key={i}
-                      className='landing-panel-bar-fill'
-                      style={{ height: `${h}%` }}
-                    />
-                  ))}
-                </div>
-
-                <div className='landing-panel-rows'>
-                  {PREVIEW_ROWS.map((row) => (
-                    <div key={row.model} className='landing-panel-row'>
-                      <span className='landing-panel-model'>{row.model}</span>
-                      <span className='landing-panel-tokens'>{row.tokens}</span>
-                      <span className='landing-panel-ms'>{row.ms}</span>
-                    </div>
-                  ))}
-                </div>
+              <div className='landing-hub-orbit'>
+                {PROVIDERS.map((p, i) => (
+                  <span
+                    key={p.key}
+                    className='landing-hub-node'
+                    style={{ '--i': i, '--n': PROVIDERS.length }}
+                  >
+                    {p.name}
+                  </span>
+                ))}
+              </div>
+              <div className='landing-hub-caption'>
+                {t('landing.hero.hub_caption')}
               </div>
             </div>
           </div>
         </div>
+
+        <div className='landing-hero-strip'>
+          <div className='landing-header-inner landing-hero-strip-inner'>
+            <span>{t('landing.hero.strip_left')}</span>
+            <span>{t('landing.hero.strip_right')}</span>
+          </div>
+        </div>
       </section>
 
-      <section className='landing-section' id='models'>
-        <div className='landing-section-head'>
-          <h2 className='landing-section-title'>{t('landing.models.title')}</h2>
-          <p className='landing-section-lead'>{t('landing.models.lead')}</p>
-        </div>
-
-        <div className='landing-model-grid'>
-          {models.length === 0 && !pricingError && (
-            <div className='landing-empty'>{t('landing.models.loading')}</div>
-          )}
-          {models.length === 0 && pricingError && (
-            <div className='landing-empty'>{t('landing.models.error')}</div>
-          )}
-          {models.map((m) => (
-            <div key={m.model_id} className='landing-model-card'>
-              <div className='landing-model-card-head'>
-                {m.provider && (
-                  <span className='landing-model-provider'>{m.provider}</span>
-                )}
-                <span className='landing-model-id'>{m.name}</span>
+      <section className='landing-logos'>
+        <div className='landing-section-inner'>
+          <div className='landing-eyebrow landing-eyebrow-center'>
+            <span className='landing-eyebrow-rule' />
+            {t('landing.logos.eyebrow')}
+            <span className='landing-eyebrow-rule' />
+          </div>
+          <div className='landing-logos-row'>
+            {PROVIDERS.map((p) => (
+              <div key={p.key} className='landing-logo-item'>
+                <span className='landing-logo-name'>{p.name}</span>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              <div className='landing-model-prices'>
-                <div className='landing-model-price'>
-                  <span className='landing-model-price-label'>
-                    {t('landing.models.input')}
-                  </span>
-                  <span className='landing-model-price-value'>
-                    {formatPrice(m.input_price)}
-                  </span>
+      <section className='landing-models' id='models'>
+        <div className='landing-section-inner'>
+          <div className='landing-section-head'>
+            <h2 className='landing-section-title'>{t('landing.models.title')}</h2>
+            <p className='landing-section-lead'>{t('landing.models.lead')}</p>
+          </div>
+
+          <div className='landing-model-grid'>
+            {models.length === 0 && !pricingError && (
+              <div className='landing-empty'>{t('landing.models.loading')}</div>
+            )}
+            {models.length === 0 && pricingError && (
+              <div className='landing-empty'>{t('landing.models.error')}</div>
+            )}
+            {models.map((m) => (
+              <Link key={m.model_id} to='/models' className='landing-model-card'>
+                <div className='landing-model-card-head'>
+                  {m.provider && (
+                    <span className='landing-model-provider'>
+                      {m.provider}
+                    </span>
+                  )}
+                  <span className='landing-model-id'>{m.name}</span>
                 </div>
-                <div className='landing-model-price'>
-                  <span className='landing-model-price-label'>
-                    {t('landing.models.output')}
-                  </span>
-                  <span className='landing-model-price-value'>
-                    {formatPrice(m.output_price)}
-                  </span>
+
+                <div className='landing-model-prices'>
+                  <div className='landing-model-price'>
+                    <span className='landing-model-price-label'>
+                      {t('landing.models.input')}
+                    </span>
+                    <span className='landing-model-price-value'>
+                      {formatPrice(m.input_price)}
+                    </span>
+                  </div>
+                  <div className='landing-model-price'>
+                    <span className='landing-model-price-label'>
+                      {t('landing.models.output')}
+                    </span>
+                    <span className='landing-model-price-value'>
+                      {formatPrice(m.output_price)}
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <div className='landing-model-unit'>{t('landing.models.unit')}</div>
+                <div className='landing-model-unit'>{t('landing.models.unit')}</div>
+              </Link>
+            ))}
+          </div>
 
-              <code className='landing-model-code'>{m.model_id}</code>
-            </div>
-          ))}
+          <div className='landing-section-more'>
+            <Link to='/models' className='landing-btn landing-btn-ghost'>
+              {t('landing.models.all')}
+            </Link>
+          </div>
         </div>
       </section>
 
-      <section className='landing-section landing-section-alt' id='how'>
-        <div className='landing-section-head'>
-          <h2 className='landing-section-title'>{t('landing.how.title')}</h2>
-          <p className='landing-section-lead'>{t('landing.how.lead')}</p>
-        </div>
+      <section className='landing-steps-section' id='how'>
+        <div className='landing-section-inner'>
+          <div className='landing-section-head'>
+            <h2 className='landing-section-title'>{t('landing.how.title')}</h2>
+            <p className='landing-section-lead'>{t('landing.how.lead')}</p>
+          </div>
 
-        <div className='landing-steps'>
-          {steps.map((step, i) => (
-            <div key={step.no} className='landing-step'>
-              <div className='landing-step-top'>
-                <span className='landing-step-no'>{step.no}</span>
-                {i < steps.length - 1 && (
-                  <span className='landing-step-line' aria-hidden='true' />
-                )}
+          <div className='landing-steps'>
+            {steps.map((step, i) => (
+              <div key={step.no} className='landing-step'>
+                <div className='landing-step-top'>
+                  <span className='landing-step-no'>{step.no}</span>
+                  {i < steps.length - 1 && (
+                    <span className='landing-step-line' aria-hidden='true' />
+                  )}
+                </div>
+                <h3 className='landing-step-title'>{step.title}</h3>
+                <p className='landing-step-body'>{step.body}</p>
               </div>
-              <h3 className='landing-step-title'>{step.title}</h3>
-              <p className='landing-step-body'>{step.body}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </section>
-
-      <section className='landing-section' id='pricing'>
-        <div className='landing-section-head'>
-          <h2 className='landing-section-title'>{t('landing.pricing.title')}</h2>
-          <p className='landing-section-lead'>{t('landing.pricing.lead')}</p>
-        </div>
-
-        <div className='landing-table-wrap'>
-          <table className='landing-table'>
-            <thead>
-              <tr>
-                <th>{t('landing.models.model')}</th>
-                <th>{t('landing.models.input')}</th>
-                <th>{t('landing.models.output')}</th>
-                <th>{t('landing.pricing.multiplier')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {models.length === 0 && (
-                <tr>
-                  <td colSpan={4} className='landing-empty'>
-                    {t('landing.models.loading')}
-                  </td>
-                </tr>
-              )}
-              {models.map((m) => (
-                <tr key={m.model_id}>
-                  <td>
-                    <code>{m.model_id}</code>
-                  </td>
-                  <td>{formatPrice(m.input_price)}</td>
-                  <td>{formatPrice(m.output_price)}</td>
-                  <td className='landing-table-dim'>
-                    {m.output_price / m.input_price}x
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <p className='landing-note'>{t('landing.pricing.note')}</p>
       </section>
 
       <section className='landing-cta'>
@@ -294,7 +280,7 @@ const Landing = () => {
       </section>
 
       <footer className='landing-footer'>
-        <div className='landing-footer-inner'>
+        <div className='landing-header-inner landing-footer-inner'>
           <span>
             &copy; {new Date().getFullYear()} {systemName}.{' '}
             {t('landing.footer.rights')}

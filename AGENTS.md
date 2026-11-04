@@ -46,6 +46,10 @@ branch `master`.
 | `common/i18n/locales/` | `en.json`, `id.json` (pesan server) |
 | `controller/pricing.go` | endpoint publik `/api/pricing` (katalog + harga) |
 | `components/Sidebar.js` | navigasi console (rail kiri) |
+| `components/ThemeToggle.js` | tombol light/dark/system |
+| `helpers/theme.js` | simpan & terapkan mode tema |
+| `semantic-dark.css` | override Semantic UI untuk mode gelap |
+| `pages/Catalogue/` | halaman Models & Pricing |
 | `components/Chrome.js` | memilih chrome per route |
 | `pages/Landing/` | landing page marketing di `/` |
 | `model/` | GORM model + auto-migrate |
@@ -296,6 +300,27 @@ Tiga jenis chrome, dipilih di `components/Chrome.js`:
 
 **Logo:** `web/default/public/logo-panway.svg` (huruf P, gradient indigo ->
 cyan). `helpers/utils.js` `getLogo()` memakai path itu sebagai default.
+
+## 12c. Tema gelap
+
+Mode tema disimpan di `localStorage` key `panway_theme` (`light` | `dark` |
+`system`) dan diterapkan sebagai class `light`/`dark` di `<html>`.
+
+- `helpers/theme.js` — baca/simpan/apply, plus `toggleTheme()`.
+  `system` mengikuti preferensi OS dan tetap ikut berubah selama app jalan.
+- `index.js` memanggil `applyTheme()` **sebelum render pertama** supaya
+  halaman tidak berkedip dengan background yang salah.
+- Semua warna diambil dari token CSS `--pw-*` di `index.css`
+  (`--pw-bg`, `--pw-surface`, `--pw-ink`, `--pw-muted`, `--pw-line`,
+  `--pw-accent`, ...). Warna hex langsung di komponen = bug tema gelap.
+- Semantic UI tidak punya dark theme, jadi `semantic-dark.css` berisi
+  override `html.dark .ui.*` untuk card, tabel, tombol, label, menu,
+  form, dan modal. Audit ulang override ini kalau ada komponen Semantic
+  baru yang dipakai.
+- Dark mode bukan sekadar membalik warna: tombol primary dibalik jadi
+  terang di atas gelap, badge status memakai background tinted + teks
+  terang, dan `--pw-faint` dinaikkan supaya label kecil tetap lolos
+  kontras.
 
 ## 13. Yang belum dikerjakan
 

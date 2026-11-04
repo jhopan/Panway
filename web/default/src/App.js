@@ -29,6 +29,8 @@ import Dashboard from './pages/Dashboard';
 
 const Home = lazy(() => import('./pages/Home'));
 const Landing = lazy(() => import('./pages/Landing'));
+const Models = lazy(() => import('./pages/Catalogue/Models'));
+const Pricing = lazy(() => import('./pages/Catalogue/Pricing'));
 const About = lazy(() => import('./pages/About'));
 
 function App() {
@@ -100,6 +102,22 @@ function App() {
         element={
           <Suspense fallback={<Loading></Loading>}>
             <Landing />
+          </Suspense>
+        }
+      />
+      <Route
+        path='/models'
+        element={
+          <Suspense fallback={<Loading></Loading>}>
+            <Models />
+          </Suspense>
+        }
+      />
+      <Route
+        path='/pricing'
+        element={
+          <Suspense fallback={<Loading></Loading>}>
+            <Pricing />
           </Suspense>
         }
       />

@@ -1,6 +1,6 @@
 .dashboard-container {
-    padding: 20px 24px 40px;
-    background-color: #f7f8fc;
+    padding: 0 0 40px;
+    background-color: var(--pw-bg, #f7f8fc);
     max-width: 1600px;
     margin-left: auto;
     margin-right: auto;
@@ -58,7 +58,7 @@
 .chart-container {
     margin-top: 2px;
     padding: 16px;
-    background-color: white;
+    background-color: var(--pw-surface, #fff);
     border-radius: 12px;
 }
 
@@ -97,7 +97,7 @@
 
 @media (max-width: 768px) {
     .dashboard-container {
-        padding: 10px 16px;
+        padding: 0 0 32px;
         max-width: 100%;
     }
 
