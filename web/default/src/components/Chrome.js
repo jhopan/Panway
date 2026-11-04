@@ -10,6 +10,10 @@ import { ToastContainer } from 'react-toastify';
 // The landing page renders its own marketing chrome.
 const BARE_ROUTES = ['/'];
 
+// Models and pricing are public catalogue pages. They bring their own
+// top bar and footer, so they must not get the console sidebar either.
+const SHELL_ROUTES = ['/models', '/pricing'];
+
 // Auth screens keep the simple top bar: a sidebar there would be noise
 // because there is nothing to navigate to yet.
 const PLAIN_ROUTES = [
@@ -24,7 +28,7 @@ const Chrome = () => {
   const location = useLocation();
   const path = location.pathname;
 
-  if (BARE_ROUTES.includes(path)) {
+  if (BARE_ROUTES.includes(path) || SHELL_ROUTES.includes(path)) {
     return (
       <>
         <App />

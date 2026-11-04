@@ -12,9 +12,13 @@ import './Sidebar.css';
 const NAV_ITEMS = [
   { name: 'header.dashboard', to: '/dashboard', icon: 'chart bar' },
   { name: 'header.token', to: '/token', icon: 'key' },
-  { name: 'header.topup', to: '/topup', icon: 'wallet' },
+  { name: 'header.topup', to: '/topup', icon: 'money' },
   { name: 'header.log', to: '/log', icon: 'history' },
-  { name: 'header.setting', to: '/setting', icon: 'setting' },
+];
+
+const CATALOGUE_ITEMS = [
+  { name: 'landing.nav.models', to: '/models', icon: 'cube' },
+  { name: 'landing.nav.pricing', to: '/pricing', icon: 'tag' },
 ];
 
 const ADMIN_ITEMS = [
@@ -97,6 +101,11 @@ const Sidebar = () => {
 
         <nav className='sidebar-nav'>
           <div className='sidebar-group'>{NAV_ITEMS.map(renderItem)}</div>
+
+          <div className='sidebar-group'>
+            <div className='sidebar-group-label'>{t('sidebar.group_catalogue')}</div>
+            {CATALOGUE_ITEMS.map(renderItem)}
+          </div>
 
           {isAdmin() && (
             <div className='sidebar-group'>

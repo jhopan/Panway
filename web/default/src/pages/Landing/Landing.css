@@ -7,37 +7,11 @@
   --lg-accent-2: #6f9bff;
   --lg-radius: 14px;
 
-  background: var(--pw-bg, #fff);
+  background: var(--pw-surface, #fff);
   color: var(--pw-ink, #10131a);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
   min-height: 100vh;
-}
-
-.landing-header-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-  width: 100%;
-}
-
-/* ---------- header ---------- */
-
-.landing-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: color-mix(in srgb, var(--pw-surface) 88%, transparent);
-  backdrop-filter: saturate(180%) blur(12px);
-  border-bottom: 1px solid var(--pw-line, #e5e8ef);
-}
-
-.landing-header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  height: 66px;
 }
 
 /* The section blocks reuse the container width but stack their content,
@@ -49,45 +23,6 @@
   width: 100%;
 }
 
-.landing-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  font-size: 19px;
-  letter-spacing: -0.02em;
-  color: var(--pw-ink, #10131a);
-  text-decoration: none;
-}
-
-.landing-brand img {
-  height: 30px;
-  width: auto;
-}
-
-.landing-nav {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-}
-
-.landing-nav a {
-  color: var(--pw-muted, #626b7c);
-  text-decoration: none;
-  font-size: 14.5px;
-  font-weight: 500;
-  transition: color 0.15s ease;
-}
-
-.landing-nav a:hover {
-  color: var(--pw-ink, #10131a);
-}
-
-.landing-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
 
 /* ---------- buttons ---------- */
 
@@ -687,10 +622,6 @@ html.dark .landing-hub-node {
 }
 
 @media (max-width: 768px) {
-  .landing-nav {
-    display: none;
-  }
-
   .landing-hub {
     width: 320px;
     height: 320px;

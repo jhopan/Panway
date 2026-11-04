@@ -86,8 +86,8 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--sb-muted);
-  padding: 0 10px 8px;
+  color: var(--pw-faint, var(--sb-muted));
+  padding: 0 11px 8px;
 }
 
 .sidebar-item {
@@ -101,7 +101,7 @@
   font-family: inherit;
   font-size: 14.5px;
   font-weight: 500;
-  color: var(--pw-muted, #4a5262);
+  color: var(--pw-ink, #4a5262);
   padding: 9px 11px;
   border-radius: 9px;
   cursor: pointer;
@@ -110,7 +110,7 @@
 }
 
 .sidebar-item i.icon {
-  color: var(--pw-faint, #9aa3b2);
+  color: var(--pw-muted, #9aa3b2);
   font-size: 16px;
   transition: color 0.14s ease;
 }
@@ -139,13 +139,14 @@
 .sidebar-footer {
   border-top: 1px solid var(--sb-line);
   padding: 14px 12px 18px;
+  margin-top: auto;
 }
 
 .sidebar-footer-tools {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .sidebar-footer-tools .sidebar-language {
@@ -177,6 +178,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  padding: 9px 11px;
+  border-radius: 9px;
+  background: var(--pw-surface-2, #f4f6fa);
 }
 
 .sidebar-user-name {

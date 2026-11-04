@@ -873,6 +873,7 @@
   },
   "landing": {
     "nav": {
+      "home": "Home",
       "models": "Models",
       "how": "How it works",
       "pricing": "Pricing",
@@ -938,7 +939,8 @@
   },
   "sidebar": {
     "group_admin": "Administration",
-    "group_site": "Site"
+    "group_site": "Site",
+    "group_catalogue": "Catalogue"
   },
   "models": {
     "eyebrow": "Model catalogue",

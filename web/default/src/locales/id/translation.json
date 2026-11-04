@@ -873,6 +873,7 @@
   },
   "landing": {
     "nav": {
+      "home": "Beranda",
       "models": "Model",
       "how": "Cara kerja",
       "pricing": "Harga",
@@ -938,7 +939,8 @@
   },
   "sidebar": {
     "group_admin": "Administrasi",
-    "group_site": "Situs"
+    "group_site": "Situs",
+    "group_catalogue": "Katalog"
   },
   "models": {
     "eyebrow": "Katalog model",

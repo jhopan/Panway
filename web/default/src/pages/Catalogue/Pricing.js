@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCatalogue } from './useCatalogue';
+import MarketingShell from '../../components/MarketingShell';
 import './Catalogue.css';
 
 const Pricing = () => {
@@ -13,7 +14,8 @@ const Pricing = () => {
   );
 
   return (
-    <div className='catalogue'>
+    <MarketingShell current='pricing'>
+      <div className='catalogue'>
       <div className='catalogue-head'>
         <span className='catalogue-eyebrow'>{t('pricing.eyebrow')}</span>
         <h1 className='catalogue-title'>{t('pricing.title')}</h1>
@@ -97,7 +99,8 @@ const Pricing = () => {
           <span className='pricing-note-body'>{t('pricing.note_rate_body')}</span>
         </div>
       </div>
-    </div>
+      </div>
+    </MarketingShell>
   );
 };
 

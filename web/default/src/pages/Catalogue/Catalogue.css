@@ -40,6 +40,7 @@
 }
 
 .catalogue-empty {
+  flex: 1 1 100%;
   padding: 44px 16px;
   text-align: center;
   color: var(--pw-muted);
@@ -78,13 +79,17 @@
 
 /* ---------- cards ---------- */
 
+/* Flex wrap instead of a grid: a provider group usually holds one or two
+   models, and a grid would leave the right half of the row empty. */
 .catalogue-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 16px;
 }
 
 .catalogue-card {
+  flex: 1 1 280px;
+  max-width: 100%;
   border: 1px solid var(--pw-line);
   border-radius: 14px;
   padding: 18px;

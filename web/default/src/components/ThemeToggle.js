@@ -25,7 +25,11 @@ const LABEL = {
 const ICON = {
   light: 'sun',
   dark: 'moon',
-  system: 'circle half',
+  // "circle half" does not exist in the Semantic icon font and rendered as
+  // an empty blue box. "adjust" renders, but reads as a control rather than
+  // a theme, so the system mode uses the sun icon and relies on the
+  // tooltip to say it follows the OS.
+  system: 'sun',
 };
 
 const ThemeToggle = () => {

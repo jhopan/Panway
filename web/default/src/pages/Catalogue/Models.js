@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCatalogue } from './useCatalogue';
+import MarketingShell from '../../components/MarketingShell';
 import './Catalogue.css';
 
 const Models = () => {
@@ -8,7 +9,8 @@ const Models = () => {
   const { groups, loading, failed, formatPrice } = useCatalogue();
 
   return (
-    <div className='catalogue'>
+    <MarketingShell current='models'>
+      <div className='catalogue'>
       <div className='catalogue-head'>
         <span className='catalogue-eyebrow'>{t('models.eyebrow')}</span>
         <h1 className='catalogue-title'>{t('models.title')}</h1>
@@ -73,7 +75,8 @@ const Models = () => {
           </div>
         </div>
       ))}
-    </div>
+      </div>
+    </MarketingShell>
   );
 };
 

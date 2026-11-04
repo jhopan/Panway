@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../context/User';
 import { getLogo, getSystemName } from '../../helpers';
-import ThemeToggle from '../../components/ThemeToggle';
+import MarketingShell from '../../components/MarketingShell';
 import './Landing.css';
 
 // Providers Panway can front. The orbit visual is the centrepiece of the
@@ -70,31 +70,8 @@ const Landing = () => {
   ];
 
   return (
-    <div className='landing'>
-      <header className='landing-header'>
-        <div className='landing-header-inner'>
-          <Link to='/' className='landing-brand'>
-            <img src={logo} alt={systemName} />
-            <span>{systemName}</span>
-          </Link>
-
-          <nav className='landing-nav'>
-            {navLinks.map((l) => (
-              <Link key={l.to} to={l.to}>
-                {l.label}
-              </Link>
-            ))}
-          </nav>
-
-          <div className='landing-header-actions'>
-            <ThemeToggle />
-            <Link to={consolePath} className='landing-btn landing-btn-primary'>
-              {userState.user ? t('landing.nav.console') : t('landing.nav.signin')}
-            </Link>
-          </div>
-        </div>
-      </header>
-
+    <MarketingShell current='home'>
+      <div className='landing'>
       <section className='landing-hero'>
         <div className='landing-hero-inner'>
           <div className='landing-hero-copy'>
@@ -161,7 +138,7 @@ const Landing = () => {
         </div>
 
         <div className='landing-hero-strip'>
-          <div className='landing-header-inner landing-hero-strip-inner'>
+          <div className='landing-section-inner landing-hero-strip-inner'>
             <span>{t('landing.hero.strip_left')}</span>
             <span>{t('landing.hero.strip_right')}</span>
           </div>
@@ -279,19 +256,8 @@ const Landing = () => {
         </div>
       </section>
 
-      <footer className='landing-footer'>
-        <div className='landing-header-inner landing-footer-inner'>
-          <span>
-            &copy; {new Date().getFullYear()} {systemName}.{' '}
-            {t('landing.footer.rights')}
-          </span>
-          <div className='landing-footer-links'>
-            <Link to='/about'>{t('landing.footer.about')}</Link>
-            <Link to='/login'>{t('landing.footer.signin')}</Link>
-          </div>
-        </div>
-      </footer>
-    </div>
+      </div>
+    </MarketingShell>
   );
 };
 
