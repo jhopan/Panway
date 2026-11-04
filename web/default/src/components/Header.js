@@ -129,7 +129,7 @@ const Header = () => {
           style={{
             fontSize: '15px',
             fontWeight: '400',
-            color: '#666',
+            color: 'var(--pw-muted, #666)',
           }}
         >
           <Icon name={button.icon} style={{ marginRight: '4px' }} />
@@ -249,11 +249,15 @@ const Header = () => {
           border: 'none',
         }}
       >
-        <Container
+        <div
           style={{
             width: '100%',
             maxWidth: isMobile() ? '100%' : '1200px',
+            margin: '0 auto',
             padding: isMobile() ? '0 10px' : '0 20px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 4,
           }}
         >
           <Menu.Item as={Link} to='/' className={'hide-on-mobile'}>
@@ -262,13 +266,16 @@ const Header = () => {
               style={{
                 fontSize: '18px',
                 fontWeight: '500',
-                color: '#333',
+                color: 'var(--pw-ink, #333)',
               }}
             >
               {systemName}
             </div>
           </Menu.Item>
-          {renderButtons(false)}
+          <Menu.Item as={Link} to='/about' style={{ fontSize: '15px' }}>
+            <Icon name='info circle' style={{ marginRight: '4px' }} />
+            {t('header.about')}
+          </Menu.Item>
           <Menu.Menu position='right'>
             <Menu.Item>
               <ThemeToggle />
@@ -326,7 +333,7 @@ const Header = () => {
               />
             )}
           </Menu.Menu>
-        </Container>
+        </div>
       </Menu>
     </>
   );

@@ -10,10 +10,11 @@ import {
 import './ThemeToggle.css';
 
 // Sun / moon switch. Clicking cycles light -> dark -> system.
+// Dark is the default, so the cycle starts there and ends back on it.
 const NEXT_MODE = {
-  light: 'dark',
-  dark: 'system',
-  system: 'light',
+  dark: 'light',
+  light: 'system',
+  system: 'dark',
 };
 
 const LABEL = {
@@ -26,10 +27,8 @@ const ICON = {
   light: 'sun',
   dark: 'moon',
   // "circle half" does not exist in the Semantic icon font and rendered as
-  // an empty blue box. "adjust" renders, but reads as a control rather than
-  // a theme, so the system mode uses the sun icon and relies on the
-  // tooltip to say it follows the OS.
-  system: 'sun',
+  // an empty blue box. "adjust" does exist and reads as "auto".
+  system: 'adjust',
 };
 
 const ThemeToggle = () => {
@@ -40,7 +39,7 @@ const ThemeToggle = () => {
   }, []);
 
   const cycle = () => {
-    const next = NEXT_MODE[getThemeMode()] || 'light';
+    const next = NEXT_MODE[getThemeMode()] || 'dark';
     setThemeMode(next);
     setMode(next);
   };

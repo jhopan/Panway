@@ -39,12 +39,15 @@ const Footer = () => {
         ) : (
           <div className='custom-footer'>
             <a href='https://github.com/jhopan/Panway' target='_blank'>
-              {systemName} {process.env.REACT_APP_VERSION}{' '}
+              {systemName} {process.env.REACT_APP_VERSION}
             </a>
-            {t('footer.built_by')}{' '}
-            <a href='https://github.com/jhopan' target='_blank'>
+            {t('footer.based_on')}{' '}
+            <a href='https://github.com/songquanpeng/one-api' target='_blank'>
               {t('footer.built_by_name')}
-            </a>{' '}
+            </a>
+            {' '}
+            {t('footer.by')}{' '}
+            <a href='https://github.com/jhopan' target='_blank'>jhopan</a>
             {t('footer.license')}{' '}
             <a href='https://opensource.org/licenses/mit-license.php'>
               {t('footer.mit')}

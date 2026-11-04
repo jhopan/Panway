@@ -31,7 +31,7 @@ const Home = lazy(() => import('./pages/Home'));
 const Landing = lazy(() => import('./pages/Landing'));
 const Models = lazy(() => import('./pages/Catalogue/Models'));
 const Pricing = lazy(() => import('./pages/Catalogue/Pricing'));
-const About = lazy(() => import('./pages/About'));
+const About = lazy(() => import('./pages/About/About'));
 
 function App() {
   const [userState, userDispatch] = useContext(UserContext);

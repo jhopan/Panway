@@ -10,9 +10,9 @@ import { ToastContainer } from 'react-toastify';
 // The landing page renders its own marketing chrome.
 const BARE_ROUTES = ['/'];
 
-// Models and pricing are public catalogue pages. They bring their own
-// top bar and footer, so they must not get the console sidebar either.
-const SHELL_ROUTES = ['/models', '/pricing'];
+// Models, pricing and about are public pages. They bring their own top
+// bar and footer, so they must not get the console sidebar either.
+const SHELL_ROUTES = ['/models', '/pricing', '/about'];
 
 // Auth screens keep the simple top bar: a sidebar there would be noise
 // because there is nothing to navigate to yet.

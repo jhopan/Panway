@@ -4,12 +4,35 @@
     <meta charset="utf-8" />
     <link rel="icon" href="logo-panway.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#0f1012" />
     <meta
       name="description"
       content="Panway — AI API gateway untuk menjual token AI. Lapisan commercial di depan PanRouter, pembayaran via PanWallet."
     />
     <title>Panway</title>
+    <script>
+      // Resolve the theme before the first paint, otherwise the page flashes
+      // the wrong background. Dark is the default.
+      ;(function () {
+        var mode = 'dark';
+        try {
+          mode = localStorage.getItem('panway_theme') || 'dark';
+        } catch (e) {}
+        if (mode !== 'light' && mode !== 'dark' && mode !== 'system') {
+          mode = 'dark';
+        }
+        var resolved = mode;
+        if (mode === 'system') {
+          resolved =
+            window.matchMedia &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+        }
+        document.documentElement.classList.add(resolved);
+        document.documentElement.style.colorScheme = resolved;
+      })();
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

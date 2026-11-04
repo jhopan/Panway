@@ -11,6 +11,10 @@ export const THEME_STORAGE_KEY = 'panway_theme';
 
 export const THEME_MODES = ['light', 'dark', 'system'];
 
+// Dark is the default look of Panway. "system" is still available in the
+// toggle for people who want to follow the OS.
+export const DEFAULT_THEME_MODE = 'dark';
+
 const listeners = new Set();
 
 export function resolveTheme(mode) {
@@ -29,10 +33,10 @@ export function resolveTheme(mode) {
 
 export function getThemeMode() {
   if (typeof localStorage === 'undefined') {
-    return 'system';
+    return DEFAULT_THEME_MODE;
   }
   const stored = localStorage.getItem(THEME_STORAGE_KEY);
-  return THEME_MODES.includes(stored) ? stored : 'system';
+  return THEME_MODES.includes(stored) ? stored : DEFAULT_THEME_MODE;
 }
 
 export function getResolvedTheme() {
@@ -52,7 +56,7 @@ export function applyTheme(mode) {
 }
 
 export function setThemeMode(mode) {
-  const next = THEME_MODES.includes(mode) ? mode : 'system';
+  const next = THEME_MODES.includes(mode) ? mode : DEFAULT_THEME_MODE;
   if (typeof localStorage !== 'undefined') {
     localStorage.setItem(THEME_STORAGE_KEY, next);
   }

@@ -772,7 +772,9 @@
   },
   "footer": {
     "built_by": "built by",
-    "built_by_name": "JustSong",
+    "built_by_name": "One API",
+    "based_on": "is a fork of",
+    "by": "by",
     "license": ", source code is licensed under the",
     "mit": "MIT License"
   },
@@ -848,10 +850,26 @@
     }
   },
   "about": {
-    "title": "About",
-    "description": "Panway is an open-source API management and proxy platform.",
-    "repository": "Repository: ",
-    "loading_failed": "Loading failed"
+    "eyebrow": "About Panway",
+    "title": "One gateway for every AI model",
+    "description": "Panway is an AI API gateway you can resell. It fronts a pool of providers behind one OpenAI-compatible endpoint, issues API keys, meters every token, and takes payment in rupiah.",
+    "what_title": "What it is",
+    "what_body": "A commercial layer in front of the model pool. Customers get one API key, one balance, and one bill, no matter which provider serves the request.",
+    "how_title": "How it works",
+    "how_body": "Requests are routed to whichever provider and account is available, with per-key limits on requests per minute, tokens per minute, and concurrent calls.",
+    "pay_title": "How you pay",
+    "pay_body": "Top up through PanWallet using rupiah or QRIS. Every request is charged on the tokens it actually used, and the log shows the cost right away.",
+    "credits": "Project",
+    "upstream_title": "Built on",
+    "upstream_body": "Panway is a fork of One API, used under the MIT license. The original copyright notice is kept as the license requires.",
+    "loading_failed": "The about page could not be loaded.",
+    "panel_title": "What you get",
+    "panel_host": "your-panway-domain",
+    "panel": {
+      "one_key": "One API key for every model",
+      "one_balance": "One rupiah balance",
+      "one_bill": "One bill, metered per token"
+    }
   },
   "messages": {
     "success": {

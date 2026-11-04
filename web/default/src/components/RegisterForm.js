@@ -245,13 +245,13 @@ const RegisterForm = () => {
                 style={{
                   textAlign: 'center',
                   fontSize: '0.9em',
-                  color: '#666',
+                  color: 'var(--pw-muted, #666)',
                 }}
               >
                 {t('auth.register.has_account')}
                 <Link
                   to='/login'
-                  style={{ color: '#2185d0', marginLeft: '2px' }}
+                  style={{ color: 'var(--pw-accent, #2185d0)', marginLeft: '2px' }}
                 >
                   {t('auth.register.login')}
                 </Link>

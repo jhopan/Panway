@@ -59,6 +59,14 @@
   border-color: var(--pw-line-strong, #ccd4e3);
 }
 
+html.dark .landing-btn-ghost {
+  border-color: #3a3e47;
+}
+
+html.dark .landing-btn-ghost:hover {
+  border-color: #545a66;
+}
+
 .landing-btn-ghost:hover {
   border-color: var(--pw-muted, #626b7c);
   transform: translateY(-1px);
@@ -306,6 +314,11 @@ html.dark .landing-hub-node {
   padding: 4px 12px;
   border-radius: 999px;
   border: 1px solid var(--pw-line, #e5e8ef);
+}
+
+html.dark .landing-hub-caption {
+  color: #b6bcc7;
+  border-color: #2c2e35;
 }
 
 .landing-hero-strip {

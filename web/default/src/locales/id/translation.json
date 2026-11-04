@@ -62,7 +62,9 @@
   },
   "footer": {
     "built_by": "dibangun oleh",
-    "built_by_name": "JustSong",
+    "built_by_name": "One API",
+    "based_on": "adalah fork dari",
+    "by": "oleh",
     "license": ", kode sumber berlisensi di bawah",
     "mit": "Lisensi MIT"
   },
@@ -138,10 +140,26 @@
     }
   },
   "about": {
-    "title": "Tentang",
-    "description": "Panway adalah platform open-source untuk manajemen dan proxy API.",
-    "repository": "Repositori: ",
-    "loading_failed": "Gagal memuat"
+    "eyebrow": "Tentang Panway",
+    "title": "Satu gateway untuk semua model AI",
+    "description": "Panway adalah AI API gateway yang bisa dijual ulang. Panway menaruh kumpulan penyedia di balik satu endpoint yang kompatibel dengan OpenAI, menerbitkan API key, menghitung tiap token, dan menerima pembayaran dalam rupiah.",
+    "what_title": "Apa itu Panway",
+    "what_body": "Lapisan komersial di depan kumpulan model. Pelanggan mendapat satu API key, satu saldo, dan satu tagihan, terlepas dari penyedia mana yang melayani request.",
+    "how_title": "Cara kerjanya",
+    "how_body": "Request dirouting ke penyedia dan akun yang tersedia, dengan batas per key untuk request per menit, token per menit, dan jumlah request paralel.",
+    "pay_title": "Cara bayar",
+    "pay_body": "Isi saldo lewat PanWallet memakai rupiah atau QRIS. Setiap request ditagih atas token yang benar-benar dipakai, dan log langsung menunjukkan biayanya.",
+    "credits": "Proyek",
+    "upstream_title": "Dibangun dari",
+    "upstream_body": "Panway adalah fork dari One API, dipakai di bawah lisensi MIT. Pemberitahuan hak cipta asli tetap dipertahankan sesuai ketentuan lisensi.",
+    "loading_failed": "Halaman tentang gagal dimuat.",
+    "panel_title": "Yang kamu dapat",
+    "panel_host": "domain-panway-kamu",
+    "panel": {
+      "one_key": "Satu API key untuk semua model",
+      "one_balance": "Satu saldo rupiah",
+      "one_bill": "Satu tagihan, dihitung per token"
+    }
   },
   "messages": {
     "success": {
