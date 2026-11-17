@@ -55,8 +55,8 @@
   },
   "common": {
     "quota": {
-      "display": "Setara: Rp{{amount}}",
-      "display_short": "Rp{{amount}}",
+      "display": "Setara: Rp {{amount}}",
+      "display_short": "Rp {{amount}}",
       "unit": "Rp"
     }
   },

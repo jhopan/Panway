@@ -262,8 +262,8 @@
   },
   "common": {
     "quota": {
-      "display": "Equivalent: Rp{{amount}}",
-      "display_short": "Rp{{amount}}",
+      "display": "Equivalent: Rp {{amount}}",
+      "display_short": "Rp {{amount}}",
       "unit": "Rp"
     }
   },

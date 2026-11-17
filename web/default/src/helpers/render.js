@@ -57,8 +57,11 @@ export function renderQuota(quota, t, precision = 2) {
   );
 
   if (displayInCurrency) {
-    const amount = (quota / quotaPerUnit).toFixed(precision);
-    return t('common.quota.display_short', { amount });
+    const amount = quota / quotaPerUnit;
+    const formatted = Number(amount).toLocaleString('id-ID', {
+      maximumFractionDigits: precision,
+    });
+    return t('common.quota.display_short', { amount: formatted });
   }
 
   return renderNumber(quota);
