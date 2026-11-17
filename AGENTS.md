@@ -99,6 +99,23 @@ go run . connect --key sk-... --base-url http://127.0.0.1:3110/v1 --client all
 Data lokal: SQLite di `data/panway.db` (`SQLITE_PATH`). Jangan dihapus.
 Admin default: `root` / `123456` — **ganti sebelum produksi**.
 
+**Menjalankan server jangka panjang:** `go run` yang dijalankan dari shell
+sesi agent akan ikut mati saat sesi berakhir, dan service detached yang
+me-restart `go run` bisa gagal dengan exit `127` karena `PATH` berbeda.
+`panway.exe` hasil `go build` juga tidak bisa dieksekusi di environment ini
+("Exec format error" / "Access is denied"). Untuk server yang tidak ikut
+mati, jalankan proses Windows terpisah dengan log dialihkan:
+
+```powershell
+Start-Process -FilePath 'C:\Program Files\Go\bin\go.exe' `
+  -ArgumentList 'run','.','--log-dir','logs' `
+  -WorkingDirectory 'C:\Users\ACER\Documents\Project\panway' `
+  -RedirectStandardOutput 'logs\server-out.log' `
+  -RedirectStandardError  'logs\server-err.log' -WindowStyle Hidden
+```
+
+Di produksi pakai binary hasil build + systemd/Docker, bukan `go run`.
+
 ## 4. Environment
 
 Semua default ada di `common/config/config.go`. `.env` tidak di-commit;
