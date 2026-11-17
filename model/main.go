@@ -64,6 +64,22 @@ func CreateRootAccountIfNeed() error {
 	return nil
 }
 
+// WarnIfDefaultRootPassword logs an error when the root account still uses
+// the password that was created with the first schema.
+//
+// The root account can read every customer's balance, keys and logs, so the
+// default password turns a fresh installation into an open door. The check is
+// a warning, not a hard failure, so an existing installation keeps starting.
+func WarnIfDefaultRootPassword() {
+	var user User
+	if err := DB.Where("role = ?", RoleRootUser).First(&user).Error; err != nil {
+		return
+	}
+	if common.ValidatePasswordAndHash("123456", user.Password) {
+		logger.SysError("the root account still uses the default password 123456; change it before selling access")
+	}
+}
+
 func chooseDB(envName string) (*gorm.DB, error) {
 	dsn := os.Getenv(envName)
 
@@ -102,7 +118,8 @@ func openMySQL(dsn string) (*gorm.DB, error) {
 func openSQLite() (*gorm.DB, error) {
 	logger.SysLog("SQL_DSN not set, using SQLite as database")
 	common.UsingSQLite = true
-	dsn := fmt.Sprintf("%s?_busy_timeout=%d", common.SQLitePath, common.SQLiteBusyTimeout)
+	dsn := fmt.Sprintf("%s?_busy_timeout=%d&_journal_mode=WAL&_synchronous=NORMAL&_foreign_keys=on",
+		common.SQLitePath, common.SQLiteBusyTimeout)
 	return gorm.Open(sqlite.Open(dsn), &gorm.Config{
 		PrepareStmt: true, // precompile SQL
 	})
@@ -163,6 +180,19 @@ func migrateDB() error {
 	if err = DB.AutoMigrate(&WalletLink{}); err != nil {
 		return err
 	}
+	if DB.Migrator().HasTable("plans") &&
+		DB.Migrator().HasColumn("plans", "price_id_r") &&
+		!DB.Migrator().HasColumn("plans", "price_idr") {
+		if err = DB.Migrator().RenameColumn("plans", "price_id_r", "price_idr"); err != nil {
+			return err
+		}
+	}
+	if err = DB.AutoMigrate(&Plan{}); err != nil {
+		return err
+	}
+	if err = DB.AutoMigrate(&PriceHistory{}); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -214,8 +244,28 @@ func setDBConns(db *gorm.DB) *sql.DB {
 		return nil
 	}
 
-	sqlDB.SetMaxIdleConns(env.Int("SQL_MAX_IDLE_CONNS", 100))
-	sqlDB.SetMaxOpenConns(env.Int("SQL_MAX_OPEN_CONNS", 1000))
+	maxIdle := env.Int("SQL_MAX_IDLE_CONNS", 0)
+	maxOpen := env.Int("SQL_MAX_OPEN_CONNS", 0)
+	if common.UsingSQLite {
+		// SQLite has one writer. A large pool turns concurrent writers into
+		// SQLITE_BUSY storms instead of making them faster; WAL still lets
+		// readers run in parallel. Raise the env values only after measuring.
+		if maxIdle <= 0 {
+			maxIdle = 1
+		}
+		if maxOpen <= 0 {
+			maxOpen = 1
+		}
+	} else {
+		if maxIdle <= 0 {
+			maxIdle = 100
+		}
+		if maxOpen <= 0 {
+			maxOpen = 1000
+		}
+	}
+	sqlDB.SetMaxIdleConns(maxIdle)
+	sqlDB.SetMaxOpenConns(maxOpen)
 	sqlDB.SetConnMaxLifetime(time.Second * time.Duration(env.Int("SQL_MAX_LIFETIME", 60)))
 	return sqlDB
 }

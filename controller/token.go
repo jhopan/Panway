@@ -30,6 +30,9 @@ func GetAllTokens(c *gin.Context) {
 		})
 		return
 	}
+	for _, token := range tokens {
+		token.Key = token.DecryptedKey()
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",
@@ -48,6 +51,9 @@ func SearchTokens(c *gin.Context) {
 			"message": err.Error(),
 		})
 		return
+	}
+	for _, token := range tokens {
+		token.Key = token.DecryptedKey()
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
@@ -75,6 +81,7 @@ func GetToken(c *gin.Context) {
 		})
 		return
 	}
+	token.Key = token.DecryptedKey()
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",
@@ -139,19 +146,20 @@ func AddToken(c *gin.Context) {
 		return
 	}
 
+	plainKey := random.GenerateKey()
 	cleanToken := model.Token{
-		UserId:          c.GetInt(ctxkey.Id),
-		Name:            token.Name,
-		Key:             random.GenerateKey(),
-		CreatedTime:     helper.GetTimestamp(),
-		AccessedTime:    helper.GetTimestamp(),
-		ExpiredTime:     token.ExpiredTime,
-		RemainQuota:     token.RemainQuota,
-		UnlimitedQuota:  token.UnlimitedQuota,
-		Models:          token.Models,
-		Subnet:          token.Subnet,
-		RateLimitRPM:    token.RateLimitRPM,
-		RateLimitTPM:    token.RateLimitTPM,
+		UserId:           c.GetInt(ctxkey.Id),
+		Name:             token.Name,
+		Key:              plainKey,
+		CreatedTime:      helper.GetTimestamp(),
+		AccessedTime:     helper.GetTimestamp(),
+		ExpiredTime:      token.ExpiredTime,
+		RemainQuota:      token.RemainQuota,
+		UnlimitedQuota:   token.UnlimitedQuota,
+		Models:           token.Models,
+		Subnet:           token.Subnet,
+		RateLimitRPM:     token.RateLimitRPM,
+		RateLimitTPM:     token.RateLimitTPM,
 		ConcurrencyLimit: token.ConcurrencyLimit,
 	}
 	err = cleanToken.Insert()
@@ -162,6 +170,9 @@ func AddToken(c *gin.Context) {
 		})
 		return
 	}
+	// The database keeps the encrypted form; the creator sees the plaintext
+	// once, exactly like other API key dashboards.
+	cleanToken.Key = plainKey
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",
@@ -254,6 +265,7 @@ func UpdateToken(c *gin.Context) {
 		})
 		return
 	}
+	cleanToken.Key = cleanToken.DecryptedKey()
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",

@@ -49,6 +49,96 @@ var TelegramApiBaseURL = env.String("TELEGRAM_API_BASE_URL", "")
 
 var SessionSecret = uuid.New().String()
 
+// --- Production safety ---
+//
+// These settings exist so the gateway can be sold and run without relying on
+// framework defaults that are convenient in development and unsafe in
+// production.
+
+// SessionCookieSecure marks the session cookie Secure, so browsers only send
+// it over HTTPS. Turn it on once the console is served through TLS.
+var SessionCookieSecure = env.Bool("SESSION_COOKIE_SECURE", false)
+
+// TrustedProxies lists the reverse proxies whose X-Forwarded-For header is
+// believed. Empty means no proxy is trusted and the client IP is taken from
+// the TCP connection, which stops a caller from choosing its own rate limit
+// bucket by spoofing the header. Set it to the proxy address (for example
+// "127.0.0.1" for a local nginx) when Panway runs behind one.
+var TrustedProxies = SplitList(env.String("TRUSTED_PROXIES", ""))
+
+// CorsAllowedOrigins lists the browser origins allowed to call /v1 and
+// /dashboard with credentials. Empty means same-origin only: no
+// Access-Control-Allow-Origin header is sent. The upstream default allowed
+// every origin together with credentials, which lets any website read a
+// logged-in administrator's console data.
+var CorsAllowedOrigins = SplitList(env.String("CORS_ALLOWED_ORIGINS", ""))
+
+// MaxRequestBodyBytes caps one request body, including a gzip-decoded one.
+// 0 disables the cap.
+var MaxRequestBodyBytes = int64(env.Int("MAX_REQUEST_BODY_MB", 32)) * 1024 * 1024
+
+// PricingCacheSeconds is how long the public /api/pricing answer is cached in
+// process. Editing a price invalidates it immediately; the TTL only bounds
+// how long a channel/ratio change made elsewhere stays invisible.
+var PricingCacheSeconds = env.Int("PRICING_CACHE_SECONDS", 30)
+
+// EstimatedUsageMode decides how usage the upstream flagged as estimated is
+// billed. "local" (default) rebuilds the numbers from Panway's own tokenizers
+// plus the hidden prompt overhead learned from exact usage; "upstream" bills
+// the upstream estimate as it arrived, which matches the upstream meter but
+// can be several times the real prompt size.
+var EstimatedUsageMode = env.String("ESTIMATED_USAGE_MODE", "local")
+
+// --- SQLite operations ---
+// SQLITE_BACKUP_ENABLED turns on the scheduled VACUUM INTO snapshot. Keep it
+// off only when an external backup tool already copies the database.
+var SQLiteBackupEnabled = env.Bool("SQLITE_BACKUP_ENABLED", false)
+var SQLiteBackupDir = env.String("SQLITE_BACKUP_DIR", "data/backups")
+var SQLiteBackupIntervalHours = env.Int("SQLITE_BACKUP_INTERVAL_HOURS", 24)
+var SQLiteBackupKeep = env.Int("SQLITE_BACKUP_KEEP", 7)
+
+// LogRetentionDays deletes operation logs older than this many days. 0 keeps
+// logs forever.
+var LogRetentionDays = env.Int("LOG_RETENTION_DAYS", 0)
+
+// LowBalanceThreshold enables a Telegram reminder when a verified customer's
+// quota drops below this number of quota units. 0 disables it.
+var LowBalanceThreshold = int64(env.Int("LOW_BALANCE_THRESHOLD", 0))
+var LowBalanceNotifyIntervalHours = env.Int("LOW_BALANCE_NOTIFY_INTERVAL_HOURS", 24)
+
+// MetricsEnabled exposes process counters at /metrics. METRICS_TOKEN adds a
+// bearer check for deployments where the port is not scrape-only.
+var MetricsEnabled = env.Bool("ENABLE_METRICS", false)
+var MetricsToken = env.String("METRICS_TOKEN", "")
+
+// Token keys are stored encrypted, with a keyed hash for lookup. The key comes
+// from TOKEN_ENCRYPTION_KEY when set; otherwise a 32-byte key file is created
+// once at TOKEN_KEY_FILE (default data/token.key). Losing that value makes
+// stored keys unreadable, so back it up with the database.
+var TokenEncryptionKey = env.String("TOKEN_ENCRYPTION_KEY", "")
+var TokenKeyFile = env.String("TOKEN_KEY_FILE", "data/token.key")
+
+// HstsMaxAge enables Strict-Transport-Security when greater than zero. Keep it
+// disabled until the console is permanently served over HTTPS.
+var HstsMaxAge = env.Int("HSTS_MAX_AGE", 0)
+var HstsIncludeSubdomains = env.Bool("HSTS_INCLUDE_SUBDOMAINS", false)
+
+// SplitList splits a comma-separated env value, dropping empty entries.
+func SplitList(value string) []string {
+	if strings.TrimSpace(value) == "" {
+		return nil
+	}
+	parts := strings.Split(value, ",")
+	items := make([]string, 0, len(parts))
+	for _, part := range parts {
+		part = strings.TrimSpace(part)
+		if part != "" {
+			items = append(items, part)
+		}
+	}
+	return items
+}
+
 var OptionMap map[string]string
 var OptionMapRWMutex sync.RWMutex
 
@@ -121,7 +211,7 @@ var AutomaticEnableChannelEnabled = false
 var QuotaRemindThreshold int64 = 1000
 var PreConsumedQuota int64 = 500
 var ApproximateTokenEnabled = false
-var RetryTimes = 0
+var RetryTimes = env.Int("RETRY_TIMES", 0)
 
 var RootUserEmail = ""
 

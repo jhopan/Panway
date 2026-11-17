@@ -44,6 +44,13 @@ func relayHelper(c *gin.Context, relayMode int) *model.ErrorWithStatusCode {
 
 func Relay(c *gin.Context) {
 	ctx := c.Request.Context()
+	common.IncRelayRequest()
+	relaySucceeded := false
+	defer func() {
+		if !relaySucceeded {
+			common.IncRelayError()
+		}
+	}()
 	relayMode := relaymode.GetByPath(c.Request.URL.Path)
 	if config.DebugEnabled {
 		requestBody, _ := common.GetRequestBody(c)
@@ -54,6 +61,7 @@ func Relay(c *gin.Context) {
 	bizErr := relayHelper(c, relayMode)
 	if bizErr == nil {
 		monitor.Emit(channelId, true)
+		relaySucceeded = true
 		return
 	}
 	lastFailedChannelId := channelId
@@ -95,6 +103,7 @@ func Relay(c *gin.Context) {
 		c.Request.Body = io.NopCloser(bytes.NewBuffer(requestBody))
 		bizErr = relayHelper(c, relayMode)
 		if bizErr == nil {
+			relaySucceeded = true
 			return
 		}
 		channelId := c.GetInt(ctxkey.ChannelId)

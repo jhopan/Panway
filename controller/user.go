@@ -61,6 +61,23 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
+	if user.TotpEnabled {
+		session := sessions.Default(c)
+		session.Set(pending2FAKey, user.Id)
+		if err := session.Save(); err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Failed to save session information, please try again",
+				"success": false,
+			})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Enter your 2FA code",
+			"success": false,
+			"data":    gin.H{"require_2fa": true},
+		})
+		return
+	}
 	SetupLogin(&user, c)
 }
 

@@ -13,6 +13,7 @@ cmd.md
 .env
 /one-api
 temp
+demo-site
 .DS_Store
 
 # upstream reference docs

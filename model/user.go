@@ -47,13 +47,21 @@ type User struct {
 	AccessToken      string `json:"access_token" gorm:"type:char(32);column:access_token;uniqueIndex"` // this token is for system management
 	Quota            int64  `json:"quota" gorm:"bigint;default:0"`
 	UsedQuota        int64  `json:"used_quota" gorm:"bigint;default:0;column:used_quota"` // used quota
-	RequestCount     int    `json:"request_count" gorm:"type:int;default:0;"`             // request number
-	Group            string `json:"group" gorm:"type:varchar(32);default:'default'"`
-	AffCode          string `json:"aff_code" gorm:"type:varchar(32);column:aff_code;uniqueIndex"`
-	InviterId        int    `json:"inviter_id" gorm:"type:int;column:inviter_id;index"`
+	// Subscription plan. PlanId is 0 when the user has no active plan;
+	// PlanExpiresAt is a Unix timestamp and is checked when the plan is read.
+	PlanId        int    `json:"plan_id" gorm:"default:0"`
+	PlanExpiresAt int64  `json:"plan_expires_at" gorm:"bigint;default:0"`
+	RequestCount  int    `json:"request_count" gorm:"type:int;default:0;"` // request number
+	Group         string `json:"group" gorm:"type:varchar(32);default:'default'"`
+	AffCode       string `json:"aff_code" gorm:"type:varchar(32);column:aff_code;uniqueIndex"`
+	InviterId     int    `json:"inviter_id" gorm:"type:int;column:inviter_id;index"`
 	// Telegram verification: the chat the customer proved to own.
 	TelegramChatId   string `json:"telegram_chat_id" gorm:"type:char(64);index"`
 	TelegramVerified bool   `json:"telegram_verified" gorm:"default:false"`
+	// TOTP two-factor authentication. The secret is never returned to the
+	// client once enabled.
+	TotpSecret  string `json:"-" gorm:"type:text;default:''"`
+	TotpEnabled bool   `json:"totp_enabled" gorm:"default:false"`
 }
 
 func GetMaxUserId() int {

@@ -94,6 +94,11 @@ func UpdateOption(c *gin.Context) {
 		})
 		return
 	}
+	switch option.Key {
+	case "ModelRatio", "CompletionRatio", "GroupRatio":
+		// The public price list is derived from these maps.
+		invalidatePricingCache()
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",

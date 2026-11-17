@@ -88,6 +88,14 @@ Buka `http://127.0.0.1:3110`.
 - Argumen untuk program native (go, git, node) **tidak** diterjemahkan MSYS.
   Pakai `C:/Users/...`; `cd /c/Users/...` untuk perintah bash.
 
+CLI setup klien (tanpa menyalakan server):
+
+```bash
+go run . connect --key sk-... --base-url http://127.0.0.1:3110/v1 --client all
+# klien: all|env|curl|python|node|cursor|continue|aider
+# --env-file my.env menulis export OPENAI_BASE_URL/OPENAI_API_KEY
+```
+
 Data lokal: SQLite di `data/panway.db` (`SQLITE_PATH`). Jangan dihapus.
 Admin default: `root` / `123456` — **ganti sebelum produksi**.
 
@@ -109,6 +117,23 @@ Semua default ada di `common/config/config.go`. `.env` tidak di-commit;
 | `TELEGRAM_BOT_TOKEN` | token bot dari @BotFather |
 | `TELEGRAM_BOT_USERNAME` | username bot tanpa "@" |
 | `TELEGRAM_API_BASE_URL` | default `api.telegram.org` |
+| `CORS_ALLOWED_ORIGINS` | origin browser yang boleh memanggil API (koma); kosong = same-origin |
+| `TRUSTED_PROXIES` | alamat reverse proxy yang dipercaya (koma); kosong = tidak ada |
+| `MAX_REQUEST_BODY_MB` | batas body request, termasuk hasil dekompresi gzip (default 32) |
+| `SESSION_COOKIE_SECURE` | cookie sesi hanya lewat HTTPS |
+| `HSTS_MAX_AGE` / `HSTS_INCLUDE_SUBDOMAINS` | HSTS; `0` = mati |
+| `PRICING_CACHE_SECONDS` | TTL cache `/api/pricing` (default 30; `0` = mati) |
+| `ESTIMATED_USAGE_MODE` | `local` (default) menormalkan usage estimated; `upstream` menagih angka upstream |
+| `SQLITE_BUSY_TIMEOUT` | timeout lock SQLite (ms) |
+| `SQL_MAX_OPEN_CONNS` / `SQL_MAX_IDLE_CONNS` | pool DB; default SQLite 1 |
+| `SQLITE_BACKUP_ENABLED` / `SQLITE_BACKUP_DIR` | backup `VACUUM INTO` otomatis |
+| `SQLITE_BACKUP_INTERVAL_HOURS` / `SQLITE_BACKUP_KEEP` | jadwal + jumlah snapshot |
+| `LOG_RETENTION_DAYS` | hapus log lebih tua dari N hari; `0` = selamanya |
+| `RETRY_TIMES` | retry ke channel lain saat upstream gagal |
+| `RELAY_TIMEOUT` | timeout upstream (detik); `0` = tanpa batas |
+| `TOKEN_ENCRYPTION_KEY` / `TOKEN_KEY_FILE` | kunci enkripsi API key; kosong = file kunci otomatis |
+| `LOW_BALANCE_THRESHOLD` / `LOW_BALANCE_NOTIFY_INTERVAL_HOURS` | reminder Telegram saldo rendah |
+| `ENABLE_METRICS` / `METRICS_TOKEN` | endpoint `/metrics` Prometheus |
 
 ## 5. Aturan kode
 
@@ -164,6 +189,50 @@ Dua hal yang mudah salah:
 2. **Error rate limit tidak boleh di-retry ke channel lain.** Kalau di-retry,
    pesan Panway tertimpa pesan upstream. `controller/relay.go` mengecualikan
    `token_rate_limit_exceeded` dari `shouldRetry`.
+
+## 6b. Tagihan stream & saldo token
+
+Dua aturan yang menjaga tagihan tetap benar saat dijual. Jangan diubah tanpa
+menguji ulang lewat `relay/adaptor/openai` dan `model/token.go`.
+
+**1. Usage `estimated` dari upstream tidak ditagih apa adanya.** PanRouter
+(sama seperti provider lain) tidak bisa mengukur token saat streaming dan
+mengirim `"estimated": true` dengan prompt yang digelembungkan (uji 2026-11:
+prompt kecil dilaporkan 2500, padahal non-stream 501). `StreamHandler` di
+`relay/adaptor/openai/main.go` memilih usage exact bila ada (sebagian
+upstream mengirim estimasi dulu lalu angka asli), dan
+`NormalizeEstimatedUsage` di `relay/adaptor/openai/helper.go` mengganti usage
+yang masih `estimated` dengan hitungan lokal: prompt dari request +
+overhead prompt upstream yang sudah dipelajari, completion dari teks hasil
+stream. Chunk usage yang dikirim ke pelanggan ikut ditulis ulang, jadi angka
+yang dilihat pelanggan sama dengan yang ditagih. Usage exact dibiarkan apa
+adanya.
+
+Overhead prompt (selisih prompt upstream exact vs hitungan lokal, mis. 499−10)
+dipelajari dari setiap usage exact (non-stream atau stream yang mengirim angka
+asli) dan disimpan di memori per nama model. Konsekuensi: **stream pertama
+untuk sebuah model setelah restart** belum punya overhead, jadi ditagih
+dengan hitungan lokal saja (lebih murah, bukan lebih mahal); stream berikutnya
+setelah ada usage exact sudah setara non-stream. `ESTIMATED_USAGE_MODE=upstream`
+mematikan normalisasi dan menagih estimasi upstream apa adanya kalau operator
+ingin menyamakan dengan meter upstream.
+
+**2. Saldo token tidak pernah minus.** `preConsumeQuota`
+(`relay/controller/helper.go`) selalu memanggang kuota token, termasuk saat
+user dianggap "trusted" (saldo besar). `model.PreConsumeTokenQuota` memakai
+satu `UPDATE ... WHERE remain_quota >= ?` (`reserveTokenQuota`) supaya dua
+request paralel tidak bisa memakai kuota yang sama, dan `PostConsumeTokenQuota`
+menagih paling banyak sisa saldo (`consumeRemainingTokenQuota`). Kalau
+pre-consume gagal, cache kuota user dikembalikan dari DB.
+
+Konsekuensi yang perlu diketahui:
+
+- Setiap request relay menulis kuota token + user di DB (pre-consume dan
+  post-consume). `BatchUpdateEnabled` tidak berlaku untuk mutasi saldo token,
+  karena pengecekan dan pemotongan saldo harus atomik.
+- Estimasi biaya pre-consume memakai `PreConsumedQuota + prompt lokal +
+  max_tokens`; kalau biaya asli lebih besar, sisa saldo ditagih sampai 0 dan
+  request berikutnya ditolak (`Insufficient token quota`).
 
 ## 7. Verifikasi Telegram
 
@@ -267,6 +336,9 @@ string literal 0.)
 ## 12. Git
 
 - Branch `master`, satu fitur satu commit, commit langsung ke `master`.
+- **Setiap perubahan wajib di-commit dan di-push ke `origin/master` setelah
+  verifikasi.** Jangan tinggalkan pekerjaan di working tree. Jika push gagal
+  karena kredensial, laporkan dan jangan menimpa commit orang lain.
 - Format: `feat:`, `fix:`, `docs:`, `ci:`, `refactor:`. Subjek ≤ 70 karakter,
   tanpa titik di akhir. Body menjelaskan **kenapa**.
 - `commitlint` di CI **advisory** (tidak menggagalkan build).
@@ -282,20 +354,48 @@ Tiga jenis chrome, dipilih di `components/Chrome.js`:
 | Route | Chrome |
 |---|---|
 | `/` | Landing sendiri, tanpa Header global |
-| `/about` | Halaman marketing, tanpa sidebar |
+| `/models`, `/pricing` | Halaman marketing publik, tanpa sidebar (untuk pengunjung) |
 | `/login`, `/register`, `/reset`, `/oauth/*` | Header lama, tanpa sidebar |
+| `/connect` | Console: sidebar kiri + konten (wajib login) |
+| `/console/models`, `/console/pricing` | Sidebar kiri + konten (wajib login) |
 | sisanya (console) | Sidebar kiri + konten |
 
 **Landing** (`pages/Landing/`):
 - Menarik katalog & harga dari `GET /api/pricing` (publik, tanpa login).
 - Hardcode nama model/price di frontend **dilarang** - harga harus dari API
   supaya panel admin tetap sumber kebenaran.
+- Landing punya seksi janji layanan (`landing.promises.*`): integritas
+  model, privasi prompt, tagihan yang bisa diaudit, dukungan. Jangan taruh
+  setup koneksi di landing; itu tugas halaman console `/connect`.
+- Header marketing selalu menautkan Models/Pricing ke halaman publik,
+  termasuk saat pengguna sudah login. Hanya tombol Console yang masuk
+  dashboard. Chip saldo (`landing.header.balance`) tetap ditampilkan untuk
+  pengguna yang login.
+- Dashboard console (`pages/Dashboard/`) dibuka dengan empat kartu cepat
+  (`dashboard.quick.*`): saldo, jumlah API key, plan aktif, dan base URL
+  connect — meniru struktur dashboard penyedia token, memakai data Panway.
+- Halaman `/connect` (console, `pages/Connect/`) berisi langkah setup, snippet
+  env/curl/Python/Node/CLI dengan tombol salin, daftar klien
+  OpenAI-compatible, dan catatan keamanan. Halaman ini tidak memakai
+  `MarketingShell`; akses lewat sidebar grup Situs atau kartu Connect di
+  dashboard. Semua teks ditulis sendiri; jangan menyalin teks atau aset situs
+  lain.
 - i18n key di namespace `landing`, path `landing.how.steps.*` (bukan
   `landing.steps.*`).
 
 **Sidebar** (`components/Sidebar.js`):
-- Menu: Dashboard, Token, Top Up, Log, Settings + grup Administrasi
-  (Channel, Redemption, User) + grup Situs (About).
+- Menu: Dashboard, Token, Top Up, Plans, Log, grup Katalog (Models, Pricing),
+  grup Administrasi (Channel, Redemption, User), grup Situs (Connect,
+  API & status, Security).
+- Semua item sidebar menunjuk ke route console, **bukan** halaman marketing:
+  Models → `/console/models`, Pricing → `/console/pricing`.
+- Halaman katalog console memakai komponen yang sama dengan halaman publik
+  lewat prop `embedded` (`pages/Catalogue/Models.js`,
+  `pages/Catalogue/Pricing.js`). Jangan duplikasi isi katalog; tambah prop
+  atau ekstrak komponen.
+- Logo sidebar menuju `/dashboard` saat sudah login, `/` saat belum.
+- Riwayat penggunaan ada di halaman Log (`/log`) — tabel `LogsTable` memuat
+  token prompt/completion, kuota, model, token name, dan detail per request.
 - Item aktif ditandai lewat `location.pathname`.
 - Di bawah 900px jadi drawer dengan tombol toggle + overlay.
 - `i18n.language` bisa berupa tag regional ("en-US"), jadi dropdown harus
@@ -355,13 +455,112 @@ Dua hal yang mudah salah:
 aktif. Peta ratio juga memuat semua model default One API, dan itu bukan
 yang bisa dilayani deployment ini.
 
+`GET /api/pricing` juga menyertakan `requests_7d` dan `avg_latency_ms` dari
+log 7 hari, dan setiap edit harga dicatat ke `price_histories`
+(`GET /api/pricing/history`, jendela 72 jam) untuk sparkline di tabel harga.
+Tabel harga menampilkan model, input/output, pengali, panggilan 7 hari,
+latensi rata-rata, dan tren harga 72 jam.
+
+## 12e. Keamanan produksi
+
+Lapisan yang dipasang di `main.go` dan `middleware/` supaya instance aman
+dijual. Semua default aman tanpa env tambahan; env hanya untuk membuka akses
+yang memang dibutuhkan deployment.
+
+| Middleware | Berkas | Perilaku |
+|---|---|---|
+| `SecurityHeaders` | `middleware/security-headers.go` | nosniff, frame DENY, referrer policy, permissions policy; HSTS hanya bila `HSTS_MAX_AGE` > 0 dan request HTTPS |
+| `NoStoreAPI` | `middleware/security-headers.go` | `/api`, `/v1`, `/dashboard` → `Cache-Control: no-store` |
+| `BodyLimit` | `middleware/body-limit.go` | 413 bila body > `MAX_REQUEST_BODY_MB`; `MaxBytesReader` juga membatasi body chunked |
+| `CORS` | `middleware/cors.go` | hanya origin di `CORS_ALLOWED_ORIGINS`; kosong = tanpa header CORS |
+| `Cache` | `middleware/cache.go` | cache 1 minggu hanya untuk aset ber-hash; SPA route `no-cache` |
+| `GzipDecodeMiddleware` | `middleware/gzip.go` | body hasil dekompresi juga dibatasi `MAX_REQUEST_BODY_MB` |
+
+Empat jebakan yang sudah diperbaiki, jangan dikembalikan:
+
+1. **CORS `AllowAllOrigins` + `AllowCredentials`.** Itu membiarkan situs mana
+   pun mengirim request ber-cookie ke console admin. Sekarang allowlist.
+2. **`Cache-Control: max-age=604800` untuk semua path non-`/`.** SPA route
+   (`/console/token`) menyajikan `index.html`; cache seminggu membuat app lama
+   tetap jalan setelah deploy. Aset ber-hash tetap boleh lama.
+3. **Gin mempercayai semua proxy.** Tanpa `SetTrustedProxies`, `ClientIP()`
+   mengikuti `X-Forwarded-For` kiriman klien, jadi rate limit global dan cek
+   subnet token bisa dilewati. Default sekarang tidak mempercayai proxy.
+4. **Tidak ada batas body dan timeout header.** Satu request raksasa atau
+   koneksi slowloris bisa menghabiskan memori/koneksi. `ReadHeaderTimeout`
+   15 detik, `IdleTimeout` 120 detik, `MaxHeaderBytes` 1 MiB; `WriteTimeout`
+   sengaja tidak diisi karena streaming.
+
+Saat start, `SESSION_SECRET` kosong dengan `GIN_MODE=release` langsung gagal;
+secret contoh atau < 32 karakter hanya jadi error log. Password root default
+`123456` juga jadi error log (`model.WarnIfDefaultRootPassword`).
+
+`/api/pricing` di-cache in-process (`PRICING_CACHE_SECONDS`, default 30 detik)
+dan dibatalkan saat harga diedit lewat `PUT/DELETE /api/pricing` atau opsi
+`ModelRatio` / `CompletionRatio` / `GroupRatio`. Response-nya juga dikirim
+dengan `Cache-Control: public, max-age=<TTL>`.
+
+## 12f. Operasional SQLite
+
+SQLite dipakai sebagai database utama sampai trafik menuntut PostgreSQL.
+`openSQLite` menyalakan WAL, `synchronous=NORMAL`, `busy_timeout`, dan
+`foreign_keys`. Pool default SQLite **1 koneksi** (`SQL_MAX_OPEN_CONNS`),
+karena SQLite hanya punya satu writer; pool besar justru memicu
+`SQLITE_BUSY`. Pindah ke PostgreSQL/MySQL cukup isi `SQL_DSN`.
+
+| Fitur | Berkas | Perilaku |
+|---|---|---|
+| Backup | `model/backup.go` | `VACUUM INTO` saat start lalu tiap `SQLITE_BACKUP_INTERVAL_HOURS`; simpan `SQLITE_BACKUP_KEEP` snapshot |
+| Retensi log | `model/retention.go` | hapus log lama per 1000 baris, harian |
+| Health | `controller/health.go` | `GET /healthz` → status, database, jumlah channel, versi; tanpa auth |
+| Metrics | `controller/metrics.go` | `GET /metrics` (opt-in) counter request/error/token/quota + gauge channel |
+| Shutdown | `main.go` | SIGINT/SIGTERM → `http.Server.Shutdown` 30 detik |
+| Compose | `docker-compose.yml` | SQLite volume `/data`, nginx profile `tls`, Redis profile `redis` |
+
+**Backup wajib menyertakan `TOKEN_KEY_FILE`** (default `data/token.key`).
+Tanpa file itu, API key di backup tidak bisa didekripsi.
+
+## 12g. Paket langganan
+
+`model/plan.go`, `controller/plan.go`, halaman `/plans`.
+
+- `plans` menyimpan nama, harga (`price_idr`), kuota, durasi, daftar model,
+  status. Pembelian memotong saldo sebesar harga lalu menambah kuota.
+- Validasi menolak `quota > price_idr`; tanpa aturan itu pembelian berulang
+  bisa mencetak saldo.
+- Pembelian menulis `users.plan_id` + `users.plan_expires_at` dan satu log
+  tipe topup. Job harian membersihkan plan kedaluwarsa.
+- `TokenAuth` menolak model di luar `plan.Models` selama plan aktif.
+- Endpoint: `GET /api/plans` + `POST /api/plans/:id/buy` (user),
+  `GET/POST/PUT/DELETE /api/plan` (admin).
+- Riwayat penggunaan bisa diekspor CSV (`/api/log/self/export`, admin
+  `/api/log/export`) dan setiap log topup punya kwitansi cetak
+  `GET /api/log/receipt/:id` (pemilik atau admin).
+
+## 12h. 2FA dan enkripsi API key
+
+- **API key** disimpan sebagai ciphertext AES-GCM (`enc:v1:`) dengan lookup
+  HMAC di `tokens.key_hash`. Kunci berasal dari `TOKEN_ENCRYPTION_KEY` atau
+  file `TOKEN_KEY_FILE` 32 byte yang dibuat otomatis. `model.MigrateTokenKeys`
+  mengenkripsi key lama saat start; console tetap menampilkan plaintext hasil
+  dekripsi. Tanpa file/kunci yang sama, key tidak bisa dibuka.
+- **2FA TOTP** (SHA-1, 6 digit, 30 detik) di `common/totp.go`. Setup/enable/
+  disable di `/api/user/2fa*`; login password menghasilkan
+  `require_2fa` lalu diselesaikan lewat `POST /api/user/login/2fa`.
+  Login OAuth belum melewati langkah TOTP.
+- Endpoint docs/status untuk pelanggan ada di `/docs` (console), membaca
+  `/healthz`.
+
 ## 13. Yang belum dikerjakan
 
 - Ganti password root (`123456` masih aktif) + `SESSION_SECRET` random.
 - PanWallet belum aktif (butuh product key `panway`).
 - Google login tinggal isi konfigurasi OIDC.
-- Belum ada domain/deploy produksi.
-- Belum ada plan/subscription terpisah — semua pakai group `default`.
+- Belum ada domain/deploy produksi; Dockerfile/compose belum diuji di mesin
+  ini karena Docker tidak terpasang.
+- Login OAuth belum meminta kode 2FA (baru login password).
+- Endpoint Anthropic `/v1/messages` belum ada; saat ini hanya shape
+  OpenAI-compatible (`/v1/chat/completions`, embeddings, images, audio).
 
 ## 14. Peringatan
 

@@ -20,6 +20,9 @@ func SetApiRouter(router *gin.Engine) {
 		apiRouter.GET("/about", controller.GetAbout)
 		apiRouter.GET("/home_page_content", controller.GetHomePageContent)
 		apiRouter.GET("/pricing", controller.GetPricing)
+		apiRouter.GET("/pricing/history", controller.GetPriceHistory)
+		apiRouter.GET("/plans", middleware.UserAuth(), controller.ListPlans)
+		apiRouter.POST("/plans/:id/buy", middleware.UserAuth(), controller.BuyPlan)
 		apiRouter.GET("/pricing/all", middleware.AdminAuth(), controller.ListPricedModels)
 		apiRouter.PUT("/pricing", middleware.AdminAuth(), controller.UpdatePricing)
 		apiRouter.DELETE("/pricing", middleware.AdminAuth(), controller.DeletePricing)
@@ -39,6 +42,7 @@ func SetApiRouter(router *gin.Engine) {
 		{
 			userRoute.POST("/register", middleware.CriticalRateLimit(), middleware.TurnstileCheck(), controller.Register)
 			userRoute.POST("/login", middleware.CriticalRateLimit(), controller.Login)
+			userRoute.POST("/login/2fa", middleware.CriticalRateLimit(), controller.LoginTOTP)
 			userRoute.GET("/logout", controller.Logout)
 
 			selfRoute := userRoute.Group("/")
@@ -62,6 +66,11 @@ func SetApiRouter(router *gin.Engine) {
 				selfRoute.POST("/telegram/send", controller.SendTelegramVerificationCode)
 				selfRoute.POST("/telegram/verify", controller.VerifyTelegramCode)
 				selfRoute.POST("/telegram/unverify", controller.UnverifyTelegram)
+				// TOTP second factor for password login.
+				selfRoute.GET("/2fa", controller.GetTotpStatus)
+				selfRoute.POST("/2fa/setup", controller.SetupTotp)
+				selfRoute.POST("/2fa/enable", controller.EnableTotp)
+				selfRoute.POST("/2fa/disable", controller.DisableTotp)
 			}
 
 			adminRoute := userRoute.Group("/")
@@ -120,14 +129,26 @@ func SetApiRouter(router *gin.Engine) {
 			redemptionRoute.PUT("/", controller.UpdateRedemption)
 			redemptionRoute.DELETE("/:id", controller.DeleteRedemption)
 		}
+		planRoute := apiRouter.Group("/plan")
+		planRoute.Use(middleware.AdminAuth())
+		{
+			planRoute.GET("/", controller.ListAllPlans)
+			planRoute.GET("/:id", controller.GetPlan)
+			planRoute.POST("/", controller.CreatePlan)
+			planRoute.PUT("/:id", controller.UpdatePlan)
+			planRoute.DELETE("/:id", controller.DeletePlan)
+		}
 		logRoute := apiRouter.Group("/log")
 		logRoute.GET("/", middleware.AdminAuth(), controller.GetAllLogs)
 		logRoute.DELETE("/", middleware.AdminAuth(), controller.DeleteHistoryLogs)
 		logRoute.GET("/stat", middleware.AdminAuth(), controller.GetLogsStat)
+		logRoute.GET("/export", middleware.AdminAuth(), controller.ExportAllLogs)
+		logRoute.GET("/receipt/:id", middleware.UserAuth(), controller.GetReceipt)
 		logRoute.GET("/self/stat", middleware.UserAuth(), controller.GetLogsSelfStat)
+		logRoute.GET("/self/search", middleware.UserAuth(), controller.SearchUserLogs)
+		logRoute.GET("/self/export", middleware.UserAuth(), controller.ExportMyLogs)
 		logRoute.GET("/search", middleware.AdminAuth(), controller.SearchAllLogs)
 		logRoute.GET("/self", middleware.UserAuth(), controller.GetUserLogs)
-		logRoute.GET("/self/search", middleware.UserAuth(), controller.SearchUserLogs)
 		groupRoute := apiRouter.Group("/group")
 		groupRoute.Use(middleware.AdminAuth())
 		{

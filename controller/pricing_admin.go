@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/jhopan/Panway/common/logger"
 	"github.com/jhopan/Panway/model"
 	"github.com/jhopan/Panway/relay/billing/ratio"
 )
@@ -105,6 +106,10 @@ func UpdatePricing(c *gin.Context) {
 		})
 		return
 	}
+	invalidatePricingCache()
+	if err := model.RecordPriceHistory(modelId, update.InputPrice, update.OutputPrice); err != nil {
+		logger.SysError("failed to record price history: " + err.Error())
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
@@ -163,6 +168,7 @@ func DeletePricing(c *gin.Context) {
 		})
 		return
 	}
+	invalidatePricingCache()
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,

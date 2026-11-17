@@ -109,7 +109,15 @@ func (a *Adaptor) DoRequest(c *gin.Context, meta *meta.Meta, requestBody io.Read
 func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, meta *meta.Meta) (usage *model.Usage, err *model.ErrorWithStatusCode) {
 	if meta.IsStream {
 		var responseText string
-		err, responseText, usage = StreamHandler(c, resp, meta.Mode)
+		err, responseText, usage = StreamHandler(c, resp, meta.Mode, meta.PromptTokens, meta.ActualModelName)
+		if usage != nil && !usage.Estimated {
+			// Exact stream usage reveals how big the upstream's hidden system
+			// prompt is; remember it for later streams.
+			learnPromptOverhead(meta.ActualModelName, meta.PromptTokens, usage.PromptTokens)
+		}
+		// An estimated stream usage overcharges: the upstream reserves a
+		// fixed prompt budget instead of counting the real messages.
+		usage = NormalizeEstimatedUsage(usage, responseText, meta.ActualModelName, meta.PromptTokens)
 		if usage == nil || usage.TotalTokens == 0 {
 			usage = ResponseText2Usage(responseText, meta.ActualModelName, meta.PromptTokens)
 		}

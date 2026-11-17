@@ -31,7 +31,7 @@ func CacheGetTokenByKey(key string) (*Token, error) {
 		keyCol = `"key"`
 	}
 	var token Token
-	if !common.RedisEnabled {
+	if !common.RedisEnabled || common.RDB == nil {
 		err := DB.Where(keyCol+" = ?", key).First(&token).Error
 		return &token, err
 	}
@@ -48,6 +48,35 @@ func CacheGetTokenByKey(key string) (*Token, error) {
 		err = common.RedisSet(fmt.Sprintf("token:%s", key), string(jsonBytes), time.Duration(TokenCacheSeconds)*time.Second)
 		if err != nil {
 			logger.SysError("Redis set token error: " + err.Error())
+		}
+		return &token, nil
+	}
+	err = json.Unmarshal([]byte(tokenObjectString), &token)
+	return &token, err
+}
+
+// CacheGetTokenByKeyHash looks a token up by its keyed hash, which is what
+// normal verification uses now that stored keys are encrypted.
+func CacheGetTokenByKeyHash(hash string) (*Token, error) {
+	var token Token
+	if !common.RedisEnabled || common.RDB == nil {
+		err := DB.Where("key_hash = ?", hash).First(&token).Error
+		return &token, err
+	}
+	cacheKey := "token_hash:" + hash
+	tokenObjectString, err := common.RedisGet(cacheKey)
+	if err != nil {
+		err := DB.Where("key_hash = ?", hash).First(&token).Error
+		if err != nil {
+			return nil, err
+		}
+		jsonBytes, err := json.Marshal(token)
+		if err != nil {
+			return nil, err
+		}
+		err = common.RedisSet(cacheKey, string(jsonBytes), time.Duration(TokenCacheSeconds)*time.Second)
+		if err != nil {
+			logger.SysError("Redis set token hash error: " + err.Error())
 		}
 		return &token, nil
 	}

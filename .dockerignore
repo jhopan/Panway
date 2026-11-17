@@ -1,0 +1,12 @@
+.git
+.env
+.env.*
+data/
+logs/
+node_modules/
+web/default/node_modules/
+web/build/
+*.exe
+*.db
+*.db-shm
+*.db-wal

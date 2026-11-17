@@ -3,11 +3,14 @@ package common
 import (
 	"flag"
 	"fmt"
-	"github.com/jhopan/Panway/common/config"
-	"github.com/jhopan/Panway/common/logger"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/gin-gonic/gin"
+
+	"github.com/jhopan/Panway/common/config"
+	"github.com/jhopan/Panway/common/logger"
 )
 
 var (
@@ -37,12 +40,21 @@ func Init() {
 		os.Exit(0)
 	}
 
-	if os.Getenv("SESSION_SECRET") != "" {
-		if os.Getenv("SESSION_SECRET") == "random_string" {
-			logger.SysError("SESSION_SECRET is set to an example value, please change it to a random string.")
-		} else {
-			config.SessionSecret = os.Getenv("SESSION_SECRET")
+	secret := os.Getenv("SESSION_SECRET")
+	switch {
+	case secret == "":
+		if os.Getenv("GIN_MODE") == gin.ReleaseMode {
+			log.Fatal("SESSION_SECRET is empty: set it to a long random string before running in release mode, " +
+				"otherwise every restart invalidates all sessions")
 		}
+		logger.SysError("SESSION_SECRET is empty: using a random secret, so all sessions are invalidated on every restart")
+	case secret == "random_string" || secret == "ubah-ke-string-acak-panjang":
+		logger.SysError("SESSION_SECRET is set to an example value, please change it to a random string.")
+	case len(secret) < 32:
+		logger.SysError("SESSION_SECRET is shorter than 32 characters; use a longer random string.")
+		config.SessionSecret = secret
+	default:
+		config.SessionSecret = secret
 	}
 	if os.Getenv("SQLITE_PATH") != "" {
 		SQLitePath = os.Getenv("SQLITE_PATH")

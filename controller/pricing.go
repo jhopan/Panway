@@ -3,10 +3,14 @@ package controller
 import (
 	"net/http"
 	"sort"
+	"strconv"
 	"strings"
+	"sync"
+	"time"
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/jhopan/Panway/common/config"
 	"github.com/jhopan/Panway/model"
 	"github.com/jhopan/Panway/relay/billing/ratio"
 )
@@ -28,6 +32,48 @@ type PricingEntry struct {
 	Currency string `json:"currency"`
 	// Unit explains the price unit, e.g. "per 1M tokens".
 	Unit string `json:"unit"`
+	// Requests7d and AvgLatencyMS come from the operation log, so the
+	// catalogue can show how much a model is actually used.
+	Requests7d   int64 `json:"requests_7d"`
+	AvgLatencyMS int64 `json:"avg_latency_ms"`
+}
+
+// pricingCache holds the last answer of buildPricingEntries.
+//
+// /api/pricing is public and unauthenticated, so every landing page visit
+// would otherwise run a channel query and walk the ratio maps. A price edit
+// invalidates the cache directly; the TTL only bounds how long a channel or
+// ratio change made from another page stays invisible.
+var pricingCache struct {
+	mu      sync.Mutex
+	entries []PricingEntry
+	expires time.Time
+}
+
+func invalidatePricingCache() {
+	pricingCache.mu.Lock()
+	pricingCache.entries = nil
+	pricingCache.expires = time.Time{}
+	pricingCache.mu.Unlock()
+}
+
+func cachedPricingEntries() ([]PricingEntry, error) {
+	ttl := time.Duration(config.PricingCacheSeconds) * time.Second
+	if ttl <= 0 {
+		return buildPricingEntries()
+	}
+	pricingCache.mu.Lock()
+	defer pricingCache.mu.Unlock()
+	if pricingCache.entries != nil && time.Now().Before(pricingCache.expires) {
+		return pricingCache.entries, nil
+	}
+	entries, err := buildPricingEntries()
+	if err != nil {
+		return nil, err
+	}
+	pricingCache.entries = entries
+	pricingCache.expires = time.Now().Add(ttl)
+	return entries, nil
 }
 
 // GetPricing returns the public price list.
@@ -42,7 +88,7 @@ type PricingEntry struct {
 // of one million tokens is modelRatio * 1e6 for input, and that value
 // multiplied by the completion ratio for output.
 func GetPricing(c *gin.Context) {
-	channels, err := model.GetAllChannels(0, 0, "all")
+	entries, err := cachedPricingEntries()
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
@@ -50,6 +96,32 @@ func GetPricing(c *gin.Context) {
 			"data":    nil,
 		})
 		return
+	}
+
+	// The catalogue is public and changes rarely, so a short browser/proxy
+	// cache keeps landing pages cheap. The admin console bypasses it with a
+	// cache-busting query string when it edits a price.
+	if config.PricingCacheSeconds > 0 {
+		c.Header("Cache-Control", "public, max-age="+strconv.Itoa(config.PricingCacheSeconds))
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+		"data": gin.H{
+			"models":   entries,
+			"currency": "IDR",
+			"unit":     "1M tokens",
+		},
+	})
+}
+
+// buildPricingEntries reads the live channels and ratio maps and returns the
+// sellable models. It is the uncached body of GetPricing.
+func buildPricingEntries() ([]PricingEntry, error) {
+	channels, err := model.GetAllChannels(0, 0, "all")
+	if err != nil {
+		return nil, err
 	}
 
 	groupRatio := ratio.GetGroupRatio("default")
@@ -103,13 +175,46 @@ func GetPricing(c *gin.Context) {
 		return entries[i].Name < entries[j].Name
 	})
 
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"message": "",
-		"data": gin.H{
-			"models":   entries,
-			"currency": "IDR",
-			"unit":     "1M tokens",
-		},
-	})
+	type modelUsage struct {
+		ModelName  string
+		Requests   int64
+		AvgLatency float64 `gorm:"column:avg_latency"`
+	}
+	var usage []modelUsage
+	since := time.Now().Add(-7 * 24 * time.Hour).Unix()
+	model.DB.Model(&model.Log{}).
+		Select("model_name, count(*) as requests, avg(elapsed_time) as avg_latency").
+		Where("type = ? AND created_at >= ?", model.LogTypeConsume, since).
+		Group("model_name").
+		Scan(&usage)
+	byModel := make(map[string]modelUsage, len(usage))
+	for _, row := range usage {
+		byModel[row.ModelName] = row
+	}
+	for i := range entries {
+		if stat, ok := byModel[entries[i].ModelId]; ok {
+			entries[i].Requests7d = stat.Requests
+			entries[i].AvgLatencyMS = int64(stat.AvgLatency)
+		}
+	}
+
+	return entries, nil
+}
+
+// GetPriceHistory returns the price edits of the last 72 hours (or a custom
+// window) so the catalogue can draw a small trend.
+func GetPriceHistory(c *gin.Context) {
+	since := time.Now().Add(-72 * time.Hour).Unix()
+	if raw := c.Query("since"); raw != "" {
+		if parsed, err := strconv.ParseInt(raw, 10, 64); err == nil && parsed > 0 {
+			since = parsed
+		}
+	}
+	rows, err := model.GetPriceHistorySince(since)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": "failed to load price history"})
+		return
+	}
+	c.Header("Cache-Control", "public, max-age=30")
+	c.JSON(http.StatusOK, gin.H{"success": true, "message": "", "data": rows})
 }

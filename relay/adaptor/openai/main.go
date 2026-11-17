@@ -24,7 +24,7 @@ const (
 	dataPrefixLength = len(dataPrefix)
 )
 
-func StreamHandler(c *gin.Context, resp *http.Response, relayMode int) (*model.ErrorWithStatusCode, string, *model.Usage) {
+func StreamHandler(c *gin.Context, resp *http.Response, relayMode int, promptTokens int, modelName string) (*model.ErrorWithStatusCode, string, *model.Usage) {
 	responseText := ""
 	scanner := bufio.NewScanner(resp.Body)
 	scanner.Split(bufio.ScanLines)
@@ -59,13 +59,30 @@ func StreamHandler(c *gin.Context, resp *http.Response, relayMode int) (*model.E
 				// but for empty choice and no usage, we should not pass it to client, this is for azure
 				continue // just ignore empty choice
 			}
-			render.StringData(c, data)
 			for _, choice := range streamResponse.Choices {
 				responseText += conv.AsString(choice.Delta.Content)
 			}
 			if streamResponse.Usage != nil {
-				usage = streamResponse.Usage
+				estimated := streamResponse.Usage.Estimated
+				if estimated {
+					// Replace the upstream estimate before it reaches the
+					// client, so the usage the customer sees matches the
+					// usage Panway bills. The response text is already
+					// complete by the time the final usage chunk arrives.
+					normalized := NormalizeEstimatedUsage(streamResponse.Usage, responseText, modelName, promptTokens)
+					if normalized != streamResponse.Usage {
+						streamResponse.Usage = normalized
+						data = rewriteStreamUsage(data, normalized)
+					}
+				}
+				// Prefer measured usage over an estimate. An upstream may send
+				// an estimate first and the measured value later, or keep
+				// sending estimates after one exact record.
+				if usage == nil || usage.Estimated || !estimated {
+					usage = streamResponse.Usage
+				}
 			}
+			render.StringData(c, data)
 		case relaymode.Completions:
 			render.StringData(c, data)
 			var streamResponse CompletionsStreamResponse
@@ -94,6 +111,30 @@ func StreamHandler(c *gin.Context, resp *http.Response, relayMode int) (*model.E
 	}
 
 	return nil, responseText, usage
+}
+
+// rewriteStreamUsage replaces the usage object of one SSE chunk while keeping
+// every other field (choice deltas, provider extras) intact.
+func rewriteStreamUsage(data string, usage *model.Usage) string {
+	payload := strings.TrimPrefix(data, dataPrefix)
+	var chunk map[string]any
+	if err := json.Unmarshal([]byte(payload), &chunk); err != nil {
+		return data
+	}
+	usageMap, ok := chunk["usage"].(map[string]any)
+	if !ok {
+		usageMap = map[string]any{}
+	}
+	usageMap["prompt_tokens"] = usage.PromptTokens
+	usageMap["completion_tokens"] = usage.CompletionTokens
+	usageMap["total_tokens"] = usage.TotalTokens
+	delete(usageMap, "estimated")
+	chunk["usage"] = usageMap
+	rewritten, err := json.Marshal(chunk)
+	if err != nil {
+		return data
+	}
+	return dataPrefix + string(rewritten)
 }
 
 func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName string) (*model.ErrorWithStatusCode, *model.Usage) {
@@ -150,6 +191,15 @@ func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName st
 			CompletionTokens: completionTokens,
 			TotalTokens:      promptTokens + completionTokens,
 		}
+	}
+	if textResponse.Usage.Estimated {
+		var responseText strings.Builder
+		for _, choice := range textResponse.Choices {
+			responseText.WriteString(choice.Message.StringContent())
+		}
+		textResponse.Usage = *NormalizeEstimatedUsage(&textResponse.Usage, responseText.String(), modelName, promptTokens)
+	} else {
+		learnPromptOverhead(modelName, promptTokens, textResponse.Usage.PromptTokens)
 	}
 	return nil, &textResponse.Usage
 }

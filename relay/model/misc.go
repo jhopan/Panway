@@ -5,6 +5,12 @@ type Usage struct {
 	CompletionTokens int `json:"completion_tokens"`
 	TotalTokens      int `json:"total_tokens"`
 
+	// Estimated marks usage the upstream could not measure exactly, for
+	// example a stream where the provider reports no final usage. Panway
+	// bills such a response from its own token counters instead of trusting
+	// the estimate, which can be several times the real prompt size.
+	Estimated bool `json:"estimated,omitempty"`
+
 	CompletionTokensDetails *CompletionTokensDetails `json:"completion_tokens_details,omitempty"`
 }
 

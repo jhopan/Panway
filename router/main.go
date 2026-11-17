@@ -3,15 +3,22 @@ package router
 import (
 	"embed"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/jhopan/Panway/common/config"
-	"github.com/jhopan/Panway/common/logger"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+
+	"github.com/jhopan/Panway/common/config"
+	"github.com/jhopan/Panway/common/logger"
+	"github.com/jhopan/Panway/controller"
 )
 
 func SetRouter(router *gin.Engine, buildFS embed.FS) {
+	router.GET("/healthz", controller.Health)
+	if config.MetricsEnabled {
+		router.GET("/metrics", controller.Metrics)
+	}
 	SetApiRouter(router)
 	SetDashboardRouter(router)
 	SetRelayRouter(router)

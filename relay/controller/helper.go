@@ -94,15 +94,17 @@ func preConsumeQuota(ctx context.Context, textRequest *relaymodel.GeneralOpenAIR
 	if err != nil {
 		return preConsumedQuota, openai.ErrorWrapper(err, "decrease_user_quota_failed", http.StatusInternalServerError)
 	}
-	if userQuota > 100*preConsumedQuota {
-		// in this case, we do not pre-consume quota
-		// because the user has enough quota
-		preConsumedQuota = 0
-		logger.Info(ctx, fmt.Sprintf("user %d has enough quota %d, trusted and no need to pre-consume", meta.UserId, userQuota))
-	}
 	if preConsumedQuota > 0 {
+		// Always hold the token's own budget, even when the user balance is
+		// large enough to be trusted. Skipping this step let a limited token
+		// spend more than its remaining quota through concurrent requests.
 		err := model.PreConsumeTokenQuota(meta.TokenId, preConsumedQuota)
 		if err != nil {
+			// The Redis copy of the user quota was already lowered; refresh
+			// it from the database, which never lost any quota.
+			if restoreErr := model.CacheUpdateUserQuota(ctx, meta.UserId); restoreErr != nil {
+				logger.Error(ctx, "failed to restore user quota cache: "+restoreErr.Error())
+			}
 			return preConsumedQuota, openai.ErrorWrapper(err, "pre_consume_token_quota_failed", http.StatusForbidden)
 		}
 	}
@@ -127,6 +129,7 @@ func postConsumeQuota(ctx context.Context, usage *relaymodel.Usage, meta *meta.M
 	if meta.TokenId != 0 {
 		common.GetTokenRateLimiter().RecordTokens(meta.TokenId, promptTokens+completionTokens)
 	}
+	common.AddRelayUsage(int64(promptTokens+completionTokens), quota)
 	totalTokens := promptTokens + completionTokens
 	if totalTokens == 0 {
 		// in this case, must be some error happened

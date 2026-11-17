@@ -129,6 +129,15 @@ func TokenAuth() func(c *gin.Context) {
 				return
 			}
 		}
+		if plan, planErr := model.GetActiveUserPlan(token.UserId); planErr == nil && plan != nil && strings.TrimSpace(plan.Models) != "" {
+			if requestModel != "" && !isModelInList(requestModel, plan.Models) {
+				abortWithMessage(c, http.StatusForbidden, fmt.Sprintf("Your plan is not allowed to use the model: %s", requestModel))
+				return
+			}
+			if c.GetString(ctxkey.AvailableModels) == "" {
+				c.Set(ctxkey.AvailableModels, plan.Models)
+			}
+		}
 		c.Set(ctxkey.Id, token.UserId)
 		c.Set(ctxkey.TokenId, token.Id)
 		c.Set(ctxkey.TokenName, token.Name)
