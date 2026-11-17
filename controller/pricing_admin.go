@@ -110,6 +110,7 @@ func UpdatePricing(c *gin.Context) {
 	if err := model.RecordPriceHistory(modelId, update.InputPrice, update.OutputPrice); err != nil {
 		logger.SysError("failed to record price history: " + err.Error())
 	}
+	auditf(c, "price %s input=%.0f output=%.0f", modelId, update.InputPrice, update.OutputPrice)
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
@@ -169,6 +170,7 @@ func DeletePricing(c *gin.Context) {
 		return
 	}
 	invalidatePricingCache()
+	auditf(c, "delete price %s", modelId)
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,

@@ -495,6 +495,10 @@ Saat start, `SESSION_SECRET` kosong dengan `GIN_MODE=release` langsung gagal;
 secret contoh atau < 32 karakter hanya jadi error log. Password root default
 `123456` juga jadi error log (`model.WarnIfDefaultRootPassword`).
 
+Perubahan admin (harga, plan, channel, opsi) dicatat sebagai log tipe
+`Manage` lewat `controller/audit.go`; nilainya tidak ikut ditulis, hanya aksi
+dan targetnya.
+
 `/api/pricing` di-cache in-process (`PRICING_CACHE_SECONDS`, default 30 detik)
 dan dibatalkan saat harga diedit lewat `PUT/DELETE /api/pricing` atau opsi
 `ModelRatio` / `CompletionRatio` / `GroupRatio`. Response-nya juga dikirim

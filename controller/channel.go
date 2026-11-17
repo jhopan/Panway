@@ -103,6 +103,7 @@ func AddChannel(c *gin.Context) {
 		})
 		return
 	}
+	auditf(c, "create channel %s", channel.Name)
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",
@@ -121,6 +122,7 @@ func DeleteChannel(c *gin.Context) {
 		})
 		return
 	}
+	auditf(c, "delete channel #%d", id)
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",
@@ -163,6 +165,7 @@ func UpdateChannel(c *gin.Context) {
 		})
 		return
 	}
+	auditf(c, "update channel #%d %s", channel.Id, channel.Name)
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",

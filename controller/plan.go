@@ -56,6 +56,7 @@ func CreatePlan(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": err.Error()})
 		return
 	}
+	auditf(c, "create plan #%d %s", plan.Id, plan.Name)
 	c.JSON(http.StatusOK, gin.H{"success": true, "message": "", "data": plan})
 }
 
@@ -80,6 +81,7 @@ func UpdatePlan(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": err.Error()})
 		return
 	}
+	auditf(c, "update plan #%d %s", plan.Id, plan.Name)
 	c.JSON(http.StatusOK, gin.H{"success": true, "message": "", "data": plan})
 }
 
@@ -89,6 +91,7 @@ func DeletePlan(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": err.Error()})
 		return
 	}
+	auditf(c, "delete plan #%d", id)
 	c.JSON(http.StatusOK, gin.H{"success": true, "message": ""})
 }
 

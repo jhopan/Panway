@@ -99,6 +99,7 @@ func UpdateOption(c *gin.Context) {
 		// The public price list is derived from these maps.
 		invalidatePricingCache()
 	}
+	auditf(c, "option %s updated", option.Key)
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",
