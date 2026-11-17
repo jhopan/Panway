@@ -6,7 +6,8 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from 'recharts';
-import { API } from '../../helpers';
+import { Button, Icon, Input, Modal } from 'semantic-ui-react';
+import { API, isAdmin, showError, showSuccess } from '../../helpers';
 import { useCatalogue } from './useCatalogue';
 import MarketingShell from '../../components/MarketingShell';
 import './Catalogue.css';
@@ -44,9 +45,15 @@ const Sparkline = ({ rows }) => {
 const Pricing = ({ embedded = false }) => {
   const { t } = useTranslation();
   const { models, loading, failed, formatPrice } = useCatalogue();
+  const admin = embedded && isAdmin();
   const [history, setHistory] = useState({});
+  const [overrides, setOverrides] = useState({});
+  const [editing, setEditing] = useState(null);
+  const [draftInput, setDraftInput] = useState('');
+  const [draftOutput, setDraftOutput] = useState('');
+  const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
+  const loadHistory = () =>
     API.get('/api/pricing/history')
       .then((res) => {
         if (!res.data.success) return;
@@ -58,9 +65,58 @@ const Pricing = ({ embedded = false }) => {
         setHistory(byModel);
       })
       .catch(() => {});
+
+  useEffect(() => {
+    loadHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const cheapest = models.reduce(
+  const rows = models.map((m) =>
+    overrides[m.model_id] ? { ...m, ...overrides[m.model_id] } : m
+  );
+
+  const openEditor = (model) => {
+    setEditing(model);
+    setDraftInput(String(Math.round(model.input_price)));
+    setDraftOutput(String(Math.round(model.output_price)));
+  };
+
+  const savePrice = async () => {
+    const inputPrice = parseFloat(draftInput);
+    const outputPrice = parseFloat(draftOutput);
+    if (!inputPrice || inputPrice <= 0 || !outputPrice || outputPrice <= 0) {
+      showError(t('models.invalid_price'));
+      return;
+    }
+    setSaving(true);
+    try {
+      const res = await API.put('/api/pricing', {
+        model_id: editing.model_id,
+        input_price: inputPrice,
+        output_price: outputPrice,
+      });
+      if (res.data.success) {
+        setOverrides((prev) => ({
+          ...prev,
+          [editing.model_id]: {
+            input_price: inputPrice,
+            output_price: outputPrice,
+          },
+        }));
+        showSuccess(t('models.saved'));
+        setEditing(null);
+        await loadHistory();
+      } else {
+        showError(res.data.message);
+      }
+    } catch (err) {
+      showError(t('models.save_failed'));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const cheapest = rows.reduce(
     (min, m) => (min === null || m.input_price < min.input_price ? m : min),
     null
   );
@@ -98,31 +154,32 @@ const Pricing = ({ embedded = false }) => {
               <th>{t('pricing.calls_7d')}</th>
               <th>{t('pricing.avg_latency')}</th>
               <th>{t('pricing.history')}</th>
+              {admin && <th>{t('pricing.actions')}</th>}
             </tr>
           </thead>
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={7} className='catalogue-empty'>
+                <td colSpan={admin ? 8 : 7} className='catalogue-empty'>
                   {t('models.loading')}
                 </td>
               </tr>
             )}
             {failed && (
               <tr>
-                <td colSpan={7} className='catalogue-empty'>
+                <td colSpan={admin ? 8 : 7} className='catalogue-empty'>
                   {t('models.error')}
                 </td>
               </tr>
             )}
-            {!loading && !failed && models.length === 0 && (
+            {!loading && !failed && rows.length === 0 && (
               <tr>
-                <td colSpan={7} className='catalogue-empty'>
+                <td colSpan={admin ? 8 : 7} className='catalogue-empty'>
                   {t('models.empty')}
                 </td>
               </tr>
             )}
-            {models.map((m) => (
+            {rows.map((m) => (
               <tr key={m.model_id}>
                 <td>
                   <code>{m.model_id}</code>
@@ -139,6 +196,17 @@ const Pricing = ({ embedded = false }) => {
                 <td>
                   <Sparkline rows={history[m.model_id]} />
                 </td>
+                {admin && (
+                  <td>
+                    <Button
+                      basic
+                      size='mini'
+                      icon='edit'
+                      content={t('models.edit')}
+                      onClick={() => openEditor(m)}
+                    />
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -162,6 +230,55 @@ const Pricing = ({ embedded = false }) => {
         </div>
       </div>
       </div>
+
+      <Modal
+        open={!!editing}
+        onClose={() => {
+          if (!saving) setEditing(null);
+        }}
+        size='tiny'
+      >
+        <Modal.Header>{t('models.modal_title')}</Modal.Header>
+        <Modal.Content>
+          <div className='catalogue-modal'>
+            <code className='catalogue-modal-id'>{editing?.model_id}</code>
+
+            <div className='catalogue-modal-field'>
+              <label htmlFor='pricing-input'>{t('models.input')}</label>
+              <Input
+                id='pricing-input'
+                type='number'
+                min='1'
+                step='1000'
+                value={draftInput}
+                onChange={(e) => setDraftInput(e.target.value)}
+                placeholder='50000'
+              />
+            </div>
+
+            <div className='catalogue-modal-field'>
+              <label htmlFor='pricing-output'>{t('models.output')}</label>
+              <Input
+                id='pricing-output'
+                type='number'
+                min='1'
+                step='1000'
+                value={draftOutput}
+                onChange={(e) => setDraftOutput(e.target.value)}
+                placeholder='200000'
+              />
+            </div>
+
+            <p className='catalogue-modal-hint'>{t('models.modal_hint')}</p>
+          </div>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => setEditing(null)}>{t('models.cancel')}</Button>
+          <Button primary loading={saving} onClick={savePrice}>
+            {t('models.save')}
+          </Button>
+        </Modal.Actions>
+      </Modal>
     </>
   );
 

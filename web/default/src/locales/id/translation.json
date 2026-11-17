@@ -1126,6 +1126,7 @@
     "calls_7d": "Panggilan (7h)",
     "avg_latency": "Latensi rata-rata",
     "history": "Harga 72 jam",
+    "actions": "Aksi",
     "note_billing": "Dikenai sesuai pemakaian",
     "note_billing_body": "Setiap request ditagih atas token yang benar-benar dipakai, terlihat di log kamu.",
     "note_topup": "Satu saldo",
