@@ -173,7 +173,9 @@ Bila memang harus mencocokkan pesan Mandarin dari provider, pakai rune escape
 ## 6. Rate limit per token
 
 Tiga batas, diatur di panel **Token → Edit**. `0` = tanpa batas (RPM jatuh ke
-`GLOBAL_API_RATE_LIMIT`).
+`GLOBAL_API_RATE_LIMIT`). Form token baru memakai default aman **60 RPM** dan
+**4 request paralel**; admin bisa mengubahnya ke `0` bila memang ingin tanpa
+batas.
 
 | Kolom | Arti | Implementasi |
 |---|---|---|

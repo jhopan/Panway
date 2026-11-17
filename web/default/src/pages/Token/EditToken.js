@@ -32,9 +32,9 @@ const EditToken = () => {
     unlimited_quota: false,
     models: [],
     subnet: '',
-    rate_limit_rpm: 0,
+    rate_limit_rpm: isEdit ? 0 : 60,
     rate_limit_tpm: 0,
-    concurrency_limit: 0,
+    concurrency_limit: isEdit ? 0 : 4,
   };
   const [inputs, setInputs] = useState(originInputs);
   const { name, remain_quota, expired_time, unlimited_quota } = inputs;
