@@ -1,0 +1,17 @@
+.docs-code {
+  background: var(--pw-surface-2, #f6f7fa);
+  border: 1px solid var(--pw-line, #e5e8ef);
+  border-radius: 10px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--pw-ink, #10131a);
+}
+
+.docs-code code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+}

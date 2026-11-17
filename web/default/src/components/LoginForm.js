@@ -28,6 +28,8 @@ const LoginForm = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [submitted, setSubmitted] = useState(false);
   const { username, password } = inputs;
+  const [need2fa, setNeed2fa] = useState(false);
+  const [totpCode, setTotpCode] = useState('');
   const [userState, userDispatch] = useContext(UserContext);
   let navigate = useNavigate();
   const [status, setStatus] = useState({});
@@ -71,6 +73,19 @@ const LoginForm = () => {
     setInputs((inputs) => ({ ...inputs, [name]: value }));
   }
 
+  const completeLogin = (data) => {
+    userDispatch({ type: 'login', payload: data });
+    localStorage.setItem('user', JSON.stringify(data));
+    if (username === 'root' && password === '123456') {
+      navigate('/user/edit');
+      showSuccess(t('messages.success.login'));
+      showWarning(t('messages.error.root_password'));
+    } else {
+      navigate('/token');
+      showSuccess(t('messages.success.login'));
+    }
+  };
+
   async function handleSubmit(e) {
     setSubmitted(true);
     if (username && password) {
@@ -80,19 +95,26 @@ const LoginForm = () => {
       });
       const { success, message, data } = res.data;
       if (success) {
-        userDispatch({ type: 'login', payload: data });
-        localStorage.setItem('user', JSON.stringify(data));
-        if (username === 'root' && password === '123456') {
-          navigate('/user/edit');
-          showSuccess(t('messages.success.login'));
-          showWarning(t('messages.error.root_password'));
-        } else {
-          navigate('/token');
-          showSuccess(t('messages.success.login'));
-        }
+        completeLogin(data);
+      } else if (data && data.require_2fa) {
+        setNeed2fa(true);
+        setTotpCode('');
+        showWarning(message || 'Enter your 2FA code');
       } else {
         showError(message);
       }
+    }
+  }
+
+  async function handleTotpSubmit(e) {
+    e.preventDefault();
+    if (!totpCode) return;
+    const res = await API.post('/api/user/login/2fa', { code: totpCode });
+    const { success, message, data } = res.data;
+    if (success) {
+      completeLogin(data);
+    } else {
+      showError(message);
     }
   }
 
@@ -116,6 +138,33 @@ const LoginForm = () => {
               </Header>
             </Card.Header>
             <Form size='large'>
+              {need2fa && (
+                <>
+                  <Message info content={t('auth.login.totp_hint')} />
+                  <Form.Input
+                    fluid
+                    icon='shield alternate'
+                    placeholder='123456'
+                    value={totpCode}
+                    onChange={(e) =>
+                      setTotpCode(e.target.value.replace(/\D/g, ''))
+                    }
+                    maxLength={6}
+                    autoFocus
+                  />
+                  <Button
+                    fluid
+                    size='large'
+                    primary
+                    style={{ marginBottom: '1.5em' }}
+                    onClick={handleTotpSubmit}
+                  >
+                    {t('auth.login.verify')}
+                  </Button>
+                </>
+              )}
+              {!need2fa && (
+                <>
               <Form.Input
                 fluid
                 icon='user'
@@ -149,6 +198,8 @@ const LoginForm = () => {
               >
                 {t('auth.login.button')}
               </Button>
+                </>
+              )}
             </Form>
 
             <Divider />

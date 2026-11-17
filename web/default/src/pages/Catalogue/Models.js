@@ -7,7 +7,7 @@ import { useCatalogue } from './useCatalogue';
 import MarketingShell from '../../components/MarketingShell';
 import './Catalogue.css';
 
-const Models = () => {
+const Models = ({ embedded = false }) => {
   const { t } = useTranslation();
   const [userState] = useContext(UserContext);
   const { groups, loading, failed, formatPrice } = useCatalogue();
@@ -98,8 +98,8 @@ const Models = () => {
     }
   };
 
-  return (
-    <MarketingShell current='models'>
+  const page = (
+    <>
       <div className='catalogue'>
         <div className='catalogue-head'>
           <span className='catalogue-eyebrow'>{t('models.eyebrow')}</span>
@@ -230,8 +230,14 @@ const Models = () => {
           </Button>
         </Modal.Actions>
       </Modal>
-    </MarketingShell>
+    </>
   );
+
+  if (embedded) {
+    return page;
+  }
+
+  return <MarketingShell current='models'>{page}</MarketingShell>;
 };
 
 export default Models;

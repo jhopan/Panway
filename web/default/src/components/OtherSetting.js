@@ -18,7 +18,6 @@ const OtherSetting = () => {
   let [inputs, setInputs] = useState({
     Footer: '',
     Notice: '',
-    About: '',
     SystemName: '',
     Logo: '',
     HomePageContent: '',
@@ -84,10 +83,6 @@ const OtherSetting = () => {
 
   const submitLogo = async () => {
     await updateOption('Logo', inputs.Logo);
-  };
-
-  const submitAbout = async () => {
-    await updateOption('About', inputs.About);
   };
 
   const submitOption = async (key) => {
@@ -195,19 +190,6 @@ const OtherSetting = () => {
           </Form.Group>
           <Form.Button onClick={() => submitOption('HomePageContent')}>
             {t('setting.other.content.buttons.save_homepage')}
-          </Form.Button>
-          <Form.Group widths='equal'>
-            <Form.TextArea
-              label={t('setting.other.content.about.title')}
-              placeholder={t('setting.other.content.about.placeholder')}
-              value={inputs.About}
-              name='About'
-              onChange={handleInputChange}
-              style={{ minHeight: 150, fontFamily: 'JetBrains Mono, Consolas' }}
-            />
-          </Form.Group>
-          <Form.Button onClick={submitAbout}>
-            {t('setting.other.content.buttons.save_about')}
           </Form.Button>
           <Message>{t('setting.other.copyright.notice')}</Message>
           <Form.Group widths='equal'>

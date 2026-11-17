@@ -152,3 +152,46 @@
     box-shadow: none !important;
     padding: 1rem 0 !important;
 }
+
+/* Quick cards: the dashboard overview block, mirroring the customer
+   dashboard layout: balance, keys, plan and the connect endpoint. */
+.quick-grid {
+  margin-bottom: 4px;
+}
+
+.ui.card.quick-card {
+  height: 100%;
+}
+
+.ui.card.quick-card .content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ui.card.quick-card .header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px !important;
+  color: var(--pw-muted, #626b7c) !important;
+  font-weight: 600 !important;
+}
+
+.quick-value {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--pw-ink, #10131a);
+  word-break: break-word;
+}
+
+.quick-value-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13.5px;
+}
+
+.quick-action {
+  font-size: 12.5px;
+  color: var(--pw-accent, #4f6bff);
+  font-weight: 600;
+}

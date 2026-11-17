@@ -12,7 +12,7 @@ const BARE_ROUTES = ['/'];
 
 // Models, pricing and about are public pages. They bring their own top
 // bar and footer, so they must not get the console sidebar either.
-const SHELL_ROUTES = ['/models', '/pricing', '/about'];
+const SHELL_ROUTES = ['/models', '/pricing'];
 
 // Auth screens keep the simple top bar: a sidebar there would be noise
 // because there is nothing to navigate to yet.

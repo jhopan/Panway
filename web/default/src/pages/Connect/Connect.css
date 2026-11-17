@@ -1,0 +1,175 @@
+.connect {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 0 72px;
+}
+
+.connect-hero {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 40px;
+}
+
+.connect-eyebrow {
+  display: inline-block;
+  background: var(--pw-accent-soft);
+  color: var(--pw-accent);
+  border-radius: 999px;
+  padding: 5px 13px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.connect-title {
+  margin: 16px 0 0;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--pw-ink);
+}
+
+.connect-lead {
+  margin: 14px 0 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--pw-muted);
+}
+
+.connect-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+.connect-section {
+  margin-top: 44px;
+}
+
+.connect-section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--pw-ink);
+  margin: 0 0 8px;
+}
+
+.connect-section-lead {
+  color: var(--pw-muted);
+  margin: 0 0 16px;
+  font-size: 14.5px;
+}
+
+.connect-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.connect-step {
+  border: 1px solid var(--pw-line);
+  border-radius: 14px;
+  padding: 20px;
+  background: var(--pw-surface);
+}
+
+.connect-step-no {
+  display: inline-flex;
+  width: 26px;
+  height: 26px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--pw-accent-soft);
+  color: var(--pw-accent);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.connect-step h3 {
+  margin: 12px 0 6px;
+  font-size: 16px;
+  color: var(--pw-ink);
+}
+
+.connect-step p {
+  margin: 0;
+  color: var(--pw-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.connect-block {
+  border: 1px solid var(--pw-line);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  background: var(--pw-surface);
+}
+
+.connect-block-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--pw-line);
+  background: var(--pw-surface-2);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--pw-muted);
+}
+
+.connect-copy {
+  border: 1px solid var(--pw-line);
+  background: var(--pw-surface);
+  color: var(--pw-ink);
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.connect-code {
+  margin: 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--pw-ink);
+}
+
+.connect-code code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+.connect-clients {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.connect-client {
+  border: 1px solid var(--pw-line);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 13.5px;
+  color: var(--pw-ink);
+  background: var(--pw-surface);
+}
+
+.connect-safety {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--pw-muted);
+  line-height: 1.9;
+}
+
+@media (max-width: 900px) {
+  .connect-steps {
+    grid-template-columns: 1fr;
+  }
+}

@@ -98,11 +98,22 @@ function getColorByElapsedTime(elapsedTime) {
   return 'red';
 }
 
-function renderDetail(log) {
+function renderDetail(log, t) {
   return (
     <>
       {log.content}
       <br />
+      {log.type === 1 && (
+        <a
+          href={`/api/log/receipt/${log.id}`}
+          target='_blank'
+          rel='noreferrer'
+        >
+          <Label basic size={'mini'} color='green'>
+            {t('log.receipt')}
+          </Label>
+        </a>
+      )}
       {log.elapsed_time && (
         <Label
           basic
@@ -309,21 +320,54 @@ const LogsTable = () => {
     setLoading(false);
   };
 
+const exportCsv = () => {
+    const params = new URLSearchParams({
+      type: String(logType),
+      token_name,
+      model_name,
+      start_timestamp: String(Date.parse(start_timestamp) / 1000),
+      end_timestamp: String(Date.parse(end_timestamp) / 1000),
+    });
+    if (isAdminUser) {
+      params.set('username', username);
+      params.set('channel', channel);
+    }
+    const path = isAdminUser ? '/api/log/export' : '/api/log/self/export';
+    window.open(`${path}?${params.toString()}`, '_blank');
+  };
+
   return (
     <>
-      <Header as='h3'>
-        {t('log.usage_details')}（{t('log.total_quota')}：
-        {showStat && renderQuota(stat.quota, t)}
-        {!showStat && (
-          <span
-            onClick={handleEyeClick}
-            style={{ cursor: 'pointer', color: 'gray' }}
-          >
-            {t('log.click_to_view')}
-          </span>
-        )}
-        ）
-      </Header>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: '12px',
+          marginBottom: '1em',
+        }}
+      >
+        <Header as='h3' style={{ margin: 0 }}>
+          {t('log.usage_details')}({t('log.total_quota')}:
+          {showStat && renderQuota(stat.quota, t)}
+          {!showStat && (
+            <span
+              onClick={handleEyeClick}
+              style={{ cursor: 'pointer', color: 'gray' }}
+            >
+              {t('log.click_to_view')}
+            </span>
+          )}
+          )
+        </Header>
+        <Button
+          basic
+          size='small'
+          icon='download'
+          content={t('log.export_csv')}
+          onClick={exportCsv}
+        />
+      </div>
       <Form>
         <Form.Group>
           <Form.Input
@@ -570,7 +614,7 @@ const LogsTable = () => {
                     </>
                   )}
 
-                  <Table.Cell>{renderDetail(log)}</Table.Cell>
+                  <Table.Cell>{renderDetail(log, t)}</Table.Cell>
                 </Table.Row>
               );
             })}

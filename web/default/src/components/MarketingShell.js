@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../context/User';
-import { getLogo, getSystemName } from '../helpers';
+import { API, getLogo, getSystemName } from '../helpers';
+import { renderQuota } from '../helpers/render';
 import ThemeToggle from './ThemeToggle';
 import './MarketingShell.css';
 
@@ -13,15 +14,32 @@ import './MarketingShell.css';
 const MarketingHeader = ({ current }) => {
   const { t } = useTranslation();
   const [userState] = useContext(UserContext);
+  const [quota, setQuota] = useState(null);
 
   const systemName = getSystemName();
   const logo = getLogo();
 
+  useEffect(() => {
+    if (!userState.user) {
+      setQuota(null);
+      return;
+    }
+    API.get('/api/user/self')
+      .then((res) => {
+        if (res.data.success) {
+          setQuota(res.data.data.quota);
+        }
+      })
+      .catch(() => {});
+  }, [userState.user]);
+
+  // These are public marketing pages. Even when the visitor is signed in,
+  // Models/Pricing/About must stay on the marketing route; only the Console
+  // button enters the dashboard.
   const links = [
     { to: '/', label: t('landing.nav.home'), key: 'home' },
     { to: '/models', label: t('landing.nav.models'), key: 'models' },
     { to: '/pricing', label: t('landing.nav.pricing'), key: 'pricing' },
-    { to: '/about', label: t('landing.nav.about'), key: 'about' },
   ];
 
   return (
@@ -45,6 +63,14 @@ const MarketingHeader = ({ current }) => {
         </nav>
 
         <div className='marketing-actions'>
+          {userState.user && quota !== null && (
+            <Link to='/topup' className='marketing-balance'>
+              <span className='marketing-balance-label'>
+                {t('landing.header.balance')}
+              </span>
+              <strong>{renderQuota(quota, t)}</strong>
+            </Link>
+          )}
           <ThemeToggle />
           <Link
             to={userState.user ? '/dashboard' : '/login'}
@@ -75,9 +101,8 @@ const MarketingShell = ({ current, children }) => {
             &copy; {new Date().getFullYear()} {systemName}.{' '}
             {t('landing.footer.rights')}
           </span>
-          <div className='marketing-footer-links'>
-            <Link to='/about'>{t('landing.footer.about')}</Link>
-            <Link to='/login'>{t('landing.footer.signin')}</Link>
+<div className='marketing-footer-links'>
+        <Link to='/login'>{t('landing.footer.signin')}</Link>
             {userState.user && (
               <Link to='/dashboard'>{t('landing.nav.console')}</Link>
             )}

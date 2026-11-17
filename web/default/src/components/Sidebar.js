@@ -13,12 +13,13 @@ const NAV_ITEMS = [
   { name: 'header.dashboard', to: '/dashboard', icon: 'chart bar' },
   { name: 'header.token', to: '/token', icon: 'key' },
   { name: 'header.topup', to: '/topup', icon: 'money' },
+  { name: 'plans.nav', to: '/plans', icon: 'shopping bag' },
   { name: 'header.log', to: '/log', icon: 'history' },
 ];
 
 const CATALOGUE_ITEMS = [
-  { name: 'landing.nav.models', to: '/models', icon: 'cube' },
-  { name: 'landing.nav.pricing', to: '/pricing', icon: 'tag' },
+  { name: 'landing.nav.models', to: '/console/models', icon: 'cube' },
+  { name: 'landing.nav.pricing', to: '/console/pricing', icon: 'tag' },
 ];
 
 const ADMIN_ITEMS = [
@@ -85,7 +86,11 @@ const Sidebar = () => {
     <>
       <aside className={`sidebar ${open ? 'is-open' : ''}`}>
         <div className='sidebar-brand'>
-          <Link to='/' className='sidebar-brand-link' onClick={() => setOpen(false)}>
+          <Link
+            to={userState.user ? '/dashboard' : '/'}
+            className='sidebar-brand-link'
+            onClick={() => setOpen(false)}
+          >
             <img src={logo} alt='logo' />
             <span className='sidebar-brand-name'>{systemName}</span>
           </Link>
@@ -119,10 +124,26 @@ const Sidebar = () => {
             <button
               type='button'
               className='sidebar-item'
-              onClick={() => go('/about')}
+              onClick={() => go('/connect')}
             >
-              <Icon name='info circle' />
-              <span>{t('header.about')}</span>
+              <Icon name='plug' />
+              <span>{t('connect.nav')}</span>
+            </button>
+            <button
+              type='button'
+              className='sidebar-item'
+              onClick={() => go('/docs')}
+            >
+              <Icon name='book' />
+              <span>{t('docs.nav')}</span>
+            </button>
+            <button
+              type='button'
+              className='sidebar-item'
+              onClick={() => go('/security')}
+            >
+              <Icon name='shield alternate' />
+              <span>{t('security.nav')}</span>
             </button>
           </div>
         </nav>

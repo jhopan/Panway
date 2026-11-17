@@ -67,11 +67,6 @@ let headerButtons = [
     to: '/setting',
     icon: 'setting',
   },
-  {
-    name: 'header.about',
-    to: '/about',
-    icon: 'info circle',
-  },
 ];
 
 if (localStorage.getItem('chat_link')) {
@@ -271,10 +266,6 @@ const Header = () => {
             >
               {systemName}
             </div>
-          </Menu.Item>
-          <Menu.Item as={Link} to='/about' style={{ fontSize: '15px' }}>
-            <Icon name='info circle' style={{ marginRight: '4px' }} />
-            {t('header.about')}
           </Menu.Item>
           <Menu.Menu position='right'>
             <Menu.Item>

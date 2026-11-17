@@ -63,11 +63,7 @@ const Landing = () => {
   // Signed in customers get the console links; visitors get sign in.
   // The console link lives in the action button on the right, so it is not
   // repeated in the nav list.
-  const navLinks = [
-    { to: '/models', label: t('landing.nav.models') },
-    { to: '/pricing', label: t('landing.nav.pricing') },
-    { to: '/about', label: t('landing.nav.about') },
-  ];
+  
 
   return (
     <MarketingShell current='home'>
@@ -157,6 +153,41 @@ const Landing = () => {
               <div key={p.key} className='landing-logo-item'>
                 <span className='landing-logo-name'>{p.name}</span>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className='landing-promises'>
+        <div className='landing-section-inner'>
+          <div className='landing-section-head'>
+            <div className='landing-eyebrow'>
+              <span className='landing-eyebrow-rule' />
+              {t('landing.promises.eyebrow')}
+            </div>
+            <h2 className='landing-section-title'>
+              {t('landing.promises.title', { name: systemName })}
+            </h2>
+          </div>
+
+          <div className='landing-promise-grid'>
+            {[
+              'integrity',
+              'privacy',
+              'transparency',
+              'support',
+            ].map((key, index) => (
+              <article key={key} className='landing-promise-card'>
+                <span className='landing-promise-no'>
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 className='landing-promise-title'>
+                  {t(`landing.promises.${key}_title`)}
+                </h3>
+                <p className='landing-promise-body'>
+                  {t(`landing.promises.${key}_body`)}
+                </p>
+              </article>
             ))}
           </div>
         </div>

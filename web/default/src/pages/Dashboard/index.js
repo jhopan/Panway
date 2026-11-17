@@ -1,4 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
+import {Link} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {Card, Grid, Icon, Label, Statistic} from 'semantic-ui-react';
 import {
@@ -14,6 +15,8 @@ import {
   YAxis,
 } from 'recharts';
 import axios from 'axios';
+import {API} from '../../helpers';
+import {renderQuota} from '../../helpers/render';
 import './Dashboard.css';
 
 const COLORS = {
@@ -41,10 +44,37 @@ const Dashboard = () => {
   const {t, i18n} = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [tokenCount, setTokenCount] = useState(0);
+  const [planName, setPlanName] = useState('');
 
   useEffect(() => {
     fetchDashboardData();
+    fetchQuickCards();
   }, []);
+
+  const fetchQuickCards = async () => {
+    try {
+      const [selfRes, tokenRes, planRes] = await Promise.all([
+        API.get('/api/user/self'),
+        API.get('/api/token/?p=0'),
+        API.get('/api/plans'),
+      ]);
+      const self = selfRes.data.success ? selfRes.data.data : null;
+      setUser(self);
+      if (tokenRes.data.success) {
+        setTokenCount((tokenRes.data.data || []).length);
+      }
+      if (planRes.data.success && self && self.plan_id) {
+        const plan = (planRes.data.data || []).find(
+          (p) => p.id === self.plan_id
+        );
+        setPlanName(plan ? plan.name : '');
+      }
+    } catch (error) {
+      // The quick cards are optional; the charts below still render.
+    }
+  };
 
   const fetchDashboardData = async () => {
     try {
@@ -223,6 +253,59 @@ const Dashboard = () => {
 
   return (
     <div className='dashboard-container'>
+      <Grid columns={4} stackable className='quick-grid'>
+        <Grid.Column>
+          <Card fluid className='quick-card' as={Link} to='/topup'>
+            <Card.Content>
+              <Card.Header>
+                <Icon name='wallet' /> {t('dashboard.quick.balance')}
+              </Card.Header>
+              <div className='quick-value'>
+                {user ? renderQuota(user.quota, t) : '—'}
+              </div>
+              <div className='quick-action'>{t('dashboard.quick.balance_action')}</div>
+            </Card.Content>
+          </Card>
+        </Grid.Column>
+        <Grid.Column>
+          <Card fluid className='quick-card' as={Link} to='/token'>
+            <Card.Content>
+              <Card.Header>
+                <Icon name='key' /> {t('dashboard.quick.keys')}
+              </Card.Header>
+              <div className='quick-value'>{tokenCount}</div>
+              <div className='quick-action'>{t('dashboard.quick.keys_action')}</div>
+            </Card.Content>
+          </Card>
+        </Grid.Column>
+        <Grid.Column>
+          <Card fluid className='quick-card' as={Link} to='/plans'>
+            <Card.Content>
+              <Card.Header>
+                <Icon name='id badge' /> {t('dashboard.quick.plan')}
+              </Card.Header>
+              <div className='quick-value'>
+                {planName || t('dashboard.quick.no_plan')}
+              </div>
+              <div className='quick-action'>{t('dashboard.quick.plan_action')}</div>
+            </Card.Content>
+          </Card>
+        </Grid.Column>
+        <Grid.Column>
+          <Card fluid className='quick-card' as={Link} to='/connect'>
+            <Card.Content>
+              <Card.Header>
+                <Icon name='plug' /> {t('dashboard.quick.connect')}
+              </Card.Header>
+              <div className='quick-value quick-value-code'>
+                {window.location.origin}/v1
+              </div>
+              <div className='quick-action'>{t('dashboard.quick.connect_action')}</div>
+            </Card.Content>
+          </Card>
+        </Grid.Column>
+      </Grid>
+
       <Grid columns={4} stackable className='summary-grid'>
         {statCards.map((card) => (
           <Grid.Column key={card.key}>

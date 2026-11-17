@@ -26,12 +26,15 @@ import Log from './pages/Log';
 import Chat from './pages/Chat';
 import LarkOAuth from './components/LarkOAuth';
 import Dashboard from './pages/Dashboard';
+import Plans from './pages/Plan';
+import Security from './pages/Security';
+import Docs from './pages/Docs';
 
 const Home = lazy(() => import('./pages/Home'));
 const Landing = lazy(() => import('./pages/Landing'));
 const Models = lazy(() => import('./pages/Catalogue/Models'));
 const Pricing = lazy(() => import('./pages/Catalogue/Pricing'));
-const About = lazy(() => import('./pages/About/About'));
+const Connect = lazy(() => import('./pages/Connect'));
 
 function App() {
   const [userState, userDispatch] = useContext(UserContext);
@@ -119,6 +122,38 @@ function App() {
           <Suspense fallback={<Loading></Loading>}>
             <Pricing />
           </Suspense>
+        }
+      />
+      {/* Console versions of the catalogue: same content, console chrome.
+          The public /models and /pricing pages stay for visitors. */}
+      <Route
+        path='/console/models'
+        element={
+          <PrivateRoute>
+            <Suspense fallback={<Loading></Loading>}>
+              <Models embedded />
+            </Suspense>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path='/console/pricing'
+        element={
+          <PrivateRoute>
+            <Suspense fallback={<Loading></Loading>}>
+              <Pricing embedded />
+            </Suspense>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path='/connect'
+        element={
+          <PrivateRoute>
+            <Suspense fallback={<Loading></Loading>}>
+              <Connect />
+            </Suspense>
+          </PrivateRoute>
         }
       />
       <Route
@@ -310,11 +345,27 @@ function App() {
         }
       />
       <Route
-        path='/about'
+        path='/plans'
         element={
-          <Suspense fallback={<Loading></Loading>}>
-            <About />
-          </Suspense>
+          <PrivateRoute>
+            <Plans />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path='/security'
+        element={
+          <PrivateRoute>
+            <Security />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path='/docs'
+        element={
+          <PrivateRoute>
+            <Docs />
+          </PrivateRoute>
         }
       />
       <Route
