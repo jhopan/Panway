@@ -169,20 +169,52 @@ func ListModels(c *gin.Context) {
 }
 
 func RetrieveModel(c *gin.Context) {
-	modelId := c.Param("model")
-	if model, ok := modelsMap[modelId]; ok {
-		c.JSON(200, model)
-	} else {
-		Error := relaymodel.Error{
-			Message: fmt.Sprintf("The model '%s' does not exist", modelId),
-			Type:    "invalid_request_error",
-			Param:   "model",
-			Code:    "model_not_found",
+	modelId := strings.TrimPrefix(c.Param("model"), "/")
+	for _, name := range availableModelNames(c) {
+		if strings.TrimSpace(name) != modelId {
+			continue
 		}
-		c.JSON(200, gin.H{
-			"error": Error,
+		if model, ok := modelsMap[modelId]; ok {
+			c.JSON(200, model)
+			return
+		}
+		c.JSON(200, OpenAIModels{
+			Id:      modelId,
+			Object:  "model",
+			Created: 1626777600,
+			OwnedBy: "custom",
+			Root:    modelId,
+			Parent:  nil,
 		})
+		return
 	}
+	Error := relaymodel.Error{
+		Message: fmt.Sprintf("The model '%s' does not exist", modelId),
+		Type:    "invalid_request_error",
+		Param:   "model",
+		Code:    "model_not_found",
+	}
+	c.JSON(200, gin.H{
+		"error": Error,
+	})
+}
+
+// availableModelNames mirrors the set used by ListModels: the token model
+// restriction first, then the group catalogue.
+func availableModelNames(c *gin.Context) []string {
+	if restriction := c.GetString(ctxkey.AvailableModels); restriction != "" {
+		return strings.Split(restriction, ",")
+	}
+	userId := c.GetInt(ctxkey.Id)
+	userGroup, err := model.CacheGetUserGroup(userId)
+	if err != nil {
+		return nil
+	}
+	names, err := model.CacheGetGroupModels(c.Request.Context(), userGroup)
+	if err != nil {
+		return nil
+	}
+	return names
 }
 
 func GetUserAvailableModels(c *gin.Context) {
