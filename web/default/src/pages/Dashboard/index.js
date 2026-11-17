@@ -138,12 +138,12 @@ const Dashboard = () => {
       }
       const tokens = (item.PromptTokens || 0) + (item.CompletionTokens || 0);
       series[day].requests += item.RequestCount || 0;
-      series[day].quota += (item.Quota || 0) / 1000000;
+      series[day].quota += item.Quota || 0;
       series[day].tokens += tokens;
       byModel[day][item.ModelName] = tokens;
 
       totalRequests += item.RequestCount || 0;
-      totalQuota += (item.Quota || 0) / 1000000;
+      totalQuota += item.Quota || 0;
       totalTokens += tokens;
     });
 
@@ -168,7 +168,7 @@ const Dashboard = () => {
       icon: 'dollar sign',
       color: COLORS.quota,
       label: t('dashboard.summary.quota'),
-      value: `$${summary.totalQuota.toFixed(3)}`,
+      value: renderQuota(summary.totalQuota, t),
     },
     {
       key: 'tokens',
@@ -358,7 +358,7 @@ const Dashboard = () => {
                   'quota',
                   COLORS.quota,
                   'dashboard.charts.quota.tooltip',
-                  (v) => `$${Number(v).toFixed(3)}`
+                  (v) => renderQuota(v, t)
                 )}
               </div>
             </Card.Content>
