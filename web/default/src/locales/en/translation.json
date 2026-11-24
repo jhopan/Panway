@@ -134,6 +134,7 @@
         "cancel": "Cancel",
         "submit": "Submit",
         "fill_models": "Fill Related Models",
+        "fetch_upstream": "Load From Channel",
         "fill_all": "Fill All Models",
         "clear": "Clear All Models",
         "add_custom": "Add",
@@ -142,6 +143,9 @@
       "messages": {
         "name_required": "Please enter channel name and key!",
         "models_required": "Please select at least one model!",
+        "upstream_loaded": "Loaded {{count}} models from the channel upstream.",
+        "upstream_failed": "Failed to load models from the channel upstream.",
+        "upstream_needs_save": "Save the channel first, then load its models.",
         "model_mapping_invalid": "Model mapping must be valid JSON format!",
         "update_success": "Channel updated successfully!",
         "create_success": "Channel created successfully!"

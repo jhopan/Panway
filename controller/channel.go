@@ -1,13 +1,18 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/jhopan/Panway/common/config"
-	"github.com/jhopan/Panway/common/helper"
-	"github.com/jhopan/Panway/model"
+	"encoding/json"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
+
+	"github.com/gin-gonic/gin"
+
+	"github.com/jhopan/Panway/common/config"
+	"github.com/jhopan/Panway/common/helper"
+	"github.com/jhopan/Panway/model"
 )
 
 func GetAllChannels(c *gin.Context) {
@@ -145,6 +150,81 @@ func DeleteDisabledChannel(c *gin.Context) {
 		"data":    rows,
 	})
 	return
+}
+
+// FetchChannelModels asks the channel's upstream for its own /v1/models list,
+// so the admin picks from what the upstream actually serves instead of the
+// static One API catalogue.
+func FetchChannelModels(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": "invalid channel id"})
+		return
+	}
+	channel, err := model.GetChannelById(id, true)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": err.Error()})
+		return
+	}
+	base := strings.TrimSuffix(strings.TrimSpace(channel.GetBaseURL()), "/")
+	if base == "" {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": "this channel has no base URL"})
+		return
+	}
+	url := base + "/models"
+	if !strings.HasSuffix(base, "/v1") {
+		url = base + "/v1/models"
+	}
+	req, err := http.NewRequestWithContext(c.Request.Context(), http.MethodGet, url, nil)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": err.Error()})
+		return
+	}
+	req.Header.Set("Authorization", "Bearer "+channel.Key)
+	req.Header.Set("Accept", "application/json")
+	client := &http.Client{Timeout: 20 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": "cannot reach upstream: " + err.Error()})
+		return
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(io.LimitReader(resp.Body, 2*1024*1024))
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": err.Error()})
+		return
+	}
+	if resp.StatusCode != http.StatusOK {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "upstream returned HTTP " + strconv.Itoa(resp.StatusCode),
+		})
+		return
+	}
+	var payload struct {
+		Data []struct {
+			Id string `json:"id"`
+		} `json:"data"`
+	}
+	ids := make([]string, 0)
+	if err := json.Unmarshal(body, &payload); err == nil {
+		for _, item := range payload.Data {
+			if strings.TrimSpace(item.Id) != "" {
+				ids = append(ids, item.Id)
+			}
+		}
+	}
+	if len(ids) == 0 {
+		var plain []string
+		if err := json.Unmarshal(body, &plain); err == nil {
+			ids = append(ids, plain...)
+		}
+	}
+	if len(ids) == 0 {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": "upstream returned no models"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"success": true, "message": "", "data": ids})
 }
 
 func UpdateChannel(c *gin.Context) {

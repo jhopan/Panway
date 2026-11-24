@@ -262,6 +262,7 @@
         "cancel": "Batal",
         "submit": "Kirim",
         "fill_models": "Isi Model Terkait",
+        "fetch_upstream": "Muat dari Kanal",
         "fill_all": "Isi Semua Model",
         "clear": "Hapus Semua Model",
         "add_custom": "Tambah",
@@ -270,6 +271,9 @@
       "messages": {
         "name_required": "Silakan masukkan nama kanal dan kunci!",
         "models_required": "Silakan pilih minimal satu model!",
+        "upstream_loaded": "{{count}} model dimuat dari kanal upstream.",
+        "upstream_failed": "Gagal memuat model dari kanal upstream.",
+        "upstream_needs_save": "Simpan kanal dulu, lalu muat modelnya.",
         "model_mapping_invalid": "Pemetaan model harus berupa format JSON yang valid!",
         "update_success": "Kanal berhasil diperbarui!",
         "create_success": "Kanal berhasil dibuat!"

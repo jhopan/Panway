@@ -57,6 +57,7 @@ const EditChannel = () => {
   const [basicModels, setBasicModels] = useState([]);
   const [fullModels, setFullModels] = useState([]);
   const [customModel, setCustomModel] = useState('');
+  const [fetchingUpstream, setFetchingUpstream] = useState(false);
   const [config, setConfig] = useState({
     region: '',
     sk: '',
@@ -127,6 +128,33 @@ const EditChannel = () => {
     }
   };
 
+  const fetchUpstreamModels = async () => {
+    if (!isEdit) {
+      showInfo(t('channel.edit.messages.upstream_needs_save'));
+      return;
+    }
+    setFetchingUpstream(true);
+    try {
+      const res = await API.get(`/api/channel/${channelId}/models`);
+      if (!res.data.success) {
+        showError(res.data.message);
+        return;
+      }
+      const ids = res.data.data || [];
+      setOriginModelOptions(
+        ids.map((id) => ({ key: id, text: id, value: id }))
+      );
+      setFullModels(ids);
+      setBasicModels(ids);
+      showSuccess(
+        t('channel.edit.messages.upstream_loaded', { count: ids.length })
+      );
+    } catch (error) {
+      showError(t('channel.edit.messages.upstream_failed'));
+    } finally {
+      setFetchingUpstream(false);
+    }
+  };
   const fetchGroups = async () => {
     try {
       let res = await API.get(`/api/group/`);
@@ -158,7 +186,7 @@ const EditChannel = () => {
 
   useEffect(() => {
     if (isEdit) {
-      loadChannel().then();
+      loadChannel().then(() => fetchUpstreamModels());
     } else {
       let localModels = getChannelModels(inputs.type);
       setBasicModels(localModels);
@@ -437,6 +465,15 @@ const EditChannel = () => {
             )}
             {inputs.type !== 43 && (
               <div style={{ lineHeight: '40px', marginBottom: '12px' }}>
+                <Button
+                  type={'button'}
+                  loading={fetchingUpstream}
+                  onClick={() => {
+                    fetchUpstreamModels().then();
+                  }}
+                >
+                  {t('channel.edit.buttons.fetch_upstream')}
+                </Button>
                 <Button
                   type={'button'}
                   onClick={() => {
