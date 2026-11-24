@@ -51,6 +51,7 @@ const Pricing = ({ embedded = false }) => {
   const [editing, setEditing] = useState(null);
   const [draftInput, setDraftInput] = useState('');
   const [draftOutput, setDraftOutput] = useState('');
+  const [draftCache, setDraftCache] = useState('');
   const [saving, setSaving] = useState(false);
 
   const loadHistory = () =>
@@ -79,12 +80,18 @@ const Pricing = ({ embedded = false }) => {
     setEditing(model);
     setDraftInput(String(Math.round(model.input_price)));
     setDraftOutput(String(Math.round(model.output_price)));
+    setDraftCache(String(Math.round(model.cache_hit_price || 0)));
   };
 
   const savePrice = async () => {
     const inputPrice = parseFloat(draftInput);
     const outputPrice = parseFloat(draftOutput);
+    const cachePrice = parseFloat(draftCache) || 0;
     if (!inputPrice || inputPrice <= 0 || !outputPrice || outputPrice <= 0) {
+      showError(t('models.invalid_price'));
+      return;
+    }
+    if (cachePrice < 0 || cachePrice > inputPrice) {
       showError(t('models.invalid_price'));
       return;
     }
@@ -94,6 +101,7 @@ const Pricing = ({ embedded = false }) => {
         model_id: editing.model_id,
         input_price: inputPrice,
         output_price: outputPrice,
+        cache_hit_price: cachePrice,
       });
       if (res.data.success) {
         setOverrides((prev) => ({
@@ -101,6 +109,7 @@ const Pricing = ({ embedded = false }) => {
           [editing.model_id]: {
             input_price: inputPrice,
             output_price: outputPrice,
+            cache_hit_price: cachePrice,
           },
         }));
         showSuccess(t('models.saved'));
@@ -268,6 +277,19 @@ const Pricing = ({ embedded = false }) => {
                 value={draftOutput}
                 onChange={(e) => setDraftOutput(e.target.value)}
                 placeholder='200000'
+              />
+            </div>
+
+            <div className='catalogue-modal-field'>
+              <label htmlFor='pricing-cache'>{t('pricing.cache_hit')}</label>
+              <Input
+                id='pricing-cache'
+                type='number'
+                min='0'
+                step='1000'
+                value={draftCache}
+                onChange={(e) => setDraftCache(e.target.value)}
+                placeholder='0'
               />
             </div>
 

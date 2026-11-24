@@ -165,7 +165,7 @@ func buildPricingEntries() ([]PricingEntry, error) {
 				Name:          name,
 				InputPrice:    inputPrice,
 				OutputPrice:   outputPrice,
-				CacheHitPrice: math.Round(inputPrice*ratio.CacheHitRatio()*100) / 100,
+				CacheHitPrice: math.Round(inputPrice*ratio.GetCacheHitRatio(modelId)*100) / 100,
 				Currency:      "IDR",
 				Unit:          "1M tokens",
 			})

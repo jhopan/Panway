@@ -95,7 +95,7 @@ func UpdateOption(c *gin.Context) {
 		return
 	}
 	switch option.Key {
-	case "ModelRatio", "CompletionRatio", "GroupRatio":
+	case "ModelRatio", "CompletionRatio", "GroupRatio", "CacheHitRatio":
 		// The public price list is derived from these maps.
 		invalidatePricingCache()
 	}

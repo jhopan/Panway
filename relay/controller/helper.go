@@ -124,7 +124,7 @@ func postConsumeQuota(ctx context.Context, usage *relaymodel.Usage, meta *meta.M
 	if usage.PromptTokensDetails != nil {
 		cachedTokens = usage.PromptTokensDetails.CachedTokens
 	}
-	quota = computeQuota(promptTokens, cachedTokens, completionTokens, ratio, completionRatio, billingratio.CacheHitRatio())
+	quota = computeQuota(promptTokens, cachedTokens, completionTokens, ratio, completionRatio, billingratio.GetCacheHitRatio(textRequest.Model))
 	if ratio != 0 && quota <= 0 {
 		quota = 1
 	}

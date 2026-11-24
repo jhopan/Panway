@@ -18,6 +18,7 @@ const Models = ({ embedded = false }) => {
   const [editing, setEditing] = useState(null);
   const [draftInput, setDraftInput] = useState('');
   const [draftOutput, setDraftOutput] = useState('');
+  const [draftCache, setDraftCache] = useState('');
   const [saving, setSaving] = useState(false);
 
   // Local copy of the catalogue so the page reflects a price change
@@ -40,6 +41,8 @@ const Models = ({ embedded = false }) => {
           ...m,
           input_price: override.input_price,
           output_price: override.output_price,
+          cache_hit_price:
+            override.cache_hit_price ?? m.cache_hit_price,
         };
       });
       result.push([provider, patched]);
@@ -51,6 +54,7 @@ const Models = ({ embedded = false }) => {
     setEditing(model);
     setDraftInput(String(Math.round(model.input_price)));
     setDraftOutput(String(Math.round(model.output_price)));
+    setDraftCache(String(Math.round(model.cache_hit_price || 0)));
   };
 
   const closeEditor = () => {
@@ -61,12 +65,17 @@ const Models = ({ embedded = false }) => {
   const savePrice = async () => {
     const inputPrice = parseFloat(draftInput);
     const outputPrice = parseFloat(draftOutput);
+    const cachePrice = parseFloat(draftCache) || 0;
 
     if (!inputPrice || inputPrice <= 0) {
       showError(t('models.invalid_price'));
       return;
     }
     if (!outputPrice || outputPrice <= 0) {
+      showError(t('models.invalid_price'));
+      return;
+    }
+    if (cachePrice < 0 || cachePrice > inputPrice) {
       showError(t('models.invalid_price'));
       return;
     }
@@ -77,6 +86,7 @@ const Models = ({ embedded = false }) => {
         model_id: editing.model_id,
         input_price: inputPrice,
         output_price: outputPrice,
+        cache_hit_price: cachePrice,
       });
       if (res.data.success) {
         setOverrides((prev) => ({
@@ -84,6 +94,7 @@ const Models = ({ embedded = false }) => {
           [editing.model_id]: {
             input_price: inputPrice,
             output_price: outputPrice,
+            cache_hit_price: cachePrice,
           },
         }));
         showSuccess(t('models.saved'));
@@ -217,6 +228,19 @@ const Models = ({ embedded = false }) => {
                 value={draftOutput}
                 onChange={(e) => setDraftOutput(e.target.value)}
                 placeholder='200000'
+              />
+            </div>
+
+            <div className='catalogue-modal-field'>
+              <label htmlFor='pw-cache-price'>{t('pricing.cache_hit')}</label>
+              <Input
+                id='pw-cache-price'
+                type='number'
+                min='0'
+                step='1000'
+                value={draftCache}
+                onChange={(e) => setDraftCache(e.target.value)}
+                placeholder='0'
               />
             </div>
 

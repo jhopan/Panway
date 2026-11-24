@@ -265,8 +265,12 @@ Konsekuensi yang perlu diketahui:
 **3. Prompt cache ditagih terpisah.** Kalau upstream mengirim
 `prompt_tokens_details.cached_tokens`, bagian prompt itu ditagih dengan
 `CACHE_HIT_DISCOUNT_PERCENT` (default 80% diskon dari harga input), bukan
-harga input penuh. Jumlah token asli tetap dicatat di kolom
-`logs.cached_tokens`, dan harga cache tampil di tabel `/pricing`. Rumusnya:
+harga input penuh. Diskon default global dari
+`CACHE_HIT_DISCOUNT_PERCENT`, tapi bisa dioverride per model dari admin
+(`PUT /api/pricing` dengan `cache_hit_price`, tersimpan di opsi
+`CacheHitRatio`; `0` mengembalikan ke default global). Jumlah token asli
+tetap dicatat di kolom `logs.cached_tokens`, dan harga cache tampil di tabel
+`/pricing`. Rumusnya:
 `quota = ((prompt - cached) + cached × cacheRatio + completion ×
 completionRatio) × ratio` dengan `cacheRatio = 1 - diskon/100`
 (`relay/billing/ratio/cache.go`).

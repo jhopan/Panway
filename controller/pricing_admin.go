@@ -26,6 +26,9 @@ type PricingUpdate struct {
 	InputPrice float64 `json:"input_price"`
 	// OutputPrice is rupiah per one million output tokens.
 	OutputPrice float64 `json:"output_price"`
+	// CacheHitPrice is rupiah per one million cached prompt tokens. 0 keeps
+	// the global CACHE_HIT_DISCOUNT_PERCENT for this model.
+	CacheHitPrice float64 `json:"cache_hit_price"`
 }
 
 // UpdatePricing changes the price of one model.
@@ -61,6 +64,13 @@ func UpdatePricing(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": "prices must be greater than zero",
+		})
+		return
+	}
+	if update.CacheHitPrice < 0 || update.CacheHitPrice > update.InputPrice {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "the cache hit price must be between zero and the input price",
 		})
 		return
 	}
@@ -110,7 +120,19 @@ func UpdatePricing(c *gin.Context) {
 	if err := model.RecordPriceHistory(modelId, update.InputPrice, update.OutputPrice); err != nil {
 		logger.SysError("failed to record price history: " + err.Error())
 	}
-	auditf(c, "price %s input=%.0f output=%.0f", modelId, update.InputPrice, update.OutputPrice)
+	var cacheRatioJSON string
+	var cacheErr error
+	if update.CacheHitPrice > 0 {
+		cacheRatioJSON, cacheErr = ratio.SetCacheHitRatio(modelId, update.CacheHitPrice/update.InputPrice)
+	} else {
+		cacheRatioJSON, cacheErr = ratio.DeleteCacheHitRatio(modelId)
+	}
+	if cacheErr != nil {
+		logger.SysError("failed to update cache hit ratio: " + cacheErr.Error())
+	} else if err := model.UpdateOption("CacheHitRatio", cacheRatioJSON); err != nil {
+		logger.SysError("failed to persist cache hit ratio: " + err.Error())
+	}
+	auditf(c, "price %s input=%.0f output=%.0f cache=%.0f", modelId, update.InputPrice, update.OutputPrice, update.CacheHitPrice)
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
@@ -170,6 +192,11 @@ func DeletePricing(c *gin.Context) {
 		return
 	}
 	invalidatePricingCache()
+	if cacheRatioJSON, cacheErr := ratio.DeleteCacheHitRatio(modelId); cacheErr != nil {
+		logger.SysError("failed to delete cache hit ratio: " + cacheErr.Error())
+	} else if err := model.UpdateOption("CacheHitRatio", cacheRatioJSON); err != nil {
+		logger.SysError("failed to persist cache hit ratio: " + err.Error())
+	}
 	auditf(c, "delete price %s", modelId)
 
 	c.JSON(http.StatusOK, gin.H{
