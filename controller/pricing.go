@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"math"
 	"net/http"
 	"sort"
 	"strconv"
@@ -164,7 +165,7 @@ func buildPricingEntries() ([]PricingEntry, error) {
 				Name:          name,
 				InputPrice:    inputPrice,
 				OutputPrice:   outputPrice,
-				CacheHitPrice: inputPrice * ratio.CacheHitRatio(),
+				CacheHitPrice: math.Round(inputPrice*ratio.CacheHitRatio()*100) / 100,
 				Currency:      "IDR",
 				Unit:          "1M tokens",
 			})

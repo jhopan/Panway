@@ -116,6 +116,14 @@ Start-Process -FilePath 'C:\Program Files\Go\bin\go.exe' `
 
 Di produksi pakai binary hasil build + systemd/Docker, bukan `go run`.
 
+Di Windows, `scripts/start-server.ps1` menjalankan server lewat
+`Win32_Process.Create` (WMI) supaya proses tidak ikut mati saat shell pemanggil
+berakhir:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/start-server.ps1
+```
+
 ## 4. Environment
 
 Semua default ada di `common/config/config.go`. `.env` tidak di-commit;
