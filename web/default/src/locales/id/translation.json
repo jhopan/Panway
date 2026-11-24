@@ -543,6 +543,7 @@
   "log": {
     "title": "Log Operasi",
     "export_csv": "Ekspor CSV",
+    "cached_tokens": "Token cache",
     "receipt": "Kwitansi",
     "search": "Cari log...",
     "usage_details": "Rincian Penggunaan",
@@ -1126,6 +1127,7 @@
     "calls_7d": "Panggilan (7h)",
     "avg_latency": "Latensi rata-rata",
     "history": "Harga 72 jam",
+    "cache_hit": "Cache hit",
     "actions": "Aksi",
     "note_billing": "Dikenai sesuai pemakaian",
     "note_billing_body": "Setiap request ditagih atas token yang benar-benar dipakai, terlihat di log kamu.",

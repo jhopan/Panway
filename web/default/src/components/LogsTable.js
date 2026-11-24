@@ -114,6 +114,11 @@ function renderDetail(log, t) {
           </Label>
         </a>
       )}
+      {log.cached_tokens > 0 && (
+        <Label basic size={'mini'} color='teal'>
+          {t('log.cached_tokens')}: {log.cached_tokens}
+        </Label>
+      )}
       {log.elapsed_time && (
         <Label
           basic

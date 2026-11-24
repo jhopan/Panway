@@ -120,7 +120,11 @@ func postConsumeQuota(ctx context.Context, usage *relaymodel.Usage, meta *meta.M
 	completionRatio := billingratio.GetCompletionRatio(textRequest.Model, meta.ChannelType)
 	promptTokens := usage.PromptTokens
 	completionTokens := usage.CompletionTokens
-	quota = int64(math.Ceil((float64(promptTokens) + float64(completionTokens)*completionRatio) * ratio))
+	cachedTokens := 0
+	if usage.PromptTokensDetails != nil {
+		cachedTokens = usage.PromptTokensDetails.CachedTokens
+	}
+	quota = computeQuota(promptTokens, cachedTokens, completionTokens, ratio, completionRatio, billingratio.CacheHitRatio())
 	if ratio != 0 && quota <= 0 {
 		quota = 1
 	}
@@ -146,10 +150,14 @@ func postConsumeQuota(ctx context.Context, usage *relaymodel.Usage, meta *meta.M
 		logger.Error(ctx, "error update user quota cache: "+err.Error())
 	}
 	logContent := fmt.Sprintf("Ratio: %.2f × %.2f × %.2f", modelRatio, groupRatio, completionRatio)
+	if cachedTokens > 0 {
+		logContent += fmt.Sprintf(" cache=%d", cachedTokens)
+	}
 	model.RecordConsumeLog(ctx, &model.Log{
 		UserId:            meta.UserId,
 		ChannelId:         meta.ChannelId,
 		PromptTokens:      promptTokens,
+		CachedTokens:      cachedTokens,
 		CompletionTokens:  completionTokens,
 		ModelName:         textRequest.Model,
 		TokenName:         meta.TokenName,
@@ -161,6 +169,21 @@ func postConsumeQuota(ctx context.Context, usage *relaymodel.Usage, meta *meta.M
 	})
 	model.UpdateUserUsedQuotaAndRequestCount(meta.UserId, quota)
 	model.UpdateChannelUsedQuota(meta.ChannelId, quota)
+}
+
+// computeQuota turns upstream token counts into quota units. Cached prompt
+// tokens are billed with cacheRatio instead of the normal input price, so a
+// prompt-cache hit is cheaper for the customer while Panway still records the
+// real token counts.
+func computeQuota(promptTokens, cachedTokens, completionTokens int, ratio, completionRatio, cacheRatio float64) int64 {
+	if cachedTokens < 0 {
+		cachedTokens = 0
+	}
+	if cachedTokens > promptTokens {
+		cachedTokens = promptTokens
+	}
+	billablePrompt := float64(promptTokens-cachedTokens) + float64(cachedTokens)*cacheRatio
+	return int64(math.Ceil((billablePrompt + float64(completionTokens)*completionRatio) * ratio))
 }
 
 func getMappedModelName(modelName string, mapping map[string]string) (string, bool) {

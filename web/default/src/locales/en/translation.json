@@ -422,6 +422,7 @@
   "log": {
     "title": "Operation Log",
     "export_csv": "Export CSV",
+    "cached_tokens": "Cached tokens",
     "receipt": "Receipt",
     "search": "Search logs...",
     "usage_details": "Usage Details",
@@ -1126,6 +1127,7 @@
     "calls_7d": "Calls (7d)",
     "avg_latency": "Avg latency",
     "history": "72h price",
+    "cache_hit": "Cache hit",
     "actions": "Action",
     "note_billing": "Billed on use",
     "note_billing_body": "Every request is charged on the tokens it actually consumed, shown in your log.",

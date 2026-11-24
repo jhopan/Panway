@@ -106,8 +106,10 @@ var LogRetentionDays = env.Int("LOG_RETENTION_DAYS", 0)
 var LowBalanceThreshold = int64(env.Int("LOW_BALANCE_THRESHOLD", 0))
 var LowBalanceNotifyIntervalHours = env.Int("LOW_BALANCE_NOTIFY_INTERVAL_HOURS", 24)
 
-// MetricsEnabled exposes process counters at /metrics. METRICS_TOKEN adds a
-// bearer check for deployments where the port is not scrape-only.
+// CacheHitDiscountPercent is the discount applied to prompt tokens the
+// upstream served from its prompt cache. 80 means a cache hit costs 20% of
+// the normal input price. 0 bills cache hits like normal input tokens.
+var CacheHitDiscountPercent = env.Int("CACHE_HIT_DISCOUNT_PERCENT", 80)
 var MetricsEnabled = env.Bool("ENABLE_METRICS", false)
 var MetricsToken = env.String("METRICS_TOKEN", "")
 

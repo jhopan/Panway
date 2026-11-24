@@ -141,6 +141,7 @@ Semua default ada di `common/config/config.go`. `.env` tidak di-commit;
 | `HSTS_MAX_AGE` / `HSTS_INCLUDE_SUBDOMAINS` | HSTS; `0` = mati |
 | `PRICING_CACHE_SECONDS` | TTL cache `/api/pricing` (default 30; `0` = mati) |
 | `ESTIMATED_USAGE_MODE` | `local` (default) menormalkan usage estimated; `upstream` menagih angka upstream |
+| `CACHE_HIT_DISCOUNT_PERCENT` | diskon token prompt dari cache upstream (default 80) |
 | `SQLITE_BUSY_TIMEOUT` | timeout lock SQLite (ms) |
 | `SQL_MAX_OPEN_CONNS` / `SQL_MAX_IDLE_CONNS` | pool DB; default SQLite 1 |
 | `SQLITE_BACKUP_ENABLED` / `SQLITE_BACKUP_DIR` | backup `VACUUM INTO` otomatis |
@@ -252,6 +253,15 @@ Konsekuensi yang perlu diketahui:
 - Estimasi biaya pre-consume memakai `PreConsumedQuota + prompt lokal +
   max_tokens`; kalau biaya asli lebih besar, sisa saldo ditagih sampai 0 dan
   request berikutnya ditolak (`Insufficient token quota`).
+
+**3. Prompt cache ditagih terpisah.** Kalau upstream mengirim
+`prompt_tokens_details.cached_tokens`, bagian prompt itu ditagih dengan
+`CACHE_HIT_DISCOUNT_PERCENT` (default 80% diskon dari harga input), bukan
+harga input penuh. Jumlah token asli tetap dicatat di kolom
+`logs.cached_tokens`, dan harga cache tampil di tabel `/pricing`. Rumusnya:
+`quota = ((prompt - cached) + cached × cacheRatio + completion ×
+completionRatio) × ratio` dengan `cacheRatio = 1 - diskon/100`
+(`relay/billing/ratio/cache.go`).
 
 ## 7. Verifikasi Telegram
 

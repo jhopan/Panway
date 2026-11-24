@@ -11,7 +11,15 @@ type Usage struct {
 	// the estimate, which can be several times the real prompt size.
 	Estimated bool `json:"estimated,omitempty"`
 
+	// PromptTokensDetails carries the upstream prompt-cache counters. When
+	// cached_tokens is set, that part of the prompt is billed at the cache
+	// price instead of the normal input price.
+	PromptTokensDetails     *PromptTokensDetails     `json:"prompt_tokens_details,omitempty"`
 	CompletionTokensDetails *CompletionTokensDetails `json:"completion_tokens_details,omitempty"`
+}
+
+type PromptTokensDetails struct {
+	CachedTokens int `json:"cached_tokens"`
 }
 
 type CompletionTokensDetails struct {

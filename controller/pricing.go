@@ -28,6 +28,8 @@ type PricingEntry struct {
 	InputPrice float64 `json:"input_price"`
 	// OutputPrice is rupiah per one million output tokens.
 	OutputPrice float64 `json:"output_price"`
+	// CacheHitPrice is rupiah per one million cached prompt tokens.
+	CacheHitPrice float64 `json:"cache_hit_price"`
 	// Currency of InputPrice and OutputPrice.
 	Currency string `json:"currency"`
 	// Unit explains the price unit, e.g. "per 1M tokens".
@@ -157,13 +159,14 @@ func buildPricingEntries() ([]PricingEntry, error) {
 			}
 
 			entries = append(entries, PricingEntry{
-				ModelId:     modelId,
-				Provider:    provider,
-				Name:        name,
-				InputPrice:  inputPrice,
-				OutputPrice: outputPrice,
-				Currency:    "IDR",
-				Unit:        "1M tokens",
+				ModelId:       modelId,
+				Provider:      provider,
+				Name:          name,
+				InputPrice:    inputPrice,
+				OutputPrice:   outputPrice,
+				CacheHitPrice: inputPrice * ratio.CacheHitRatio(),
+				Currency:      "IDR",
+				Unit:          "1M tokens",
 			})
 		}
 	}

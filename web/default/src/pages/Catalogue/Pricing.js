@@ -150,6 +150,7 @@ const Pricing = ({ embedded = false }) => {
               <th>{t('models.model')}</th>
               <th>{t('models.input')}</th>
               <th>{t('models.output')}</th>
+              <th>{t('pricing.cache_hit')}</th>
               <th>{t('pricing.multiplier')}</th>
               <th>{t('pricing.calls_7d')}</th>
               <th>{t('pricing.avg_latency')}</th>
@@ -160,21 +161,21 @@ const Pricing = ({ embedded = false }) => {
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={admin ? 8 : 7} className='catalogue-empty'>
+                <td colSpan={admin ? 9 : 8} className='catalogue-empty'>
                   {t('models.loading')}
                 </td>
               </tr>
             )}
             {failed && (
               <tr>
-                <td colSpan={admin ? 8 : 7} className='catalogue-empty'>
+                <td colSpan={admin ? 9 : 8} className='catalogue-empty'>
                   {t('models.error')}
                 </td>
               </tr>
             )}
             {!loading && !failed && rows.length === 0 && (
               <tr>
-                <td colSpan={admin ? 8 : 7} className='catalogue-empty'>
+                <td colSpan={admin ? 9 : 8} className='catalogue-empty'>
                   {t('models.empty')}
                 </td>
               </tr>
@@ -186,6 +187,7 @@ const Pricing = ({ embedded = false }) => {
                 </td>
                 <td>{formatPrice(m.input_price)}</td>
                 <td>{formatPrice(m.output_price)}</td>
+                <td>{formatPrice(m.cache_hit_price || 0)}</td>
                 <td className='pricing-dim'>
                   {m.output_price / m.input_price}x
                 </td>
