@@ -350,3 +350,54 @@ html.dark .ui.accordion .active.title,
 html.dark .ui.accordion .title:hover {
     color: var(--pw-accent) !important;
 }
+
+/* Dropdown menus render in their own layer; without this the console keeps
+   Semantic's white menu on a dark page, and the item text becomes unreadable. */
+html.dark .ui.dropdown .menu,
+html.dark .ui.selection.dropdown .menu,
+html.dark .ui.search.dropdown .menu,
+html.dark .ui.multiple.dropdown .menu {
+    background: var(--pw-surface) !important;
+    border-color: var(--pw-line) !important;
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.dropdown .menu > .item,
+html.dark .ui.dropdown .menu > .header,
+html.dark .ui.selection.dropdown .menu > .item,
+html.dark .ui.search.dropdown .menu > .item {
+    color: var(--pw-ink) !important;
+    border-color: var(--pw-line) !important;
+    background: transparent !important;
+}
+
+html.dark .ui.dropdown .menu > .item:hover,
+html.dark .ui.dropdown .menu > .item.active,
+html.dark .ui.dropdown .menu > .item.selected,
+html.dark .ui.selection.dropdown .menu > .item:hover,
+html.dark .ui.selection.dropdown .menu > .item.active,
+html.dark .ui.selection.dropdown .menu > .item.selected,
+html.dark .ui.search.dropdown .menu > .item:hover,
+html.dark .ui.search.dropdown .menu > .item.selected {
+    background: var(--pw-surface-2) !important;
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.dropdown .menu > .divider {
+    border-top-color: var(--pw-line) !important;
+}
+
+html.dark .ui.multiple.dropdown > .label {
+    background: var(--pw-surface-2) !important;
+    color: var(--pw-ink) !important;
+    border-color: var(--pw-line) !important;
+}
+
+html.dark .ui.dropdown > .text,
+html.dark .ui.search.dropdown > input.search {
+    color: var(--pw-ink) !important;
+}
+
+html.dark .ui.dropdown .menu {
+    scrollbar-color: var(--pw-line) transparent;
+}
